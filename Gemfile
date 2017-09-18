@@ -8,7 +8,7 @@ end
 
 gem 'rails', '~> 5.1.4'
 gem 'activerecord-sqlserver-adapter'
-gem 'tiny_tds' # support for activerecord-sqlserver-adapter on OSX/*NIX
+gem 'tiny_tds', '1.3.0' # support for activerecord-sqlserver-adapter on OSX/*NIX
 gem 'puma', '~> 3.7'
 gem 'haml-rails', '~> 1.0'
 gem 'sass-rails', '~> 5.0'
