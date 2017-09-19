@@ -1,0 +1,21 @@
+!!!
+%html
+  %head
+    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %title Jail Dashboard
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body
+    .page-wrapper
+      .sidebar
+        .logo SLC LOGO
+        %ul.nav-options
+          %li.nav-option{ class: ('active' if content_for(:nav_active) == 'bookings') }
+            %a{ href: '/bookings' } Jail Bookings
+          %li.nav-option{ class: ('active' if content_for(:nav_active) == 'adjudication') }
+            %a{ href: '/adjudication' } Adjudication Process
+          %li.nav-option{ class: ('active' if content_for(:nav_active) == 'population') }
+            %a{ href: '/population' } Jail Population
+      .content
+        = yield
