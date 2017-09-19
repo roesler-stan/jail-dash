@@ -1,1 +1,24 @@
 = content_for(:nav_active, 'population')
+.header
+  %h2.page-title Jail Population Breakdown
+  .header-metrics
+    .metric
+      .metric-number 2,308
+      .metric-title total jail population
+    .metric
+      .metric-number 2,271
+      .metric-title in-house jail population
+%section
+  .section-title Percentage of total jail beds by population
+  .time-range-descriptor Current jail population
+  %ul.accordion
+    %li
+      %a.js-accordion-trigger{ href: "javascript:void(0)" } Condition of Probation
+      %ul.submenu
+        %li
+          %a{ href: "javascript:void(0)" } Quarterly Trend
+    %li
+      %a.js-accordion-trigger{ href: "javascript:void(0)" } Justice Court Commitments
+      %ul.submenu
+        %li
+          %a{ href: "javascript:void(0)" } Quarterly Trend

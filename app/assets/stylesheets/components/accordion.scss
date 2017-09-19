@@ -1,0 +1,42 @@
+.accordion {
+  $accordion-menu-color: $base-font-color;
+  $accordion-menu-background: $shade-gray;
+  $accordion-menu-sub-background: $shade-gray;
+  $accordion-menu-list-padding: ($base-spacing / 2) $base-spacing;
+
+  margin: 0 0 $base-spacing 0;
+  padding: 0;
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+
+    > a {
+      color: $accordion-menu-color;
+      display: block;
+      padding: $accordion-menu-list-padding;
+      text-decoration: none;
+    }
+
+    &:nth-child(odd) {
+      background-color: $accordion-menu-background;
+    }
+  }
+
+  ul.submenu {
+    display: none;
+
+    li {
+      background-color: $accordion-menu-sub-background;
+    }
+  }
+
+  .is-expanded {
+    display: block;
+    padding-bottom: 0;
+  }
+}

@@ -15,4 +15,6 @@
 //= require turbolinks
 //= require d3
 
+//= require pages/population
+
 //= require charts/bookings-by-agency
