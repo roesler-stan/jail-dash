@@ -11,6 +11,7 @@ gem 'rails', '~> 5.1.4'
 gem 'activerecord-sqlserver-adapter'
 gem 'tiny_tds', '1.3.0' # support for activerecord-sqlserver-adapter on OSX/*NIX
 gem 'puma', '~> 3.7'
+gem 'jquery-rails'
 gem 'haml-rails', '~> 1.0'
 gem 'sass-rails', '~> 5.0'
 gem 'bourbon', '5.0.0.beta.8'
@@ -18,6 +19,7 @@ gem 'neat', '2.1.0'
 gem 'uglifier', '>= 1.3.0' # JS asset compression
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
+gem 'd3-rails', '~> 4.10'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
