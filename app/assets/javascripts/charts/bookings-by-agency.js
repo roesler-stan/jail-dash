@@ -16,11 +16,11 @@ class BookingsByAgencyChart {
         .attr("id", "gradient-maroon")
     gradientMaroon.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#DC5692")
+        .attr("stop-color", "#DD5893") // hover: #F36AA9
         .attr("stop-opacity", 1);
     gradientMaroon.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#861F41")
+        .attr("stop-color", "#B82C5A") // hover: #E23870
         .attr("stop-opacity", 1);
 
     var gradientYellow = svg.append("defs")
@@ -28,11 +28,11 @@ class BookingsByAgencyChart {
         .attr("id", "gradient-yellow")
     gradientYellow.append("stop")
         .attr("offset", "0%")
-        .attr("stop-color", "#FED500")
+        .attr("stop-color", "#FADC00") // hover: #FFE905
         .attr("stop-opacity", 1);
     gradientYellow.append("stop")
         .attr("offset", "100%")
-        .attr("stop-color", "#F2B600")
+        .attr("stop-color", "#F2B600") // hover: #FFCF02
         .attr("stop-opacity", 1);
 
     var x0 = d3.scaleBand()

@@ -11,12 +11,12 @@
     .page-wrapper
       .sidebar
         .logo SLC LOGO
-        %ul.nav-options
-          %li.nav-option{ class: ('active' if content_for(:nav_active) == 'bookings') }
+        %ul.nav-tabs
+          %li.tab{ class: ('active' if content_for(:nav_active) == 'bookings') }
             %a{ href: '/bookings' } Jail Bookings
-          %li.nav-option{ class: ('active' if content_for(:nav_active) == 'adjudication') }
+          %li.tab{ class: ('active' if content_for(:nav_active) == 'adjudication') }
             %a{ href: '/adjudication' } Adjudication Process
-          %li.nav-option{ class: ('active' if content_for(:nav_active) == 'population') }
+          %li.tab{ class: ('active' if content_for(:nav_active) == 'population') }
             %a{ href: '/population' } Jail Population
       .content
         = yield

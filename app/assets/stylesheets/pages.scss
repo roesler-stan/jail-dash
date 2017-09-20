@@ -20,16 +20,16 @@
   display: inline-block;
 }
 
-.header-metrics {
+.header-kpis {
   float: right;
 
-  .metric {
+  .kpi-container {
     display: inline-block;
 
-    .metric-number {
+    .kpi {
       color: $action-color;
     }
-    .metric-title {
+    .kpi-title {
       color: $base-font-color;
     }
   }

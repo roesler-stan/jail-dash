@@ -15,20 +15,21 @@ $base-z-index: 0;
 // Colors
 $maroon: #861F41;
 $fuchsia: #B82C5A;
-$yellow: #F2B600;
-$dark-gray: #333333;
-$medium-1-gray: #5C5C5C;
-$medium-2-gray: #7D7D7D;
-$light-gray: #858585;
+$yellow: #C99700;
+$dark-gray-1: #333333;
+$dark-gray-2: #5C5C5C;
+$medium-gray-1: #858585;
+$medium-gray-2: #ADADAD;
+$light-gray: #D6D6D6;
 $shade-gray: #F7F7F7;
 
 // Font Colors
 $base-font-color: #333333;
-$title-font-color: $maroon;
+$section-header-color: $maroon;
 $action-color: $fuchsia;
 
 // Border
-$base-border-color: $medium-1-gray;
+$base-border-color: $medium-gray-1;
 $base-border: 1px solid $base-border-color;
 
 // Background Colors

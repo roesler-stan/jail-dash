@@ -1,14 +1,14 @@
 = content_for(:nav_active, 'bookings')
 .header
-  %h2.page-title Jail Bookings by Agency
-  .header-metrics
-    .metric
-      .metric-number 7,122
-      .metric-title bookings last quarter
+  %h2.section_header Jail Bookings by Agency
+  .header-kpis
+    .kpi
+      .kpi-number 7,122
+      .kpi_label bookings last quarter
 
 %section.chart
-  .section-title Percentage of total jail bookings by agency compared to size of municipality served as a percentage of total population
-  .time-range-descriptor Last quarter (April 1, 2017 - June 30, 2017)
+  .chart_title Percentage of total jail bookings by agency compared to size of municipality served as a percentage of total population
+  .chart_subtitle Last quarter (April 1, 2017 - June 30, 2017)
   #bookings-by-population
     %svg{ width: '100%', height: '100%' }
     :javascript
@@ -18,8 +18,8 @@
       })
 
 %section.chart
-  .section-title Total number of jail bookings over time
+  .chart_title Total number of jail bookings over time
 
 %section.chart
-  .section-title Jail bookings over time, by agency
-  .time-range-descriptor From Q2 2015 to Q2 2017  
+  .chart_title Jail bookings over time, by agency
+  .chart_subtitle From Q2 2015 to Q2 2017
