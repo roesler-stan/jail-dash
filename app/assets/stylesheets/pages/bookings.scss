@@ -1,4 +1,41 @@
 #bookings-by-population {
   height: 500px;
   width: 100%;
+
+  .column {
+    &.gradient-purple {
+      fill: url(#gradient-purple);
+
+      &:hover {
+        fill: url(#gradient-purple-hover);
+      }
+    }
+    &.gradient-yellow {
+      fill: url(#gradient-yellow);
+
+      &:hover {
+        fill: url(#gradient-yellow-hover);
+      }
+    }
+  }
+}
+
+#gradient-purple {
+  .stop-left { stop-color: #DD5893 }
+  .stop-right { stop-color: #B82C5A }
+}
+
+#gradient-purple-hover {
+  .stop-left { stop-color: #F36AA9 }
+  .stop-right { stop-color: #E23870 }
+}
+
+#gradient-yellow {
+  .stop-left { stop-color: #FADC00 }
+  .stop-right { stop-color: #F2B600 }
+}
+
+#gradient-yellow-hover {
+  .stop-left { stop-color: #FFE905 }
+  .stop-right { stop-color: #FFCF02 }
 }

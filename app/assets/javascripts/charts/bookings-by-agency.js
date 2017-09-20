@@ -11,29 +11,32 @@ class BookingsByAgencyChart {
         height = 500 - margin.top - margin.bottom,
         g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var gradientMaroon = svg.append("defs")
-      .append("linearGradient")
-        .attr("id", "gradient-maroon")
-    gradientMaroon.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", "#DD5893") // hover: #F36AA9
-        .attr("stop-opacity", 1);
-    gradientMaroon.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", "#B82C5A") // hover: #E23870
-        .attr("stop-opacity", 1);
+    var svgDefs = svg.append("defs")
 
-    var gradientYellow = svg.append("defs")
-      .append("linearGradient")
-        .attr("id", "gradient-yellow")
-    gradientYellow.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", "#FADC00") // hover: #FFE905
-        .attr("stop-opacity", 1);
-    gradientYellow.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", "#F2B600") // hover: #FFCF02
-        .attr("stop-opacity", 1);
+
+    var purpleGradient = svgDefs.append('linearGradient')
+        .attr('id', 'gradient-purple')
+    var purpleGradientHover = svgDefs.append('linearGradient')
+        .attr('id', 'gradient-purple-hover')
+    var yellowGradient = svgDefs.append('linearGradient')
+        .attr('id', 'gradient-yellow')
+    var yellowGradientHover = svgDefs.append('linearGradient')
+        .attr('id', 'gradient-yellow-hover')
+    var gradients = [
+      purpleGradient,
+      purpleGradientHover,
+      yellowGradient,
+      yellowGradientHover
+    ]
+
+    gradients.forEach(function(gradient) {
+      gradient.append('stop')
+        .attr('class', 'stop-left')
+        .attr('offset', 0)
+      gradient.append('stop')
+        .attr('class', 'stop-right')
+        .attr('offset', 1)
+    })
 
     var x0 = d3.scaleBand()
         .rangeRound([0, width])
@@ -48,8 +51,8 @@ class BookingsByAgencyChart {
     var z = d3.scaleOrdinal()
         .range(["#861F41", "#F2B600"]);
 
-    var zGradients = d3.scaleOrdinal()
-        .range(['gradient-maroon', 'gradient-yellow']);
+    var gradientClasses = d3.scaleOrdinal()
+        .range(['gradient-purple', 'gradient-yellow']);
 
     d3.json("/bookings_data", function(response, data) {
       var keys = ['yrs_lt5', 'yrs_5_13']
@@ -70,7 +73,7 @@ class BookingsByAgencyChart {
           .attr("y", function(d) { return y(d.value); })
           .attr("width", x1.bandwidth())
           .attr("height", function(d) { return height - y(d.value); })
-          .attr("fill", function(d) { return "url(#"+zGradients(d.key)+")" });
+          .attr("class", function(d) { return 'column '+gradientClasses(d.key) });
 
       g.append("g")
           .attr("class", "axis")
@@ -110,7 +113,7 @@ class BookingsByAgencyChart {
           .attr("dy", "0.32em")
           .text(function(d) { return d; });
     });
-    
+
   }
 
 }
