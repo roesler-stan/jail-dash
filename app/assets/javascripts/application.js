@@ -14,6 +14,7 @@
 //= require rails-ujs
 //= require turbolinks
 //= require d3
+//= require d3-tip
 
 //= require pages/population
 

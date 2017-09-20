@@ -20,6 +20,9 @@ gem 'uglifier', '>= 1.3.0' # JS asset compression
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5' # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'd3-rails', '~> 4.10'
+source 'https://rails-assets.org' do
+  gem 'rails-assets-d3-tip'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

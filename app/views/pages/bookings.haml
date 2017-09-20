@@ -15,10 +15,18 @@
       $('document').ready(function () {
         const bookingsByAgency = new BookingsByAgencyChart();
         bookingsByAgency.render()
-      })
+      });
 
 %section.chart
   .chart_title Total number of jail bookings over time
+  .chart_subtitle From Q2 2015 to Q2 2017
+  #bookings-over-time
+  %svg{ width: '100%', height: '100%' }
+    :javascript
+      $('document').ready(function () {
+        const bookingsOverTime = new BookingsOverTimeChart();
+        bookingsOverTime.render()
+      });
 
 %section.chart
   .chart_title Jail bookings over time, by agency

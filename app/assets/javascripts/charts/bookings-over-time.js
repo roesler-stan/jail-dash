@@ -1,11 +1,11 @@
-class BookingsByAgencyChart {
+class BookingsOverTimeChart {
   constructor(args) {
     this.args = args;
   }
 
   render(targetElement) {
 
-    var svg = d3.select("#bookings-by-population svg"),
+    var svg = d3.select("#bookings-over-time svg"),
         margin = {top: 20, right: 20, bottom: 20, left: 20},
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,
