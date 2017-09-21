@@ -30,10 +30,10 @@ class BookingsByAgencyChart {
 
     gradients.forEach(function(gradient) {
       gradient.append('stop')
-        .attr('class', 'stop-left')
+        .attr('class', 'stop-begin')
         .attr('offset', 0)
       gradient.append('stop')
-        .attr('class', 'stop-right')
+        .attr('class', 'stop-end')
         .attr('offset', 1)
     })
 
@@ -78,13 +78,13 @@ class BookingsByAgencyChart {
         .selectAll("rect")
         .data(function(d) { return keys.map(function(key) { return {agency: d.agency, key: key, value: d[key]}; }); })
         .enter().append("rect")
-          .on('mouseover', infotip.show)
-          .on('mouseout', infotip.hide)
           .attr("x", function(d) { return x1(d.key); })
           .attr("y", function(d) { return y(d.value); })
           .attr("width", x1.bandwidth())
           .attr("height", function(d) { return height - y(d.value); })
-          .attr("class", function(d) { return 'column '+gradientClasses(d.key) });
+          .attr("class", function(d) { return 'column '+gradientClasses(d.key) })
+          .on('mouseover', infotip.show)
+          .on('mouseout', infotip.hide);
 
       g.append("g")
           .attr("class", "axis")
@@ -99,9 +99,6 @@ class BookingsByAgencyChart {
           .attr("y", y(y.ticks().pop()) + 0.5)
           .attr("dy", "0.32em")
           .attr("fill", "#000")
-          .attr("font-weight", "bold")
-          .attr("text-anchor", "start")
-          .text("Population");
 
       var legend = g.append("g")
           .attr("font-family", "sans-serif")

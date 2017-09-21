@@ -19,3 +19,5 @@
 //= require pages/population
 
 //= require charts/bookings-by-agency
+//= require charts/bookings-over-time
+//= require charts/adjudication-by-court

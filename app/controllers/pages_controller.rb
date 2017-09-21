@@ -16,6 +16,17 @@ class PagesController < ApplicationController
   def adjudication
   end
 
+  def adjudication_data
+    render json: [
+      { agency: 'Agency CA', value: 2704659 },
+      { agency: 'Agency TX', value: 2027307 },
+      { agency: 'Agency NY', value: 1208495 },
+      { agency: 'Agency FL', value: 1140516 },
+      { agency: 'Agency IL', value: 894368 },
+      { agency: 'Agency PA', value: 737462 },
+    ]
+  end
+
   def population
   end
 end
