@@ -3,8 +3,8 @@ class AdjudicationByJudgeChart {
     this.args = args;
   }
 
-  render(targetElement) {
-    var svg = d3.select("#adjudication-by-judge svg"),
+  render(targetElementSelector) {
+    var svg = d3.select(targetElementSelector),
         margin = {top: 20, right: 20, bottom: 20, left: 70},
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,

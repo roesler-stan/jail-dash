@@ -3,9 +3,9 @@ class BookingsByAgencyChart {
     this.args = args;
   }
 
-  render(targetElement) {
+  render(targetElementSelector) {
 
-    var svg = d3.select("#bookings-by-population svg"),
+    var svg = d3.select(targetElementSelector),
         margin = {top: 20, right: 20, bottom: 20, left: 20},
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,
@@ -80,6 +80,8 @@ class BookingsByAgencyChart {
         .enter().append("rect")
           .attr("x", function(d) { return x1(d.key); })
           .attr("y", function(d) { return y(d.value); })
+          .attr('rx', 3) // border radius
+          .attr('ry', 3) // border radius
           .attr("width", x1.bandwidth())
           .attr("height", function(d) { return height - y(d.value); })
           .attr("class", function(d) { return 'column '+gradientClasses(d.key) })

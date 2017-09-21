@@ -17,7 +17,7 @@
     :javascript
       $(document).ready(function () {
         const adjudicationByCourt = new AdjudicationByCourtChart();
-        adjudicationByCourt.render();
+        adjudicationByCourt.render("#adjudication-by-court svg");
       });
 
 %section.chart
@@ -28,5 +28,5 @@
     :javascript
       $(document).ready(function () {
         const adjudicationByJudge = new AdjudicationByJudgeChart();
-        adjudicationByJudge.render();
+        adjudicationByJudge.render("#adjudication-by-judge svg");
       });

@@ -3,5 +3,5 @@ class BookingsOverTimeChart {
     this.args = args;
   }
 
-  render(targetElement) {}
+  render(targetElementSelector) {}
 }
