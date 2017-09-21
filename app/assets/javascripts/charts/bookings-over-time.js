@@ -34,7 +34,20 @@ class BookingsOverTimeChart {
         .x(function(d) { return x(d.time) })
         .y(function(d) { return y(d.value) });
 
-      // draw first, to be under all other elements
+      // draw axes first so that they're under all other elements
+      g.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0,"+height+")")
+          .call(xAxis)
+      g.append("g")
+          .attr("class", "axis")
+          .call(yAxis)
+        .append("text")
+          .attr("x", 2)
+          .attr("y", y(y.ticks().pop()) + 0.5)
+          .attr("dy", "0.32em")
+          .attr("fill", "#000")
+
       g.selectAll(".dot-halo")
         .data(data)
         .enter().append("circle")
@@ -66,20 +79,29 @@ class BookingsOverTimeChart {
             g.selectAll(".dot-halo").attr("r", 0)
             infotip.hide(d, i);
           });
-
-      g.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(0,"+height+")")
-          .call(d3.axisBottom(x));
-
-      g.append("g")
-          .attr("class", "axis")
-          .call(d3.axisLeft(y).ticks(null, "s"))
-        .append("text")
-          .attr("x", 2)
-          .attr("y", y(y.ticks().pop()) + 0.5)
-          .attr("dy", "0.32em")
-          .attr("fill", "#000")
     });
+
+    function xAxis(g) {
+      g.call(
+        d3.axisBottom(x)
+          .tickSize(0)
+      )
+      g.selectAll('.tick')
+        .attr('class', 'chart_label')
+    }
+
+    function yAxis(g) {
+      g.call(
+        d3.axisRight(y)
+          .ticks(null, "s")
+          .tickSize(width)
+      )
+      g.select('.domain').remove()
+      g.selectAll(".tick:not(:first-of-type) line").attr("stroke", "#D6D6D6");
+      g.selectAll(".tick text")
+        .attr('class', 'chart_label')
+        .attr("x", -40)
+        .attr("dy", 4)
+    }
   }
 }
