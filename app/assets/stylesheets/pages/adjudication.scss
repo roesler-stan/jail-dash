@@ -1,5 +1,5 @@
 .adjudication {
-  #adjudication-by-court {
+  #adjudication-by-court, #adjudication-by-judge {
     height: 500px;
     width: 100%;
 
@@ -35,10 +35,10 @@
     padding: 5px;
     border-radius: 2px;
 
-    &.yrs_lt5 {
+    &.purple {
       border-color: $maroon;
     }
-    &.yrs_5_13 {
+    &.yellow {
       border-color: $yellow;
     }
   }
@@ -58,10 +58,17 @@
     border-width: 8px;
     margin-left: -8px;
   }
-  .infotip:before {
+  @mixin infotip_before {
     border-color: transparent;
     border-width: 11px;
     margin-left: -11px;
+  }
+  .infotip.purple:before {
+    @include infotip_before;
+    border-top-color: $maroon;
+  }
+  .infotip.yellow:before {
+    @include infotip_before;
     border-top-color: $yellow;
   }
 }

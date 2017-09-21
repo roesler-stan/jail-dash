@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require rails-ujs
-//= require turbolinks
 //= require d3
 //= require d3-tip
 
@@ -21,3 +20,4 @@
 //= require charts/bookings-by-agency
 //= require charts/bookings-over-time
 //= require charts/adjudication-by-court
+//= require charts/adjudication-by-judge

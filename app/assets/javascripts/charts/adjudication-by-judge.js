@@ -1,10 +1,10 @@
-class AdjudicationByCourtChart {
+class AdjudicationByJudgeChart {
   constructor(args) {
     this.args = args;
   }
 
   render(targetElement) {
-    var svg = d3.select("#adjudication-by-court svg"),
+    var svg = d3.select("#adjudication-by-judge svg"),
         margin = {top: 20, right: 20, bottom: 20, left: 70},
         width = 700 - margin.left - margin.right,
         height = 500 - margin.top - margin.bottom,
@@ -12,21 +12,21 @@ class AdjudicationByCourtChart {
 
     var svgDefs = svg.append("defs")
 
-    var yellowGradient = svgDefs.append('linearGradient')
-        .attr('id', 'gradient-yellow')
+    var purpleGradient = svgDefs.append('linearGradient')
+        .attr('id', 'gradient-purple')
         .attr('x1', '50%')
         .attr('y1', '0%')
         .attr('x2', '50%')
         .attr('y2', '100%')
-    var yellowGradientHover = svgDefs.append('linearGradient')
-        .attr('id', 'gradient-yellow-hover')
+    var purpleGradientHover = svgDefs.append('linearGradient')
+        .attr('id', 'gradient-purple-hover')
         .attr('x1', '50%')
         .attr('y1', '0%')
         .attr('x2', '50%')
         .attr('y2', '100%')
     var gradients = [
-      yellowGradient,
-      yellowGradientHover
+      purpleGradient,
+      purpleGradientHover
     ]
 
     gradients.forEach(function(gradient) {
@@ -52,7 +52,7 @@ class AdjudicationByCourtChart {
       .attr('class', 'infotip-container')
       .offset([-10, 0])
       .html(function(d) {
-        return "<div class='infotip yellow'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"+d.value+" bookings</div></div>"
+        return "<div class='infotip purple'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"+d.value+" bookings</div></div>"
       })
 
     svg.call(infotip);
@@ -74,7 +74,7 @@ class AdjudicationByCourtChart {
           .attr('ry', 3) // border radius
           .attr("height", y.bandwidth())
           .attr("width", function(d) { return x(d.value); })
-          .attr("class", 'row gradient-yellow')
+          .attr("class", 'row gradient-purple')
           .on('mouseover', infotip.show)
           .on('mouseout', infotip.hide);
 

@@ -1,25 +1,24 @@
-= content_for(:nav_active, 'population')
-.population
-  .header
-    %h2.section_header Jail Population Breakdown
-    .header-kpis
-      .kpi
-        .kpi-number 2,308
-        .kpi_label total jail population
-      .kpi
-        .kpi-number 2,271
-        .kpi_label in-house jail population
-  %section
-    .chart_title Percentage of total jail beds by population
-    .chart_subtitle Current jail population
-    %ul.accordion
-      %li
-        %a.js-accordion-trigger{ href: "javascript:void(0)" } Condition of Probation
-        %ul.submenu
-          %li
-            %a{ href: "javascript:void(0)" } Quarterly Trend
-      %li
-        %a.js-accordion-trigger{ href: "javascript:void(0)" } Justice Court Commitments
-        %ul.submenu
-          %li
-            %a{ href: "javascript:void(0)" } Quarterly Trend
+= content_for(:page_name, 'population')
+.header
+  %h2.section_header Jail Population Breakdown
+  .header-kpis
+    .kpi
+      .kpi-number 2,308
+      .kpi_label total jail population
+    .kpi
+      .kpi-number 2,271
+      .kpi_label in-house jail population
+%section
+  .chart_title Percentage of total jail beds by population
+  .chart_subtitle Current jail population
+  %ul.accordion
+    %li
+      %a.js-accordion-trigger{ href: "javascript:void(0)" } Condition of Probation
+      %ul.submenu
+        %li
+          %a{ href: "javascript:void(0)" } Quarterly Trend
+    %li
+      %a.js-accordion-trigger{ href: "javascript:void(0)" } Justice Court Commitments
+      %ul.submenu
+        %li
+          %a{ href: "javascript:void(0)" } Quarterly Trend

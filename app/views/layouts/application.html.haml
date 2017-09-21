@@ -4,19 +4,20 @@
     %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
     %title Jail Dashboard
     = csrf_meta_tags
-    = stylesheet_link_tag 'application', 'https://fonts.googleapis.com/css?family=Arvo|Lato:400,700', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'application', 'https://fonts.googleapis.com/css?family=Arvo|Lato:400,700', media: 'all'
+    = javascript_include_tag 'application'
     = render 'shared/analytics'
-  %body
+  %body{ class: content_for(:page_name) }
     .page-wrapper
       .sidebar
         .logo SLC LOGO
         %ul.nav-tabs
-          %li.tab{ class: ('active' if content_for(:nav_active) == 'bookings') }
+          %li.tab{ class: ('active' if content_for(:page_name) == 'bookings') }
             %a{ href: '/bookings' } Jail Bookings
-          %li.tab{ class: ('active' if content_for(:nav_active) == 'adjudication') }
+          %li.tab{ class: ('active' if content_for(:page_name) == 'adjudication') }
             %a{ href: '/adjudication' } Adjudication Process
-          %li.tab{ class: ('active' if content_for(:nav_active) == 'population') }
+          %li.tab{ class: ('active' if content_for(:page_name) == 'population') }
             %a{ href: '/population' } Jail Population
       .content
         = yield
+  }
