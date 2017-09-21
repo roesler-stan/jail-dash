@@ -13,6 +13,17 @@ class PagesController < ApplicationController
     ]
   end
 
+  def bookings_data_over_time
+    render json: [
+      { time: 1, value: 1938695 },
+      { time: 2, value: 3277946 },
+      { time: 3, value: 2141490 },
+      { time: 4, value: 4499890 },
+      { time: 5, value: 1558919 },
+      { time: 6, value: 1345341 },
+    ]
+  end
+
   def adjudication
   end
 
