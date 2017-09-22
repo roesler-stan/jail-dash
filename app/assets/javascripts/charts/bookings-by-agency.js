@@ -89,18 +89,17 @@ class BookingsByAgencyChart {
           .on('mouseout', infotip.hide);
 
       g.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(0," + height + ")")
-          .call(d3.axisBottom(x0));
-
-      g.append("g")
-          .attr("class", "axis")
-          .call(d3.axisLeft(y).ticks(null, "s"))
-        .append("text")
-          .attr("x", 2)
-          .attr("y", y(y.ticks().pop()) + 0.5)
-          .attr("dy", "0.32em")
-          .attr("fill", "#000")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(
+          d3.axisBottom(x0)
+            .tickSize(0)
+        );
+      g.select('.domain').remove()
+      g.selectAll(".tick text")
+        .attr('class', 'chart_label')
+        .attr("x", 0)
+        .attr("dy", 15)
 
       var legend = g.append("g")
           .attr("font-family", "sans-serif")
@@ -112,9 +111,11 @@ class BookingsByAgencyChart {
           .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
       legend.append("rect")
-          .attr("x", width - 19)
-          .attr("width", 19)
-          .attr("height", 19)
+          .attr("x", width - 16)
+          .attr('rx', 3) // border radius
+          .attr('ry', 3) // border radius
+          .attr("width", 16)
+          .attr("height", 16)
           .attr("fill", z);
 
       legend.append("text")
