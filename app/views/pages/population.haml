@@ -14,23 +14,43 @@
   %ul.accordion
     %li.js-accordion-trigger{ href: "javascript:void(0)" }
       %span Condition of Probation
+      .chevron
       %ul.submenu
         %li
-          %span Quarterly Trend
-          #condition-of-probation
-            %svg{ width: '100%', height: '100%' }
-            :javascript
-              $(document).ready(function () {
-                const conditionOfProbation = new ConditionOfProbationChart();
-                conditionOfProbation.render("#condition-of-probation svg")
-              });
+          .population-info-section
+            .chart-area
+              %span Quarterly Trend
+              #condition-of-probation
+                %svg
+                :javascript
+                  $(window).load(function () {
+                    const conditionOfProbation = new ConditionOfProbationChart();
+                    conditionOfProbation.render("#condition-of-probation svg")
+                  });
+            .stats-sidebar
+              %span Current Stats
+              .stat
+                .arrow
+                .stat-value 32%
+                .stat-label % of jail beds
+              .stat
+                .arrow
+                .stat-value 32%
+                .stat-label % of jail beds
+              .stat
+                .arrow
+                .stat-value 181 days
+                .stat-label avg length of sentence
+
     %li.js-accordion-trigger{ href: "javascript:void(0)" }
       %span Justice Court Commitments
+      .chevron
       %ul.submenu
         %li
           %span Quarterly Trend
     %li.js-accordion-trigger{ href: "javascript:void(0)" }
       %span Held on Fines Under $XXX
+      .chevron
       %ul.submenu
         %li
           %span Quarterly Trend
