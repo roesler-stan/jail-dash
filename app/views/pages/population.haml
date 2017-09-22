@@ -12,20 +12,21 @@
   .chart_title Percentage of total jail beds by population
   .chart_subtitle Current jail population
   %ul.accordion
-    %li.js-accordion-trigger{ href: "javascript:void(0)" }
+    %li
       %span Condition of Probation
-      .chevron
+      .chevron.js-accordion-trigger{ 'data-chart': 'condition-of-probation', href: "javascript:void(0)" }
       %ul.submenu
         %li
           .population-info-section
             .chart-area
               %span Quarterly Trend
               #condition-of-probation
-                %svg
                 :javascript
-                  $(window).load(function () {
-                    const conditionOfProbation = new ConditionOfProbationChart();
-                    conditionOfProbation.render("#condition-of-probation svg")
+                  $(document).on('drawchart-condition-of-probation', function () {
+                    window.conditionOfProbation = new ConditionOfProbationChart();
+                    window.conditionOfProbation.render("#condition-of-probation", {
+                      height: 300
+                    })
                   });
             .stats-sidebar
               %span Current Stats
@@ -42,15 +43,15 @@
                 .stat-value 181 days
                 .stat-label avg length of sentence
 
-    %li.js-accordion-trigger{ href: "javascript:void(0)" }
+    %li
       %span Justice Court Commitments
-      .chevron
+      .chevron.js-accordion-trigger{ href: "javascript:void(0)" }
       %ul.submenu
         %li
           %span Quarterly Trend
-    %li.js-accordion-trigger{ href: "javascript:void(0)" }
+    %li
       %span Held on Fines Under $XXX
-      .chevron
+      .chevron.js-accordion-trigger{ href: "javascript:void(0)" }
       %ul.submenu
         %li
           %span Quarterly Trend

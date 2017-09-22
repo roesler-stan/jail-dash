@@ -1,6 +1,4 @@
 .population {
-  #condition-of-probation {
-  }
   .population-info-section {
     @include grid-container();
 
@@ -9,6 +7,19 @@
     }
     .stats-sidebar {
       @include grid-column(3);
+    }
+  }
+
+  #condition-of-probation {
+    .line {
+      stroke: #C93163;
+      stroke-width: 3;
+    }
+    .dot {
+      fill: #C93163;
+    }
+    .dot-halo {
+      fill: #F1CBD8;
     }
   }
 }

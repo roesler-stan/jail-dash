@@ -1,24 +1,37 @@
-class ConditionOfProbationChart {
-  constructor(args) {
-    this.args = args;
-  }
+class TimeseriesChart {
+  base_render(targetElementSelector, opts={}) {
+    this.opts = {
+      renderedHeight: opts.height || 500
+    }
 
-  render(targetElementSelector) {
-    var svg = d3.select(targetElementSelector),
-        margin = {top: 20, right: 20, bottom: 20, left: 70},
-        width = 700 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    const targetElement = d3.select(targetElementSelector);
+    
+    // clean up previous render of chart, if present
+    targetElement.selectAll('svg').remove()
 
-    var svgDefs = svg.append("defs")
+    const renderedWidth = parseInt(targetElement.style('width'));
 
-    var x = d3.scaleLinear()
+    const margin = { top: 20, right: 20, bottom: 20, left: 70 };
+
+    const width = renderedWidth - margin.left - margin.right;
+    const height = this.opts.renderedHeight - margin.top - margin.bottom;
+
+    const svg = targetElement.append('svg')
+      .attr('preserveAspectRatio', 'none')
+      .attr('height', this.opts.renderedHeight)
+      .attr('width', renderedWidth);
+    
+    const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    const svgDefs = svg.append("defs")
+
+    const x = d3.scaleLinear()
       .range([0, width]);
 
-    var y = d3.scaleLinear()
+    const y = d3.scaleLinear()
       .range([height, 0]);
 
-    var infotip = d3.tip()
+    const infotip = d3.tip()
       .attr('class', 'infotip-container')
       .html(function(d) {
         return "<div class='infotip purple'><div class='tooltip_label'>"+d.time+"</div><div class='tooltip_body'>Total bookings: "+d.value+"</div></div>"

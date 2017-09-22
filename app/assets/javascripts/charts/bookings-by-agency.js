@@ -4,12 +4,25 @@ class BookingsByAgencyChart {
   }
 
   render(targetElementSelector) {
+    const targetElement = d3.select(targetElementSelector);
 
-    var svg = d3.select(targetElementSelector),
-        margin = {top: 20, right: 20, bottom: 20, left: 20},
-        width = 700 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom,
-        g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // clean up previous render of chart, if present
+    targetElement.selectAll('svg').remove()
+
+    const renderedHeight = 500;
+    const renderedWidth = parseInt(targetElement.style('width'));
+
+    const margin = { top: 20, right: 20, bottom: 20, left: 70 };
+
+    const width = renderedWidth - margin.left - margin.right;
+    const height = renderedHeight - margin.top - margin.bottom;
+
+    const svg = targetElement.append('svg')
+      .attr('preserveAspectRatio', 'none')
+      .attr('height', renderedHeight)
+      .attr('width', renderedWidth);
+
+    const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var svgDefs = svg.append("defs")
 

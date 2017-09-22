@@ -1,7 +1,11 @@
 $(document).ready(function () {
   $('.js-accordion-trigger').click(function(e){
-    $(this).find('.submenu').slideToggle('fast');  // apply the toggle to the ul
-    $(this).toggleClass('is-expanded');
     e.preventDefault();
+    $(this).parent().toggleClass('is-expanded');
+
+    // only redraw a chart when opening the accordion
+    if ($(this).parent().hasClass('is-expanded')) {
+      $(this).trigger('drawchart-'+$(this).data('chart'))
+    }
   });
 });

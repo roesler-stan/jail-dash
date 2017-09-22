@@ -10,22 +10,20 @@
   .chart_title Percentage of total jail bookings by agency compared to size of municipality served as a percentage of total population
   .chart_subtitle Last quarter (April 1, 2017 - June 30, 2017)
   #bookings-by-agency
-    %svg{ width: '100%', height: '100%' }
     :javascript
       $(document).ready(function () {
         const bookingsByAgency = new BookingsByAgencyChart();
-        bookingsByAgency.render("#bookings-by-agency svg")
+        bookingsByAgency.render("#bookings-by-agency")
       });
 
 %section.chart
   .chart_title Total number of jail bookings over time
   .chart_subtitle From Q2 2015 to Q2 2017
   #bookings-over-time
-    %svg{ width: '100%', height: '100%' }
     :javascript
       $(document).ready(function () {
         const bookingsOverTime = new BookingsOverTimeChart();
-        bookingsOverTime.render("#bookings-over-time svg")
+        bookingsOverTime.render("#bookings-over-time")
       });
 
 %section.chart

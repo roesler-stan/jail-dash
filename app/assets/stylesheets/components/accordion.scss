@@ -15,7 +15,6 @@
   li {
     position: relative; // for positioning of child elements
     list-style: none;
-    cursor: pointer;
 
     > span {
       color: $accordion-menu-color;
@@ -42,6 +41,7 @@
     top: 15px;
     right: 0;
     width: 100px; // content width varies - static parent width helps w/positioning
+    cursor: pointer;
   }
 
   .chevron::before {
@@ -71,6 +71,10 @@
   .is-expanded {
     display: block;
     padding-bottom: 0;
+
+    ul.submenu {
+      display: block;
+    }
 
     .chevron:before {
       top: 0;

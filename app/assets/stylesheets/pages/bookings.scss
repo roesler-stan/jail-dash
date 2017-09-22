@@ -70,18 +70,13 @@
   }
 
   #bookings-over-time {
-    height: 500px;
-    width: 100%;
-
     .line {
       stroke: #C93163;
       stroke-width: 3;
     }
-
     .dot {
       fill: #C93163;
     }
-
     .dot-halo {
       fill: #F1CBD8;
     }

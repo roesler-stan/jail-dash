@@ -17,9 +17,10 @@
 
 //= require pages/population
 
+//= require charts/timeseries
 //= require charts/bookings-by-agency
 //= require charts/bookings-over-time
 //= require charts/adjudication
 //= require charts/adjudication-by-court
 //= require charts/adjudication-by-judge
-//= require charts/condition-of-probation
+//= require charts/population-condition-of-probation
