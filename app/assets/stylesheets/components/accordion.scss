@@ -14,8 +14,9 @@
 
   li {
     list-style: none;
+    cursor: pointer;
 
-    > a {
+    > span {
       color: $accordion-menu-color;
       display: block;
       padding: $accordion-menu-list-padding;

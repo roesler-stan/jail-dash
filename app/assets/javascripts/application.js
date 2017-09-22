@@ -22,3 +22,4 @@
 //= require charts/adjudication
 //= require charts/adjudication-by-court
 //= require charts/adjudication-by-judge
+//= require charts/condition-of-probation

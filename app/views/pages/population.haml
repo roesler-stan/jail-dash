@@ -12,13 +12,25 @@
   .chart_title Percentage of total jail beds by population
   .chart_subtitle Current jail population
   %ul.accordion
-    %li
-      %a.js-accordion-trigger{ href: "javascript:void(0)" } Condition of Probation
+    %li.js-accordion-trigger{ href: "javascript:void(0)" }
+      %span Condition of Probation
       %ul.submenu
         %li
-          %a{ href: "javascript:void(0)" } Quarterly Trend
-    %li
-      %a.js-accordion-trigger{ href: "javascript:void(0)" } Justice Court Commitments
+          %span Quarterly Trend
+          #condition-of-probation
+            %svg{ width: '100%', height: '100%' }
+            :javascript
+              $(document).ready(function () {
+                const conditionOfProbation = new ConditionOfProbationChart();
+                conditionOfProbation.render("#condition-of-probation svg")
+              });
+    %li.js-accordion-trigger{ href: "javascript:void(0)" }
+      %span Justice Court Commitments
       %ul.submenu
         %li
-          %a{ href: "javascript:void(0)" } Quarterly Trend
+          %span Quarterly Trend
+    %li.js-accordion-trigger{ href: "javascript:void(0)" }
+      %span Held on Fines Under $XXX
+      %ul.submenu
+        %li
+          %span Quarterly Trend
