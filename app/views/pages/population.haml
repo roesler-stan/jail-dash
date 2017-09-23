@@ -3,10 +3,10 @@
   %h2.section_header Jail Population Breakdown
   .header-kpis
     .kpi
-      .kpi-number 2,308
+      .kpi 2,308
       .kpi_label total jail population
     .kpi
-      .kpi-number 2,271
+      .kpi 2,271
       .kpi_label in-house jail population
 %section
   .chart_title Percentage of total jail beds by population
@@ -15,43 +15,96 @@
     %li
       %span Condition of Probation
       .chevron.js-accordion-trigger{ 'data-chart': 'condition-of-probation', href: "javascript:void(0)" }
-      %ul.submenu
-        %li
-          .population-info-section
-            .chart-area
-              %span Quarterly Trend
-              #condition-of-probation
-                :javascript
-                  $(document).on('drawchart-condition-of-probation', function () {
-                    window.conditionOfProbation = new ConditionOfProbationChart();
-                    window.conditionOfProbation.render("#condition-of-probation", {
-                      height: 300
-                    })
-                  });
-            .stats-sidebar
-              %span Current Stats
-              .stat
-                .arrow
-                .stat-value 32%
-                .stat-label % of jail beds
-              .stat
-                .arrow
-                .stat-value 32%
-                .stat-label % of jail beds
-              .stat
-                .arrow
-                .stat-value 181 days
-                .stat-label avg length of sentence
-
+      .submenu
+        .population-info-section
+          .chart-area
+            %span Quarterly Trend
+            #condition-of-probation
+              :javascript
+                $(document).on('drawchart-condition-of-probation', function () {
+                  window.conditionOfProbation = new ConditionOfProbationChart();
+                  window.conditionOfProbation.render("#condition-of-probation", {
+                    height: 300
+                  })
+                });
+          .stats-sidebar
+            %span Current Stats
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 32%
+                .kpi_label % of jail beds
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 32%
+                .kpi_label % of jail beds
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 181 days
+                .kpi_label avg length of sentence
     %li
       %span Justice Court Commitments
-      .chevron.js-accordion-trigger{ href: "javascript:void(0)" }
-      %ul.submenu
-        %li
-          %span Quarterly Trend
+      .chevron.js-accordion-trigger{ 'data-chart': 'justice-court-commitments', href: "javascript:void(0)" }
+      .submenu
+        .population-info-section
+          .chart-area
+            %span Quarterly Trend
+            #justice-court-commitments
+              :javascript
+                $(document).on('drawchart-justice-court-commitments', function () {
+                  window.conditionOfProbation = new ConditionOfProbationChart();
+                  window.conditionOfProbation.render("#justice-court-commitments", {
+                    height: 300
+                  })
+                });
+          .stats-sidebar
+            %span Current Stats
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 32%
+                .kpi_label % of jail beds
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 32%
+                .kpi_label % of jail beds
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 181 days
+                .kpi_label avg length of sentence
     %li
       %span Held on Fines Under $XXX
-      .chevron.js-accordion-trigger{ href: "javascript:void(0)" }
-      %ul.submenu
-        %li
-          %span Quarterly Trend
+      .chevron.js-accordion-trigger{ 'data-chart': 'held-on-fines', href: "javascript:void(0)" }
+      .submenu
+        .population-info-section
+          .chart-area
+            %span Quarterly Trend
+            #held-on-fines
+              :javascript
+                $(document).on('drawchart-held-on-fines', function () {
+                  window.conditionOfProbation = new ConditionOfProbationChart();
+                  window.conditionOfProbation.render("#held-on-fines", {
+                    height: 300
+                  })
+                });
+          .stats-sidebar
+            %span Current Stats
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 32%
+                .kpi_label % of jail beds
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 32%
+                .kpi_label % of jail beds
+            .stat
+              .arrow
+              .kpi-container
+                .kpi 181 days
+                .kpi_label avg length of sentence

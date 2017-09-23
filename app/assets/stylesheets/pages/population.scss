@@ -10,7 +10,31 @@
     }
   }
 
-  #condition-of-probation {
+  .arrow {
+    position: relative;
+    top: -8px;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 15px solid $fuchsia;
+
+    border-top: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+  }
+
+  .stat {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .kpi-container {
+    display: inline-block;
+  }
+
+  #condition-of-probation,
+  #justice-court-commitments,
+  #held-on-fines {
     .line {
       stroke: #C93163;
       stroke-width: 3;
