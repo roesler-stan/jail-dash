@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925174625) do
+ActiveRecord::Schema.define(version: 20170925182556) do
 
   create_table "agency_populations", force: :cascade do |t|
     t.bigint "slc_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20170925174625) do
     t.bigint "sysid"
     t.string "bondtype"
     t.bigint "case_pk"
+    t.integer "original_bond_amt"
     t.index ["bondid"], name: "index_bond_masters_on_bondid", unique: true
   end
 
