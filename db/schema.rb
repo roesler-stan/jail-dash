@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170925230713) do
+ActiveRecord::Schema.define(version: 20170926004101) do
 
   create_table "agency_populations", force: :cascade do |t|
     t.bigint "slc_id"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20170925230713) do
   end
 
   create_table "bookings", force: :cascade do |t|
-    t.bigint "arrest"
+    t.string "arrest"
     t.datetime "comdate"
     t.bigint "sysid", null: false
     t.datetime "reldate"
