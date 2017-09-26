@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926004101) do
+ActiveRecord::Schema.define(version: 20170926173014) do
 
   create_table "agency_populations", force: :cascade do |t|
     t.bigint "slc_id"
@@ -75,15 +75,15 @@ ActiveRecord::Schema.define(version: 20170926004101) do
   end
 
   create_table "hearing_court_names", force: :cascade do |t|
-    t.bigint "slc_id", null: false
+    t.string "slc_id", null: false
     t.string "extdesc"
-    t.index ["slc_id"], name: "index_hearing_court_names_on_slc_id", unique: true
+    t.index ["slc_id"], name: "index_hearing_court_names_on_slc_id"
   end
 
   create_table "judges", force: :cascade do |t|
-    t.bigint "slc_id", null: false
+    t.string "slc_id", null: false
     t.string "extdesc"
-    t.index ["slc_id"], name: "index_judges_on_slc_id", unique: true
+    t.index ["slc_id"], name: "index_judges_on_slc_id"
   end
 
 end
