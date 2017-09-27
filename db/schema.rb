@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926173014) do
+ActiveRecord::Schema.define(version: 20170927001346) do
 
   create_table "agency_populations", force: :cascade do |t|
-    t.bigint "slc_id"
-    t.bigint "agency_id"
+    t.string "agency_id", null: false
     t.integer "population"
+    t.index ["agency_id"], name: "index_agency_populations_on_agency_id", unique: true
   end
 
   create_table "arrests", force: :cascade do |t|
