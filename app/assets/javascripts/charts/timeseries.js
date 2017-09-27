@@ -1,7 +1,8 @@
 class TimeseriesChart {
   base_render(targetElementSelector, opts={}) {
     this.opts = {
-      renderedHeight: opts.height || 500
+      renderedHeight: opts.height || 500,
+      data_url: opts.data_url,
     }
 
     const targetElement = d3.select(targetElementSelector);
@@ -38,7 +39,7 @@ class TimeseriesChart {
 
     svg.call(infotip);
 
-    d3.json('/bookings_over_time.json', function(response, data) {
+    d3.json(this.opts.data_url, function(response, data) {
       y.domain([0, d3.max(data, function(d) { return d.booking_count })]).nice();
 
       x = d3.scaleOrdinal()

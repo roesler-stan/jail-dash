@@ -4,7 +4,10 @@ class BookingsOverTimeChart extends TimeseriesChart {
     this.args = args;
   }
 
-  render(targetElementSelector) {
-    this.base_render(targetElementSelector);
+  render(targetElementSelector, opts={}) {
+    opts = Object.assign(opts, {
+      data_url: '/bookings_over_time.json'
+    });
+    this.base_render(targetElementSelector, opts);
   }
 }

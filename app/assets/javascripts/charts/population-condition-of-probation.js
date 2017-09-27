@@ -4,7 +4,10 @@ class ConditionOfProbationChart extends TimeseriesChart {
     this.args = args;
   }
 
-  render(targetElementSelector, opts) {
+  render(targetElementSelector, opts={}) {
+    opts = Object.assign(opts, {
+      data_url: '/population_condition_of_probation.json'
+    });
     this.base_render(targetElementSelector, opts);
   }
 }

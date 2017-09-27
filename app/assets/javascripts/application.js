@@ -24,3 +24,5 @@
 //= require charts/adjudication-by-court
 //= require charts/adjudication-by-judge
 //= require charts/population-condition-of-probation
+//= require charts/population-justice-court-commitments
+//= require charts/population-held-on-fines

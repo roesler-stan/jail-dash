@@ -11,10 +11,10 @@ class PagesController < ApplicationController
     case time_unit
     when 'this_year'
       this_year = Date.today
-      @bookings = bookings_in_time_period(this_year.beginning_of_year, this_year.end_of_year)
+      @bookings = Booking.bookings_in_time_period(this_year.beginning_of_year, this_year.end_of_year)
     when 'last_year'
       last_year = Date.today.last_year
-      @bookings = bookings_in_time_period(last_year.beginning_of_year, last_year.end_of_year)
+      @bookings = Booking.bookings_in_time_period(last_year.beginning_of_year, last_year.end_of_year)
     else
       raise 'invalid time period argument'
     end
@@ -24,35 +24,8 @@ class PagesController < ApplicationController
 
   def bookings_over_time
     time_unit = params[:time_unit] || 'quarterly'
-    bookings = []
-    date_cursor = Date.today
 
-    8.times do |i|
-      case time_unit
-      when 'yearly'
-        date_cursor = date_cursor.last_year
-        from_date = date_cursor.beginning_of_year
-        to_date = date_cursor.end_of_year
-        bookings << { period: date_cursor.beginning_of_year.year, booking_count: bookings_in_time_period(from_date, to_date).count }
-      when 'quarterly'
-        date_cursor = date_cursor.previous_financial_quarter
-        from_date = date_cursor.beginning_of_financial_quarter
-        to_date = date_cursor.end_of_financial_quarter
-        bookings << { period: date_cursor.financial_quarter, booking_count: bookings_in_time_period(from_date, to_date).count }
-      when 'monthly'
-        date_cursor = date_cursor.last_month
-        from_date = date_cursor.beginning_of_month
-        to_date = date_cursor.end_of_month
-        bookings << { period: date_cursor.beginning_of_month, booking_count: bookings_in_time_period(from_date, to_date).count }
-      when 'weekly'
-        date_cursor = date_cursor.last_week
-        from_date = date_cursor.beginning_of_week
-        to_date = date_cursor.end_of_week
-        bookings << { period: date_cursor.beginning_of_week, booking_count: bookings_in_time_period(from_date, to_date).count }
-      else
-        raise 'invalid time period argument'
-      end
-    end
+    bookings = Booking.time_series_bookings(time_unit)
 
     render json: bookings
   end
@@ -85,14 +58,42 @@ class PagesController < ApplicationController
   def population
   end
 
+  def population_justice_court_commitments
+    time_unit = params[:time_unit] || 'quarterly'
+
+    bookings = Booking.time_series_bookings(
+      time_unit,
+      Booking.joins(:cases)
+        .joins("INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code")
+        .where("hearing_court_names.extdesc LIKE '%JUSTICE COURT%'")
+        .where("NOT EXISTS(SELECT 1 FROM hearing_court_names WHERE hearing_court_names.slc_id = case_masters.jurisdiction_code AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT%')")
+        .distinct
+    )
+
+    render json: bookings
+  end
+
+  def population_held_on_fines
+    time_unit = params[:time_unit] || 'quarterly'
+
+    bookings = Booking.time_series_bookings(
+      time_unit,
+      bookings=Booking.joins(:bonds).where("bond_masters.bondtype = 'FIN' AND bond_masters.original_bond_amt < 500")
+    )
+
+    render json: bookings
+  end
+
+  def population_condition_of_probation
+    time_unit = params[:time_unit] || 'quarterly'
+
+    bookings = Booking.time_series_bookings(time_unit, bookings=Booking.all) # TODO: Write query for "condition of probation"
+
+    render json: bookings
+  end
+
   def bookings_over_time_params
     params.require(:time_unit)
   end
 
-
-  private
-
-  def bookings_in_time_period(from_date, to_date)
-    Booking.where("comdate > ? AND comdate < ?", from_date, to_date)
-  end
 end

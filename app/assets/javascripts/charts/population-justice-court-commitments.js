@@ -1,10 +1,13 @@
-class JusticeCourtCommitments extends TimeseriesChart {
+class JusticeCourtCommitmentsChart extends TimeseriesChart {
   constructor(args) {
     super(args);
     this.args = args;
   }
 
-  render(targetElementSelector, opts) {
+  render(targetElementSelector, opts={}) {
+    opts = Object.assign(opts, {
+      data_url: '/population_justice_court_commitments.json'
+    });
     this.base_render(targetElementSelector, opts);
   }
 }
