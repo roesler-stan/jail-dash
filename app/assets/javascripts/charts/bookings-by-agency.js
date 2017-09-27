@@ -81,7 +81,7 @@ class BookingsByAgencyChart {
 
       x0.domain(data.agencies.map(function(d) { return d.name; }));
       x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-      y.domain([0, d3.max(data.agencies, function(d) { return d3.max(keys, function(key) { return d[key+'_count']; }); })]).nice();
+      y.domain([0, d3.max(data.agencies, function(d) { return d3.max(keys, function(key) { return d[key+'_pct']; }); })]).nice();
 
       g.append("g")
         .selectAll("g")
@@ -92,11 +92,11 @@ class BookingsByAgencyChart {
         .data(function(d) { return keys.map(function(key) { return {agency: d.name, key: key, count: d[key+'_count'], percent: d[key+'_pct']}; }); })
         .enter().append("rect")
           .attr("x", function(d) { return x1(d.key); })
-          .attr("y", function(d) { return y(d.count); })
+          .attr("y", function(d) { return y(d.percent); })
           .attr('rx', 3) // border radius
           .attr('ry', 3) // border radius
           .attr("width", x1.bandwidth())
-          .attr("height", function(d) { return height - y(d.count); })
+          .attr("height", function(d) { return height - y(d.percent); })
           .attr("class", function(d) { return 'column '+gradientClasses(d.key) })
           .on('mouseover', infotip.show)
           .on('mouseout', infotip.hide);

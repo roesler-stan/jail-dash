@@ -1,4 +1,4 @@
-total_population = 100 # TODO: Replace placeholder w/real data
+total_population = AgencyPopulation.sum(:population)
 total_bookings = @bookings.count
 
 json.total_population total_population
@@ -11,7 +11,7 @@ json.agencies @agencies.each do |agency|
   json.booking_count booking_count
   json.booking_pct ((booking_count.to_f / total_bookings)*100).round(0)
   
-  pop_count = 7 # TODO: Replace placeholder w/real data
+  pop_count = agency.agency_population.try(:population) || 0
   json.pop_count pop_count
   json.pop_pct ((pop_count.to_f / total_population)*100).round(0)
 end
