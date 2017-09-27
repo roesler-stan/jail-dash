@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170927001346) do
+ActiveRecord::Schema.define(version: 20170927205619) do
 
   create_table "agency_populations", force: :cascade do |t|
     t.string "agency_id", null: false
@@ -37,6 +37,9 @@ ActiveRecord::Schema.define(version: 20170927001346) do
     t.bigint "case_pk"
     t.integer "original_bond_amt"
     t.index ["bondid"], name: "index_bond_masters_on_bondid", unique: true
+    t.index ["bondtype"], name: "index_bond_masters_on_bondtype"
+    t.index ["case_pk"], name: "index_bond_masters_on_case_pk"
+    t.index ["sysid"], name: "index_bond_masters_on_sysid"
   end
 
   create_table "bookings", force: :cascade do |t|
@@ -71,6 +74,7 @@ ActiveRecord::Schema.define(version: 20170927001346) do
     t.bigint "sysid"
     t.index ["billing_community"], name: "index_case_masters_on_billing_community"
     t.index ["case_pk"], name: "index_case_masters_on_case_pk", unique: true
+    t.index ["judge"], name: "index_case_masters_on_judge"
     t.index ["sysid"], name: "index_case_masters_on_sysid"
   end
 
