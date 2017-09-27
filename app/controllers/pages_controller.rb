@@ -60,14 +60,25 @@ class PagesController < ApplicationController
   def adjudication
   end
 
-  def adjudication_data
+  def adjudication_by_court
     render json: [
-      { agency: 'Agency CA', value: 2704659 },
-      { agency: 'Agency TX', value: 2027307 },
-      { agency: 'Agency NY', value: 1208495 },
-      { agency: 'Agency FL', value: 1140516 },
-      { agency: 'Agency IL', value: 894368 },
-      { agency: 'Agency PA', value: 737462 },
+      { agency: 'Court A', value: 2704659 },
+      { agency: 'Court TX', value: 2027307 },
+      { agency: 'Court NY', value: 1208495 },
+      { agency: 'Court FL', value: 1140516 },
+      { agency: 'Court IL', value: 894368 },
+      { agency: 'Court PA', value: 737462 },
+    ]
+  end
+
+  def adjudication_by_judge
+    render json: [
+      { agency: 'Judge CA', value: 2704659 },
+      { agency: 'Judge TX', value: 2027307 },
+      { agency: 'Judge NY', value: 1208495 },
+      { agency: 'Judge FL', value: 1140516 },
+      { agency: 'Judge IL', value: 894368 },
+      { agency: 'Judge PA', value: 737462 },
     ]
   end
 
