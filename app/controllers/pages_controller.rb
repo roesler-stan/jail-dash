@@ -1,4 +1,5 @@
 class PagesController < ApplicationController
+  http_basic_authenticate_with name: "jail", password: "dashboard", except: [:bookings_by_agency, :bookings_over_time]
   def bookings
   end
 
