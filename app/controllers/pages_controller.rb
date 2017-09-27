@@ -4,8 +4,22 @@ class PagesController < ApplicationController
   end
 
   def bookings_by_agency
-    @agencies = Arrest.first(10)
-    @bookings = Booking.all #bookings_in_time_period(Date.today.beginning_of_year, Date.today)
+    time_unit = params[:time_unit] || 'last_year'
+
+    @agencies = Arrest.all
+
+    case time_unit
+    when 'this_year'
+      this_year = Date.today
+      @bookings = bookings_in_time_period(this_year.beginning_of_year, this_year.end_of_year)
+    when 'last_year'
+      last_year = Date.today.last_year
+      @bookings = bookings_in_time_period(last_year.beginning_of_year, last_year.end_of_year)
+    else
+      raise 'invalid time period argument'
+    end
+
+    # bookings_by_agency.json.jbuilder
   end
 
   def bookings_over_time
