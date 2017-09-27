@@ -2,26 +2,44 @@ class PagesController < ApplicationController
   def bookings
   end
 
-  def bookings_data
-    render json: [
-      { agency: 'Agency CA', yrs_lt5: 2704659, yrs_5_13: 4499890 },
-      { agency: 'Agency TX', yrs_lt5: 2027307, yrs_5_13: 3277946 },
-      { agency: 'Agency NY', yrs_lt5: 1208495, yrs_5_13: 2141490 },
-      { agency: 'Agency FL', yrs_lt5: 1140516, yrs_5_13: 1938695 },
-      { agency: 'Agency IL', yrs_lt5: 894368, yrs_5_13: 1558919 },
-      { agency: 'Agency PA', yrs_lt5: 737462, yrs_5_13: 1345341 },
-    ]
+  def bookings_by_agency
+    @agencies = Arrest.first(10)
+    @bookings = Booking.all #bookings_in_time_period(Date.today.beginning_of_year, Date.today)
   end
 
-  def bookings_data_over_time
-    render json: [
-      { time: 1, value: 1938695 },
-      { time: 2, value: 3277946 },
-      { time: 3, value: 2141490 },
-      { time: 4, value: 4499890 },
-      { time: 5, value: 1558919 },
-      { time: 6, value: 1345341 },
-    ]
+  def bookings_over_time
+    time_unit = params[:time_unit] || 'quarterly'
+    bookings = []
+    date_cursor = Date.today
+
+    8.times do |i|
+      case time_unit
+      when 'yearly'
+        date_cursor = date_cursor.last_year
+        from_date = date_cursor.beginning_of_year
+        to_date = date_cursor.end_of_year
+        bookings << { period: date_cursor.beginning_of_year.year, booking_count: bookings_in_time_period(from_date, to_date).count }
+      when 'quarterly'
+        date_cursor = date_cursor.previous_financial_quarter
+        from_date = date_cursor.beginning_of_financial_quarter
+        to_date = date_cursor.end_of_financial_quarter
+        bookings << { period: date_cursor.financial_quarter, booking_count: bookings_in_time_period(from_date, to_date).count }
+      when 'monthly'
+        date_cursor = date_cursor.last_month
+        from_date = date_cursor.beginning_of_month
+        to_date = date_cursor.end_of_month
+        bookings << { period: date_cursor.beginning_of_month, booking_count: bookings_in_time_period(from_date, to_date).count }
+      when 'weekly'
+        date_cursor = date_cursor.last_week
+        from_date = date_cursor.beginning_of_week
+        to_date = date_cursor.end_of_week
+        bookings << { period: date_cursor.beginning_of_week, booking_count: bookings_in_time_period(from_date, to_date).count }
+      else
+        raise 'invalid time period argument'
+      end
+    end
+
+    render json: bookings
   end
 
   def adjudication
@@ -39,5 +57,16 @@ class PagesController < ApplicationController
   end
 
   def population
+  end
+
+  def bookings_over_time_params
+    params.require(:time_unit)
+  end
+
+
+  private
+
+  def bookings_in_time_period(from_date, to_date)
+    Booking.where("comdate > ? AND comdate < ?", from_date, to_date)
   end
 end

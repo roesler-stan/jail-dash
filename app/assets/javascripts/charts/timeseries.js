@@ -5,7 +5,7 @@ class TimeseriesChart {
     }
 
     const targetElement = d3.select(targetElementSelector);
-    
+
     // clean up previous render of chart, if present
     targetElement.selectAll('svg').remove()
 
@@ -20,13 +20,12 @@ class TimeseriesChart {
       .attr('preserveAspectRatio', 'none')
       .attr('height', this.opts.renderedHeight)
       .attr('width', renderedWidth);
-    
+
     const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     const svgDefs = svg.append("defs")
 
-    const x = d3.scaleLinear()
-      .range([0, width]);
+    let x;
 
     const y = d3.scaleLinear()
       .range([height, 0]);
@@ -34,18 +33,21 @@ class TimeseriesChart {
     const infotip = d3.tip()
       .attr('class', 'infotip-container')
       .html(function(d) {
-        return "<div class='infotip purple'><div class='tooltip_label'>"+d.time+"</div><div class='tooltip_body'>Total bookings: "+d.value+"</div></div>"
+        return "<div class='infotip purple'><div class='tooltip_label'>"+d.period+"</div><div class='tooltip_body'>Total bookings: "+d.booking_count+"</div></div>"
       });
 
     svg.call(infotip);
 
-    d3.json('/bookings_data_over_time', function(response, data) {
-      x.domain([0, d3.max(data, function(d) { return d.time })]);
-      y.domain([0, d3.max(data, function(d) { return d.value })]).nice();
+    d3.json('/bookings_over_time.json', function(response, data) {
+      y.domain([0, d3.max(data, function(d) { return d.booking_count })]).nice();
+
+      x = d3.scaleOrdinal()
+        .domain(data.map(function (d) { return d.period }))
+        .range(data.map(function (d, i, data) { return (width/data.length)*i }).reverse());
 
       const line = d3.line()
-        .x(function(d) { return x(d.time) })
-        .y(function(d) { return y(d.value) });
+        .x(function(d) { return x(d.period) })
+        .y(function(d) { return y(d.booking_count) });
 
       // draw axes first so that they're under all other elements
       g.append("g")

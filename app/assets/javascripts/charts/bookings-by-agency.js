@@ -71,32 +71,32 @@ class BookingsByAgencyChart {
       .attr('class', 'infotip-container')
       .offset([-10, 0])
       .html(function(d) {
-        return "<div class='infotip "+d.key+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"+d.value+" bookings</div></div>"
+        return "<div class='infotip "+d.agency+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"+d.percent+"% ("+d.count+" bookings)</div></div>"
       })
 
     svg.call(infotip);
 
-    d3.json("/bookings_data", function(response, data) {
-      var keys = ['yrs_lt5', 'yrs_5_13']
+    d3.json("/bookings_by_agency.json", function(response, data) {
+      var keys = ['booking', 'pop']
 
-      x0.domain(data.map(function(d) { return d.agency; }));
+      x0.domain(data.agencies.map(function(d) { return d.name; }));
       x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-      y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+      y.domain([0, d3.max(data.agencies, function(d) { return d3.max(keys, function(key) { return d[key+'_count']; }); })]).nice();
 
       g.append("g")
         .selectAll("g")
-        .data(data)
+        .data(data.agencies)
         .enter().append("g")
-          .attr("transform", function(d) { return "translate(" + x0(d.agency) + ",0)"; })
+          .attr("transform", function(d) { return "translate(" + x0(d.name) + ",0)"; })
         .selectAll("rect")
-        .data(function(d) { return keys.map(function(key) { return {agency: d.agency, key: key, value: d[key]}; }); })
+        .data(function(d) { return keys.map(function(key) { return {agency: d.name, key: key, count: d[key+'_count'], percent: d[key+'_pct']}; }); })
         .enter().append("rect")
           .attr("x", function(d) { return x1(d.key); })
-          .attr("y", function(d) { return y(d.value); })
+          .attr("y", function(d) { return y(d.count); })
           .attr('rx', 3) // border radius
           .attr('ry', 3) // border radius
           .attr("width", x1.bandwidth())
-          .attr("height", function(d) { return height - y(d.value); })
+          .attr("height", function(d) { return height - y(d.count); })
           .attr("class", function(d) { return 'column '+gradientClasses(d.key) })
           .on('mouseover', infotip.show)
           .on('mouseout', infotip.hide);
