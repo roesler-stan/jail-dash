@@ -34,25 +34,43 @@ class PagesController < ApplicationController
   end
 
   def adjudication_by_court
-    render json: [
-      { agency: 'Court A', value: 2704659 },
-      { agency: 'Court TX', value: 2027307 },
-      { agency: 'Court NY', value: 1208495 },
-      { agency: 'Court FL', value: 1140516 },
-      { agency: 'Court IL', value: 894368 },
-      { agency: 'Court PA', value: 737462 },
-    ]
+    # The years 1900 and 1901 are used to store NULL-like values
+    # TODO: Presently showing only those courts with 'DISTRICT COURT' in the name (for performance)
+    averages = ActiveRecord::Base.connection.exec_query(
+      <<-SQL
+        SELECT
+          DISTINCT(hearing_court_names.extdesc) AS "name",
+          AVG(datediff(dd, bookings.comdate, bookings.reldate)) OVER(PARTITION BY hearing_court_names.slc_id) AS "avg_duration"
+        FROM hearing_court_names
+        INNER JOIN case_masters ON case_masters.jurisdiction_code = hearing_court_names.slc_id
+        INNER JOIN bookings ON bookings.sysid = case_masters.sysid
+        WHERE bookings.reldate > '1902-01-01 00:00:00'
+          AND hearing_court_names.extdesc LIKE '%DISTRICT COURT%'
+        ORDER BY avg_duration DESC;
+      SQL
+    )
+
+    render json: averages
   end
 
   def adjudication_by_judge
-    render json: [
-      { agency: 'Judge CA', value: 2704659 },
-      { agency: 'Judge TX', value: 2027307 },
-      { agency: 'Judge NY', value: 1208495 },
-      { agency: 'Judge FL', value: 1140516 },
-      { agency: 'Judge IL', value: 894368 },
-      { agency: 'Judge PA', value: 737462 },
-    ]
+    # The years 1900 and 1901 are used to store NULL-like values
+    # TODO: Presently showing only those judges whose last names start with 'A' (for performance)
+    averages = ActiveRecord::Base.connection.exec_query(
+      <<-SQL
+        SELECT
+          DISTINCT(judges.extdesc) AS "name",
+          AVG(datediff(dd, bookings.comdate, bookings.reldate)) OVER(PARTITION BY judges.slc_id) AS "avg_duration"
+        FROM judges
+        INNER JOIN case_masters ON case_masters.judge = judges.slc_id
+        INNER JOIN bookings ON bookings.sysid = case_masters.sysid
+        WHERE bookings.reldate > '1902-01-01 00:00:00'
+        AND judges.extdesc LIKE 'A%'
+        ORDER BY avg_duration DESC;
+      SQL
+    )
+
+    render json: averages
   end
 
   def population

@@ -13,20 +13,18 @@
   .chart_title Average length of adjudication process by court
   .chart_subtitle Last year (1/1/16 - 12/31/16)
   #adjudication-by-court
-    %svg{ width: '100%', height: '100%' }
     :javascript
       $(document).ready(function () {
         const adjudicationByCourt = new AdjudicationByCourtChart();
-        adjudicationByCourt.render("#adjudication-by-court svg", {color: 'yellow'});
+        adjudicationByCourt.render("#adjudication-by-court", {color: 'yellow'});
       });
 
 %section.chart
   .chart_title Average length of adjudication process by judge
   .chart_subtitle Last year (1/1/16 - 12/31/16)
   #adjudication-by-judge
-    %svg{ width: '100%', height: '100%' }
     :javascript
       $(document).ready(function () {
         const adjudicationByJudge = new AdjudicationByJudgeChart();
-        adjudicationByJudge.render("#adjudication-by-judge svg", {color: 'purple'});
+        adjudicationByJudge.render("#adjudication-by-judge", {color: 'purple'});
       });
