@@ -2,12 +2,12 @@
 .header
   %h2.section_header Jail Population Breakdown
   .header-kpis
-    .kpi
-      .kpi 2,308
-      .kpi_label total jail population
-    .kpi
-      .kpi 2,271
-      .kpi_label in-house jail population
+    .kpi-container
+      .kpi= @total_jail_population
+      .kpi_label Total Jail Population
+    .kpi-container
+      .kpi= @inhouse_jail_population
+      .kpi_label In-house Jail Population
 %section
   .chart_title Percentage of total jail beds by population
   .chart_subtitle Current jail population
