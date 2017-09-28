@@ -74,12 +74,15 @@ class AdjudicationChart {
       y.domain(data.map(function(d) { return d.name }));
       x.domain([0, d3.max(data, function(d) { return d.avg_duration })]).nice();
 
+      const durations = data.map(function (d) { return d.avg_duration })
+      const average = Math.round(durations.reduce(function(sum, val) { return sum + val }) / data.length)
+
       g.append("g")
         .selectAll("g")
         .data(data)
         .enter().append("g")
         .selectAll("rect")
-        .data(function(d) { return [d] })
+        .data(function(d) { return [d] }) // TODO: this seems silly
         .enter().append("rect")
           .attr("x", 0)
           .attr("y", function(d) { return y(d.name); })
@@ -90,6 +93,23 @@ class AdjudicationChart {
           .attr("class", 'row gradient-'+color)
           .on('mouseover', infotip.show)
           .on('mouseout', infotip.hide);
+
+      const average_line = g.append('g')
+      average_line.append('line')
+          .attr('x1', function(d) { return x(average) })
+          .attr('x2', function(d) { return x(average) })
+          .attr('y1', 0)
+          .attr('y2', height)
+          .attr('stroke-width', 1)
+          .attr('stroke', '#5C5C5C')
+
+      average_line.append('text')
+        .attr('class', 'chart_label')
+        .attr('fill', '#5C5C5C')
+        .attr('text-anchor', 'middle')
+        .attr('x', function(d) { return x(average) })
+        .attr('y', -5)
+        .text('Overall average: '+average+' days')
 
       g.append("g")
           .attr("class", "axis")
