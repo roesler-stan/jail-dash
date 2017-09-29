@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/', to: redirect('/bookings')
   get '/bookings' => 'pages#bookings'
   get '/bookings_by_agency' => 'pages#bookings_by_agency'
   get '/bookings_over_time' => 'pages#bookings_over_time'
