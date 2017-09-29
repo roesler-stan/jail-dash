@@ -14,7 +14,13 @@
   %ul.accordion
     %li
       %span Condition of Probation
-      .chevron.js-accordion-trigger{ 'data-chart': 'condition-of-probation', href: "javascript:void(0)" }
+      .row
+        .metric-bar
+          .bar{ style: "width: #{@condition_of_probation_pct}%" }
+          .kpi-container
+            .kpi #{@condition_of_probation_pct}%
+            .panel_kpi_label of jail beds
+        .chevron.js-accordion-trigger{ 'data-chart': 'condition-of-probation', href: "javascript:void(0)" }
       .submenu
         .population-info-section
           .chart-area
@@ -25,7 +31,7 @@
                   window.conditionOfProbation = new ConditionOfProbationChart();
                   window.conditionOfProbation.render("#condition-of-probation", {
                     height: 300
-                  })
+                  });
                 });
           .stats-sidebar
             %span Current Stats
@@ -33,20 +39,26 @@
               .arrow
               .kpi-container
                 .kpi #{@condition_of_probation_pct}%
-                .kpi_label % of jail beds
+                .panel_kpi_label % of jail beds
             .stat
               .arrow
               .kpi-container
                 .kpi= @condition_of_probation_pop
-                .kpi_label # of jail beds
+                .panel_kpi_label # of jail beds
             .stat
               .arrow
               .kpi-container
                 .kpi 181 days
-                .kpi_label avg length of sentence
+                .panel_kpi_label avg length of sentence
     %li
       %span Justice Court Commitments
-      .chevron.js-accordion-trigger{ 'data-chart': 'justice-court-commitments', href: "javascript:void(0)" }
+      .row
+        .metric-bar
+          .bar{ style: "width: #{@justice_court_pct}%" }
+          .kpi-container
+            .kpi #{@justice_court_pct}%
+            .panel_kpi_label of jail beds
+        .chevron.js-accordion-trigger{ 'data-chart': 'justice-court-commitments', href: "javascript:void(0)" }
       .submenu
         .population-info-section
           .chart-area
@@ -57,7 +69,7 @@
                   window.justiceCourtCommitments = new JusticeCourtCommitmentsChart();
                   window.justiceCourtCommitments.render("#justice-court-commitments", {
                     height: 300
-                  })
+                  });
                 });
           .stats-sidebar
             %span Current Stats
@@ -65,20 +77,26 @@
               .arrow
               .kpi-container
                 .kpi #{@justice_court_pct}%
-                .kpi_label % of jail beds
+                .panel_kpi_label % of jail beds
             .stat
               .arrow
               .kpi-container
                 .kpi= @justice_court_pop
-                .kpi_label # of jail beds
+                .panel_kpi_label # of jail beds
             .stat
               .arrow
               .kpi-container
                 .kpi 181 days
-                .kpi_label avg length of sentence
+                .panel_kpi_label avg length of sentence
     %li
       %span Held on Fines Under $500
-      .chevron.js-accordion-trigger{ 'data-chart': 'held-on-fines', href: "javascript:void(0)" }
+      .row
+        .metric-bar
+          .bar{ style: "width: #{@held_on_fines_pct}%" }
+          .kpi-container
+            .kpi #{@held_on_fines_pct}%
+            .panel_kpi_label of jail beds
+        .chevron.js-accordion-trigger{ 'data-chart': 'held-on-fines', href: "javascript:void(0)" }
       .submenu
         .population-info-section
           .chart-area
@@ -89,7 +107,7 @@
                   window.heldOnFines = new HeldOnFinesChart();
                   window.heldOnFines.render("#held-on-fines", {
                     height: 300
-                  })
+                  });
                 });
           .stats-sidebar
             %span Current Stats
@@ -97,14 +115,14 @@
               .arrow
               .kpi-container
                 .kpi #{@held_on_fines_pct}%
-                .kpi_label % of jail beds
+                .panel_kpi_label % of jail beds
             .stat
               .arrow
               .kpi-container
                 .kpi= @held_on_fines_pop
-                .kpi_label # of jail beds
+                .panel_kpi_label # of jail beds
             .stat
               .arrow
               .kpi-container
                 .kpi 181 days
-                .kpi_label avg length of sentence
+                .panel_kpi_label avg length of sentence

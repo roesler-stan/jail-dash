@@ -10,6 +10,15 @@
     }
   }
 
+  .metric-bar {
+    .bar {
+      display: inline-block;
+      height: 40px;
+      border-radius: 2px;
+      background: linear-gradient(to bottom, #DD5893, $fuchsia);
+    }
+  }
+
   .arrow {
     position: relative;
     top: -8px;

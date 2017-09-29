@@ -2,7 +2,6 @@
   $accordion-menu-color: $base-font-color;
   $accordion-menu-background: $shade-gray;
   $accordion-menu-sub-background: $shade-gray;
-  $accordion-menu-list-padding: ($base-spacing / 2) $base-spacing;
 
   margin: 0 0 $base-spacing 0;
   padding: 0;
@@ -19,8 +18,15 @@
     > span {
       color: $accordion-menu-color;
       display: block;
-      padding: $accordion-menu-list-padding;
       text-decoration: none;
+      padding-top: 20px;
+      padding-left: 40px;
+    }
+
+    > .row {
+      position: relative;
+      padding-bottom: 35px;
+      padding-left: 40px;
     }
 
     &:nth-child(odd) {
@@ -38,7 +44,7 @@
 
   .chevron {
     position: absolute;
-    top: 15px;
+    bottom: 40px;
     right: 0;
     width: 100px; // content width varies - static parent width helps w/positioning
     cursor: pointer;
