@@ -29,3 +29,9 @@
 %section.chart
   .chart_title Jail bookings over time, by agency
   .chart_subtitle From Q2 2015 to Q2 2017
+  #bookings-over-time-by-agency
+    :javascript
+      $(document).ready(function () {
+        const bookingsOverTimeByAgency = new BookingsOverTimeByAgencyChart();
+        bookingsOverTimeByAgency.render("#bookings-over-time-by-agency")
+      });

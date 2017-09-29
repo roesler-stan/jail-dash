@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get '/bookings' => 'pages#bookings'
   get '/bookings_by_agency' => 'pages#bookings_by_agency'
   get '/bookings_over_time' => 'pages#bookings_over_time'
+  get '/bookings_over_time_by_agency' => 'pages#bookings_over_time_by_agency'
   get '/adjudication' => 'pages#adjudication'
   get '/adjudication_by_court' => 'pages#adjudication_by_court'
   get '/adjudication_by_judge' => 'pages#adjudication_by_judge'

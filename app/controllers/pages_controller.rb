@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   http_basic_authenticate_with name: "jail", password: "dashboard"
-  
+
   def bookings
     previous_quarter = Date.today.previous_financial_quarter
     @bookings_last_quarter = Booking.where("comdate > ? AND comdate < ?", previous_quarter.beginning_of_financial_quarter, previous_quarter.end_of_financial_quarter).count
@@ -31,6 +31,19 @@ class PagesController < ApplicationController
     bookings = Booking.time_series_bookings(time_unit)
 
     render json: bookings
+  end
+
+  def bookings_over_time_by_agency
+    time_unit = params[:time_unit] || 'yearly'
+
+    agencies = Arrest.first(10).map do |agency|
+      {
+        name: agency.extdesc,
+        bookings: Booking.time_series_bookings(time_unit, bookings=Booking.where(arrest: agency.slc_id))
+      }
+    end
+
+    render json: agencies
   end
 
   def adjudication
