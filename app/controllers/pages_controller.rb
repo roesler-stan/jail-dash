@@ -36,7 +36,7 @@ class PagesController < ApplicationController
   def bookings_over_time_by_agency
     time_unit = params[:time_unit] || 'yearly'
 
-    agencies = Arrest.first(10).map do |agency|
+    agencies = Arrest.first(5).map do |agency|
       {
         name: agency.extdesc,
         bookings: Booking.time_series_bookings(time_unit, bookings=Booking.where(arrest: agency.slc_id))

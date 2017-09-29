@@ -24,17 +24,17 @@ class BookingsByAgencyChart {
 
     const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var svgDefs = svg.append("defs")
+    const svgDefs = svg.append("defs")
 
-    var purpleGradient = svgDefs.append('linearGradient')
+    const purpleGradient = svgDefs.append('linearGradient')
         .attr('id', 'gradient-purple')
-    var purpleGradientHover = svgDefs.append('linearGradient')
+    const purpleGradientHover = svgDefs.append('linearGradient')
         .attr('id', 'gradient-purple-hover')
-    var yellowGradient = svgDefs.append('linearGradient')
+    const yellowGradient = svgDefs.append('linearGradient')
         .attr('id', 'gradient-yellow')
-    var yellowGradientHover = svgDefs.append('linearGradient')
+    const yellowGradientHover = svgDefs.append('linearGradient')
         .attr('id', 'gradient-yellow-hover')
-    var gradients = [
+    const gradients = [
       purpleGradient,
       purpleGradientHover,
       yellowGradient,
@@ -51,23 +51,23 @@ class BookingsByAgencyChart {
     })
 
     // gradientClasses should match those defined in CSS under .column
-    var gradientClasses = d3.scaleOrdinal()
+    const gradientClasses = d3.scaleOrdinal()
         .range(['gradient-purple', 'gradient-yellow']);
 
-    var x0 = d3.scaleBand()
+    const x0 = d3.scaleBand()
         .rangeRound([0, width])
         .paddingInner(0.1);
 
-    var x1 = d3.scaleBand()
+    const x1 = d3.scaleBand()
         .padding(0.05);
 
-    var y = d3.scaleLinear()
+    const y = d3.scaleLinear()
         .rangeRound([height, 0]);
 
-    var z = d3.scaleOrdinal()
+    const z = d3.scaleOrdinal()
         .range(["#861F41", "#F2B600"]);
 
-    var infotip = d3.tip()
+    const infotip = d3.tip()
       .attr('class', 'infotip-container')
       .offset([-10, 0])
       .html(function(d) {
@@ -114,7 +114,7 @@ class BookingsByAgencyChart {
         .attr("x", 0)
         .attr("dy", 15)
 
-      var legend = g.append("g")
+      const legend = g.append("g")
           .attr("font-family", "sans-serif")
           .attr("font-size", 10)
           .attr("text-anchor", "end")

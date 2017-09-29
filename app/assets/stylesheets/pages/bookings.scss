@@ -69,16 +69,48 @@
     }
   }
 
-  #bookings-over-time {
+  .purple {
     .line {
       stroke: #C93163;
       stroke-width: 3;
     }
-    .dot {
-      fill: #C93163;
+    .dot, &.legend { fill: #C93163; }
+    .dot-halo { fill: #F1CBD8; }
+  }
+
+  .series-color-1 {
+    .line {
+      stroke: #FF9D98;
+      stroke-width: 3;
     }
-    .dot-halo {
-      fill: #F1CBD8;
+    .dot, &.legend { fill: #FF9D98; }
+    .dot-halo { fill: #DAEAEA; }
+  }
+
+  .series-color-2 {
+    .line {
+      stroke: #4C78A9;
+      stroke-width: 3;
     }
+    .dot, &.legend { fill: #4C78A9; }
+    .dot-halo { fill: #DBE4EE; }
+  }
+
+  .series-color-3 {
+    .line {
+      stroke: #9FCBE9;
+      stroke-width: 3;
+    }
+    .dot, &.legend { fill: #9FCBE9; }
+    .dot-halo { fill: #ECF5FB; }
+  }
+
+  .series-color-4 {
+    .line {
+      stroke: #F48F14;
+      stroke-width: 3;
+    }
+    .dot, &.legend { fill: #F48F14; }
+    .dot-halo { fill: #FDE9D0; }
   }
 }

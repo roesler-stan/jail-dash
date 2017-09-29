@@ -3,6 +3,7 @@ class TimeseriesChart {
     this.opts = {
       renderedHeight: opts.height || 500,
       data_url: opts.data_url,
+      color: opts.color || 'purple',
     }
 
     const targetElement = d3.select(targetElementSelector);
@@ -22,7 +23,9 @@ class TimeseriesChart {
       .attr('height', this.opts.renderedHeight)
       .attr('width', renderedWidth);
 
-    const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    const g = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      .attr('class', this.opts.color);
 
     const svgDefs = svg.append("defs")
 
@@ -74,7 +77,6 @@ class TimeseriesChart {
 
       g.append('path')
         .attr('class', 'line')
-        .attr('stroke', '#000000')
         .attr('fill', 'none')
         .attr('d', line(data));
 

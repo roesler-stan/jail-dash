@@ -29,6 +29,8 @@ class BookingsOverTimeByAgencyChart {
 
     let x;
 
+    let colorClasses;
+
     const y = d3.scaleLinear()
       .range([height, 0]);
 
@@ -46,14 +48,23 @@ class BookingsOverTimeByAgencyChart {
         d3.max(agencies, function (agency) {
           return d3.max(agency.bookings, function(period) {
             return period.booking_count
-          });
-        });
+          })
+        })
       ]).nice();
 
       const sampleBookings = agencies[0].bookings
       x = d3.scaleOrdinal()
         .domain(sampleBookings.map(function (d) { return d.period }))
         .range(sampleBookings.map(function (d, i, agencies) { return (width/sampleBookings.length)*i }).reverse());
+
+      colorClasses = d3.scaleOrdinal()
+        .domain(agencies, function (agency) { return agency.name })
+        .range([
+          'series-color-1',
+          'series-color-2',
+          'series-color-3',
+          'series-color-4',
+        ])
 
       agencies.forEach(function (agency) {
         renderLine(agency)
@@ -73,10 +84,32 @@ class BookingsOverTimeByAgencyChart {
           .attr("y", y(y.ticks().pop()) + 0.5)
           .attr("dy", "0.32em")
           .attr("fill", "#000")
+
+      const legendLayer = svg.append("g")
+          .attr("font-family", "sans-serif")
+          .attr("font-size", 10)
+          .attr("text-anchor", "end")
+        .selectAll("g")
+        .data(agencies.map(function (agency) { return agency.name }).slice().reverse())
+        .enter().append("g")
+          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+      legendLayer.append('circle')
+        .attr('class', function (name) { return 'legend '+colorClasses(name) })
+        .attr('cx', width - 16)
+        .attr('r', 7);
+
+      legendLayer.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9.5)
+        .attr("dy", "0.32em")
+        .text(function(d) { return d; });
     });
 
     function renderLine(series) {
-      const lineLayer = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      const lineLayer = svg.append("g")
+        .attr('class', colorClasses(series.name))
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
       const line = d3.line()
         .x(function(d) { return x(d.period) })
