@@ -49,6 +49,8 @@ class PagesController < ApplicationController
   def adjudication_by_court
     # The years 1900 and 1901 are used to store NULL-like values
     # TODO: Presently showing only those courts with 'DISTRICT COURT' in the name (for performance)
+    from_date = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
+    to_date = Date.today.end_of_year.strftime('%Y%m%d')
     averages = ActiveRecord::Base.connection.exec_query(
       <<-SQL
         SELECT
@@ -57,8 +59,9 @@ class PagesController < ApplicationController
         FROM hearing_court_names
         INNER JOIN case_masters ON case_masters.jurisdiction_code = hearing_court_names.slc_id
         INNER JOIN bookings ON bookings.sysid = case_masters.sysid
-        WHERE bookings.reldate > '1902-01-01 00:00:00'
-          AND hearing_court_names.extdesc LIKE '%DISTRICT COURT%'
+        WHERE bookings.reldate > '#{from_date}'
+          AND bookings.reldate < '#{to_date}'
+          AND bookings.reldate > '1902-01-01 00:00:00'
         ORDER BY avg_duration DESC;
       SQL
     )
@@ -69,6 +72,8 @@ class PagesController < ApplicationController
   def adjudication_by_judge
     # The years 1900 and 1901 are used to store NULL-like values
     # TODO: Presently showing only those judges whose last names start with 'A' (for performance)
+    from_date = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
+    to_date = Date.today.end_of_year.strftime('%Y%m%d')
     averages = ActiveRecord::Base.connection.exec_query(
       <<-SQL
         SELECT
@@ -77,8 +82,9 @@ class PagesController < ApplicationController
         FROM judges
         INNER JOIN case_masters ON case_masters.judge = judges.slc_id
         INNER JOIN bookings ON bookings.sysid = case_masters.sysid
-        WHERE bookings.reldate > '1902-01-01 00:00:00'
-        AND judges.extdesc LIKE 'A%'
+        WHERE bookings.reldate > '#{from_date}'
+          AND bookings.reldate < '#{to_date}'
+          AND bookings.reldate > '1902-01-01 00:00:00'
         ORDER BY avg_duration DESC;
       SQL
     )

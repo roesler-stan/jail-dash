@@ -12,7 +12,7 @@ class AdjudicationChart {
 
     const renderedWidth = parseInt(targetElement.style('width'));
 
-    const margin = { top: 20, right: 20, bottom: 20, left: 70 };
+    const margin = { top: 20, right: 20, bottom: 20, left: 150 };
 
     const width = renderedWidth - margin.left - margin.right;
     const height = this.opts.renderedHeight - margin.top - margin.bottom;
@@ -77,22 +77,32 @@ class AdjudicationChart {
       const durations = data.map(function (d) { return d.avg_duration })
       const average = Math.round(durations.reduce(function(sum, val) { return sum + val }) / data.length)
 
-      g.append("g")
+      const bar = g.append("g")
         .selectAll("g")
         .data(data)
         .enter().append("g")
         .selectAll("rect")
         .data(function(d) { return [d] }) // TODO: this seems silly
-        .enter().append("rect")
-          .attr("x", 0)
-          .attr("y", function(d) { return y(d.name); })
-          .attr('rx', 3) // border radius
-          .attr('ry', 3) // border radius
-          .attr("height", y.bandwidth())
-          .attr("width", function(d) { return x(d.avg_duration); })
-          .attr("class", 'row gradient-'+color)
-          .on('mouseover', infotip.show)
-          .on('mouseout', infotip.hide);
+        .enter()
+
+      bar.append("rect")
+        .attr("x", 0)
+        .attr("y", function(d) { return y(d.name); })
+        .attr('rx', 3) // border radius
+        .attr('ry', 3) // border radius
+        .attr("height", y.bandwidth())
+        .attr("width", function(d) { return x(d.avg_duration); })
+        .attr("class", 'row gradient-'+color)
+        .on('mouseover', infotip.show)
+        .on('mouseout', infotip.hide);
+
+      bar.append('text')
+        .attr('class', 'chart_label')
+        .attr('fill', '#5C5C5C')
+        .attr('x', function(d) { return x(d.avg_duration) + 5 })
+        .attr('y', function(d) { return y(d.name) + y.bandwidth()/2 + 6 }) // 6 is half of 12px text height
+        .attr('text-anchor', 'start')
+        .text(function(d) { return d.avg_duration });
 
       const average_line = g.append('g')
       average_line.append('line')
@@ -116,7 +126,7 @@ class AdjudicationChart {
           .call(d3.axisLeft(y)
             .ticks(null, "s")
             .tickSize(0)
-            .tickPadding(20)
+            .tickPadding(10)
           )
         .append("text")
           .attr("y", 2)
