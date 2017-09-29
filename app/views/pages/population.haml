@@ -32,13 +32,13 @@
             .stat
               .arrow
               .kpi-container
-                .kpi 32%
+                .kpi #{@condition_of_probation_pct}%
                 .kpi_label % of jail beds
             .stat
               .arrow
               .kpi-container
-                .kpi 32%
-                .kpi_label % of jail beds
+                .kpi= @condition_of_probation_pop
+                .kpi_label # of jail beds
             .stat
               .arrow
               .kpi-container
@@ -64,13 +64,13 @@
             .stat
               .arrow
               .kpi-container
-                .kpi 32%
+                .kpi #{@justice_court_pct}%
                 .kpi_label % of jail beds
             .stat
               .arrow
               .kpi-container
-                .kpi 32%
-                .kpi_label % of jail beds
+                .kpi= @justice_court_pop
+                .kpi_label # of jail beds
             .stat
               .arrow
               .kpi-container
@@ -96,13 +96,13 @@
             .stat
               .arrow
               .kpi-container
-                .kpi 32%
+                .kpi #{@held_on_fines_pct}%
                 .kpi_label % of jail beds
             .stat
               .arrow
               .kpi-container
-                .kpi 32%
-                .kpi_label % of jail beds
+                .kpi= @held_on_fines_pop
+                .kpi_label # of jail beds
             .stat
               .arrow
               .kpi-container

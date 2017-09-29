@@ -71,7 +71,6 @@ class PagesController < ApplicationController
 
   def adjudication_by_judge
     # The years 1900 and 1901 are used to store NULL-like values
-    # TODO: Presently showing only those judges whose last names start with 'A' (for performance)
     from_date = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
     to_date = Date.today.end_of_year.strftime('%Y%m%d')
     averages = ActiveRecord::Base.connection.exec_query(
@@ -93,12 +92,29 @@ class PagesController < ApplicationController
   end
 
   def population
-    @total_jail_population = Booking.where("reldate < '1902-01-01 00:00:00'").count
-    @inhouse_jail_population = Booking.joins(:cases)
+    unreleased_bookings = Booking.where("reldate < '1902-01-01 00:00:00'")
+
+    @total_jail_population = unreleased_bookings.count
+    @inhouse_jail_population = unreleased_bookings.joins(:cases)
       .where(jlocat: 'MAIN')
-      .where("bookings.reldate < '1902-01-01 00:00:00'")
       .distinct
       .count
+    @held_on_fines_pop = unreleased_bookings.joins(:bonds)
+      .where("bond_masters.bondtype = 'FIN' AND bond_masters.original_bond_amt < 500")
+      .count
+    @held_on_fines_pct = ((@held_on_fines_pop.to_f / @total_jail_population) * 100).round(0)
+    @condition_of_probation_pop = unreleased_bookings.joins(:cases)
+        .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
+        .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
+        .count
+    @condition_of_probation_pct = ((@condition_of_probation_pop.to_f / @total_jail_population) * 100).round(0)
+    @justice_court_pop = unreleased_bookings.joins(:cases)
+      .joins("INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code")
+      .where("hearing_court_names.extdesc LIKE '%JUSTICE COURT%'")
+      .where("NOT EXISTS(SELECT 1 FROM hearing_court_names WHERE hearing_court_names.slc_id = case_masters.jurisdiction_code AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT%')")
+      .distinct
+      .count
+    @justice_court_pct = ((@justice_court_pop.to_f / @total_jail_population) * 100).round(0)
   end
 
   def population_justice_court_commitments
@@ -128,9 +144,15 @@ class PagesController < ApplicationController
   end
 
   def population_condition_of_probation
+    # billing_communities.extdesc = 'state probationary senctence inmates'
     time_unit = params[:time_unit] || 'quarterly'
 
-    bookings = Booking.time_series_bookings(time_unit, bookings=Booking.all) # TODO: Write query for "condition of probation"
+    bookings = Booking.time_series_bookings(
+      time_unit,
+      bookings=Booking.joins(:cases)
+        .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
+        .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
+    )
 
     render json: bookings
   end
