@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  http_basic_authenticate_with name: "jail", password: "dashboard"
+  http_basic_authenticate_with name: "slco", password: "jaildashboard"
 
   def bookings
     previous_quarter = Date.today.previous_financial_quarter
