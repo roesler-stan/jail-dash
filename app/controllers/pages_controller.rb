@@ -7,9 +7,22 @@ class PagesController < ApplicationController
   end
 
   def bookings_by_agency
-    time_unit = params[:time_unit] || 'last_year'
+    time_unit = params[:time_unit] || 'few_years'
 
-    @agencies = Arrest.all
+    # TODO: query for demo purposes only - replace with real one for final release
+    @agencies = ActiveRecord::Base.connection.exec_query(
+      <<-SQL
+        SELECT TOP 10
+          arrests.slc_id,
+          arrests.extdesc,
+          COUNT(bookings.sysid) AS "booking_count"
+        FROM arrests
+        INNER JOIN bookings on bookings.arrest = arrests.slc_id
+        WHERE bookings.comdate > '2010-01-01'
+        GROUP BY arrests.slc_id, arrests.extdesc
+        ORDER BY COUNT(bookings.sysid) DESC;
+      SQL
+    )
 
     case time_unit
     when 'this_year'
@@ -18,6 +31,8 @@ class PagesController < ApplicationController
     when 'last_year'
       last_year = Date.today.last_year
       @bookings = Booking.bookings_in_time_period(last_year.beginning_of_year, last_year.end_of_year)
+    when 'few_years' # TODO: test purposes only - remove this before shipping
+      @bookings = Booking.bookings_in_time_period((Date.today-5.years).beginning_of_year, Date.today.end_of_year)
     else
       raise 'invalid time period argument'
     end
@@ -131,7 +146,7 @@ class PagesController < ApplicationController
   end
 
   def population_justice_court_commitments
-    time_unit = params[:time_unit] || 'quarterly'
+    time_unit = params[:time_unit] || 'yearly'
 
     bookings = Booking.time_series_bookings(
       time_unit,
@@ -146,7 +161,7 @@ class PagesController < ApplicationController
   end
 
   def population_held_on_fines
-    time_unit = params[:time_unit] || 'quarterly'
+    time_unit = params[:time_unit] || 'yearly'
 
     bookings = Booking.time_series_bookings(
       time_unit,
@@ -158,7 +173,7 @@ class PagesController < ApplicationController
 
   def population_condition_of_probation
     # billing_communities.extdesc = 'state probationary senctence inmates'
-    time_unit = params[:time_unit] || 'quarterly'
+    time_unit = params[:time_unit] || 'yearly'
 
     bookings = Booking.time_series_bookings(
       time_unit,
