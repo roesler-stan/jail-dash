@@ -135,7 +135,7 @@ class BookingsByAgencyChart {
           .attr("x", width - 24)
           .attr("y", 9.5)
           .attr("dy", "0.32em")
-          .text(function(d) { return d; });
+          .text(function(d) { return '% of total '+d; });
     });
 
   }
