@@ -82,40 +82,33 @@
     .dot-halo { fill: #F1CBD8; }
   }
 
-  .series-color-1 {
-    .line {
-      stroke: #FF9D98;
-      stroke-width: 3;
-    }
-    .dot, &.legend { fill: #FF9D98; }
-    .dot-halo { fill: #DAEAEA; }
-  }
+  $all_series: (
+    #FF9D98 #DAEAEA,
+    #4C78A9 #DBE4EE,
+    #9FCBE9 #ECF5FB,
+    #F48F14 #FDE9D0,
+    #BAB0AC #F1EFEE,
+    #56A24B #DDECDB,
+    #8AD279 #E8F6E4,
+    #B179A2 #EFE4EC,
+    #F2CF5A #FCF5DE,
+    #459894 #DAEAEA,
+    #84BCB6 #E6F2F0,
+    #E35656 #F9DDDD,
+  );
 
-  .series-color-2 {
-    .line {
-      stroke: #4C78A9;
-      stroke-width: 3;
+  @for $i from 1 through length($all_series) {
+    $series: nth($all_series, $i);
+    $color_base: nth($series, 1);
+    $color_shade: nth($series, 2);
+    .series-color-#{$i} {
+      .line {
+        stroke: $color_base;
+        stroke-width: 3;
+      }
+      .dot, &.legend { fill: $color_base; }
+      .dot-halo { fill: $color_shade; }
     }
-    .dot, &.legend { fill: #4C78A9; }
-    .dot-halo { fill: #DBE4EE; }
-  }
-
-  .series-color-3 {
-    .line {
-      stroke: #9FCBE9;
-      stroke-width: 3;
-    }
-    .dot, &.legend { fill: #9FCBE9; }
-    .dot-halo { fill: #ECF5FB; }
-  }
-
-  .series-color-4 {
-    .line {
-      stroke: #F48F14;
-      stroke-width: 3;
-    }
-    .dot, &.legend { fill: #F48F14; }
-    .dot-halo { fill: #FDE9D0; }
   }
 
   .inactive {
