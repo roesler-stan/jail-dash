@@ -1,7 +1,7 @@
 class BookingsOverTimeByAgencyChart {
   render(targetElementSelector, opts={}) {
     opts = Object.assign(opts, {
-      data_url: '/bookings_over_time_by_agency.json'
+      data_url: '/api/v1/bookings_over_time_by_agency.json'
     });
     this.opts = {
       renderedHeight: opts.height || 500,
@@ -79,6 +79,14 @@ class BookingsOverTimeByAgencyChart {
           'series-color-2',
           'series-color-3',
           'series-color-4',
+          'series-color-5',
+          'series-color-6',
+          'series-color-7',
+          'series-color-8',
+          'series-color-9',
+          'series-color-10',
+          'series-color-11',
+          'series-color-12',
         ])
 
       renderSeriesArray(agencies);

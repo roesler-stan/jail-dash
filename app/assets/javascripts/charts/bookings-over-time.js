@@ -6,7 +6,7 @@ class BookingsOverTimeChart extends TimeseriesChart {
 
   render(targetElementSelector, opts={}) {
     opts = Object.assign(opts, {
-      data_url: '/bookings_over_time.json',
+      data_url: '/api/v1/bookings_over_time.json',
       color: 'purple',
     });
     this.base_render(targetElementSelector, opts);

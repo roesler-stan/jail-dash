@@ -6,7 +6,7 @@ class JusticeCourtCommitmentsChart extends TimeseriesChart {
 
   render(targetElementSelector, opts={}) {
     opts = Object.assign(opts, {
-      data_url: '/population_justice_court_commitments.json'
+      data_url: '/api/v1/population_justice_court_commitments.json'
     });
     this.base_render(targetElementSelector, opts);
   }

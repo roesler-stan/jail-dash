@@ -6,7 +6,7 @@ class HeldOnFinesChart extends TimeseriesChart {
 
   render(targetElementSelector, opts={}) {
     opts = Object.assign(opts, {
-      data_url: '/population_held_on_fines.json'
+      data_url: '/api/v1/population_held_on_fines.json'
     });
     this.base_render(targetElementSelector, opts);
   }

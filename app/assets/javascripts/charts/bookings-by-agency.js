@@ -83,7 +83,7 @@ class BookingsByAgencyChart {
 
     svg.call(infotip);
 
-    d3.json("/bookings_by_agency.json", function(response, data) {
+    d3.json("/api/v1/bookings_by_agency.json", function(response, data) {
       var keys = ['booking', 'pop']
 
       x0.domain(data.agencies.map(function(d) { return d.name; }));
