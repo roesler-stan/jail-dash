@@ -2,6 +2,8 @@ class Api::V1::BookingsController < ApplicationController
 
   def by_agency
     time_unit = params[:time_unit] || 'few_years'
+    time_start = params[:time_start]
+    time_end = params[:time_end]
 
     # TODO: query for demo purposes only - replace with real one for final release
     @agencies = ActiveRecord::Base.connection.exec_query(
@@ -27,6 +29,8 @@ class Api::V1::BookingsController < ApplicationController
       @bookings = Booking.between(last_year.beginning_of_year, last_year.end_of_year)
     when 'few_years' # TODO: test purposes only - remove this before shipping
       @bookings = Booking.between((Date.today-5.years).beginning_of_year, Date.today.end_of_year)
+    when 'custom'
+      @bookings = Booking.bookings_in_time_period(time_start, time_end)
     else
       raise 'invalid time period argument'
     end
@@ -35,20 +39,34 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   def over_time
-    time_unit = params[:time_unit] || 'quarterly'
+    time_unit = bookings_over_time_params[:time_unit] || 'quarterly'
+    time_start = bookings_over_time_params[:time_start]
+    time_end = bookings_over_time_params[:time_end]
 
-    bookings = Booking.time_series_bookings(time_unit)
+    bookings = Booking.time_series_bookings(
+      time_unit,
+      bookings: Booking.all,
+      time_start: time_start, # time params used only when time_unit == 'custom'
+      time_end: time_end, # time params used only when time_unit == 'custom'
+    )
 
     render json: bookings
   end
 
   def over_time_by_agency
     time_unit = params[:time_unit] || 'yearly'
+    time_start = params[:time_start]
+    time_end = params[:time_end]
 
     agencies = Arrest.first(5).map do |agency|
       {
         name: agency.extdesc,
-        bookings: Booking.time_series_bookings(time_unit, bookings=Booking.where(arrest: agency.slc_id))
+        bookings: Booking.time_series_bookings(
+          time_unit,
+          bookings: Booking.where(arrest: agency.slc_id),
+          time_start: time_start, # time params used only when time_unit == 'custom'
+          time_end: time_end, # time params used only when time_unit == 'custom'
+        )
       }
     end
 
@@ -59,6 +77,6 @@ class Api::V1::BookingsController < ApplicationController
   private
 
   def bookings_over_time_params
-    params.require(:time_unit)
+    params.permit(:time_unit, :time_start, :time_end)
   end
 end

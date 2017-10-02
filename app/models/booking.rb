@@ -12,11 +12,21 @@ class Booking < ApplicationRecord
     Booking.where("comdate > ? AND comdate < ?", from_date, to_date)
   end
 
-  def self.time_series_bookings(time_unit, bookings=Booking.all, percentage_mode:false)
-    date_cursor = Date.today
+  def self.time_series_bookings(time_unit, bookings:Booking.all, time_start:nil, time_end:nil, percentage_mode:false)
+    chart_time_steps = 8
+
+    if time_unit == 'custom'
+      beginning = Date.parse(time_start)
+      ending = Date.parse(time_end)
+      date_cursor = ending
+      time_step_size = ((ending - beginning).to_i / chart_time_steps)
+    else
+      date_cursor = Date.today
+    end
+
     time_periods = []
 
-    8.times do |i|
+    chart_time_steps.times do |i|
       case time_unit
       when 'yearly'
         date_cursor = date_cursor.last_year
@@ -62,6 +72,14 @@ class Booking < ApplicationRecord
         else
           booking_count = bookings.between(from_date, to_date).count
         end
+      when 'custom'
+        previous_cursor = date_cursor
+        date_cursor = date_cursor - time_step_size
+        from_date = date_cursor
+        to_date = previous_cursor
+
+        period_name = date_cursor
+        booking_count = bookings.where("comdate > ? AND comdate < ?", from_date, to_date).count
       else
         raise 'invalid time period argument'
       end
