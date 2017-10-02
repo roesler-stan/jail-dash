@@ -1,55 +1,15 @@
 .bookings {
-  .infotip-container {
-    padding-bottom: 5px;
-  }
-
-  .infotip {
-    position: relative;
-    background: #ffffff;
-    border: 2px solid black;
-    padding: 5px;
-    border-radius: 2px;
-
-    &.yrs_lt5 {
-      border-color: $maroon;
-    }
-    &.yrs_5_13 {
-      border-color: $yellow;
-    }
-  }
-  .infotip:after, .infotip:before {
-    top: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-  .infotip:after {
-    border-color: transparent;
-    border-top-color: #ffffff;
-    border-width: 8px;
-    margin-left: -8px;
-  }
-  @mixin infotip_before {
-    border-color: transparent;
-    border-width: 11px;
-    margin-left: -11px;
-  }
-  .infotip.yrs_lt5:before {
-    @include infotip_before;
-    border-top-color: $maroon;
-  }
-  .infotip.yrs_5_13:before {
-    @include infotip_before;
-    border-top-color: $yellow;
-  }
-
   #bookings-by-agency {
     height: 500px;
     width: 100%;
+
+    rect.purple {
+      fill: $maroon;
+    }
+
+    rect.yellow {
+      fill: $yellow;
+    }
 
     .column {
       &.gradient-purple {
@@ -69,17 +29,20 @@
     }
   }
 
-  text.legend[class*='series-color-'] {
-    fill: #000000;
+  #bookings-over-time {
+    .purple {
+      fill: $maroon;
+      .line {
+        stroke: #C93163;
+        stroke-width: 3;
+      }
+      .dot, &.legend { fill: #C93163; }
+      .dot-halo { fill: #F1CBD8; }
+    }
   }
 
-  .purple {
-    .line {
-      stroke: #C93163;
-      stroke-width: 3;
-    }
-    .dot, &.legend { fill: #C93163; }
-    .dot-halo { fill: #F1CBD8; }
+  text.legend[class*='series-color-'] {
+    fill: #000000;
   }
 
   $all_series: (
@@ -108,6 +71,15 @@
       }
       .dot, &.legend { fill: $color_base; }
       .dot-halo { fill: $color_shade; }
+    }
+
+    // extends styles in infotip.scss
+    .infotip.series-color-#{$i} {
+      border-color: $color_base;
+      &:before {
+        @include infotip_before;
+        border-top-color: $color_base;
+      }
     }
   }
 

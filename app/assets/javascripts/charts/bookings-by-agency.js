@@ -65,13 +65,13 @@ class BookingsByAgencyChart {
         .rangeRound([height, 0]);
 
     const z = d3.scaleOrdinal()
-        .range(["#861F41", "#F2B600"]);
+        .range(['purple', 'yellow']);
 
     const infotip = d3.tip()
       .attr('class', 'infotip-container')
       .offset([-10, 0])
       .html(function(d) {
-        let tooltip = "<div class='infotip "+d.agency+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"
+        let tooltip = "<div class='infotip "+z(d.key)+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"
         if (d.key == 'booking') {
           tooltip += ( d.percent+"% ("+d.count+" bookings)" )
         } else if (d.key == 'pop') {
@@ -136,7 +136,7 @@ class BookingsByAgencyChart {
           .attr('ry', 3) // border radius
           .attr("width", 16)
           .attr("height", 16)
-          .attr("fill", z);
+          .attr('class', z);
 
       legend.append("text")
           .attr("x", width - 24)

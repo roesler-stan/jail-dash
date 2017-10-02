@@ -51,8 +51,8 @@ class BookingsOverTimeByAgencyChart {
 
     const infotip = d3.tip()
       .attr('class', 'infotip-container')
-      .html(function(d) {
-        return "<div class='infotip purple'><div class='tooltip_label'>"+d.period+"</div><div class='tooltip_body'>Total bookings: "+d.booking_count+"</div></div>"
+      .html(function(d, a, b) {
+        return "<div class='infotip "+colorClasses(d.name)+"'><div class='tooltip_label'>"+d.period+"</div><div class='tooltip_body'>"+d.name+" Bookings: "+d.booking_count+"</div></div>"
       });
 
     chart_area.call(infotip);
@@ -172,7 +172,7 @@ class BookingsOverTimeByAgencyChart {
       // draw last, to be on top of all other elements
       // needs to be on top to catch mouse events
       lineLayer.selectAll(".dot")
-        .data(series.bookings)
+        .data(series.bookings.map(function(d) { return Object.assign(d, { name: series.name }) }))
         .enter().append("circle")
           .attr("class", "dot")
           .attr("cx", line.x())
@@ -180,7 +180,7 @@ class BookingsOverTimeByAgencyChart {
           .attr("r", 7)
           .on('mouseover', function(d, i) {
             lineLayer.select(".dot-halo.dot-"+i).attr("r", 12)
-            infotip.show(d, i)
+            infotip.show(d, i);
           })
           .on('mouseout', function(d, i) {
             lineLayer.selectAll(".dot-halo").attr("r", 0)

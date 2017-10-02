@@ -2,10 +2,11 @@
 @import "neat";
 @import "base/base";
 
+@import "components/accordion";
+@import "components/gradients";
+@import "components/infotip";
+
 @import "pages";
 @import "pages/bookings";
 @import "pages/adjudication";
 @import "pages/population";
-
-@import "components/accordion";
-@import "components/gradients";

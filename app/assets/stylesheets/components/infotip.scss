@@ -1,0 +1,48 @@
+.infotip-container {
+  padding-bottom: 5px;
+}
+
+@mixin infotip_before {
+  border-color: transparent;
+  border-width: 11px;
+  margin-left: -11px;
+}
+
+.infotip {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid black;
+  padding: 5px;
+  border-radius: 2px;
+
+  &.purple {
+    border-color: $maroon;
+    &:before { 
+      @include infotip_before;
+      border-top-color: $maroon;
+    }
+  }
+  &.yellow {
+    border-color: $yellow;
+    &:before { 
+      @include infotip_before;
+      border-top-color: $yellow;
+    }
+  }
+}
+.infotip:after, .infotip:before {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+.infotip:after {
+  border-color: transparent;
+  border-top-color: #ffffff;
+  border-width: 8px;
+  margin-left: -8px;
+}
