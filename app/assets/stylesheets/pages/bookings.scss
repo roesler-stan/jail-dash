@@ -69,6 +69,10 @@
     }
   }
 
+  text.legend[class*='series-color-'] {
+    fill: #000000;
+  }
+
   .purple {
     .line {
       stroke: #C93163;
@@ -112,5 +116,11 @@
     }
     .dot, &.legend { fill: #F48F14; }
     .dot-halo { fill: #FDE9D0; }
+  }
+
+  .inactive {
+    .dot, &.legend, text {
+      fill: $medium-gray-2;
+    }
   }
 }

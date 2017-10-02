@@ -15,17 +15,32 @@ class BookingsOverTimeByAgencyChart {
 
     const renderedWidth = parseInt(targetElement.style('width'));
 
-    const margin = { top: 20, right: 20, bottom: 20, left: 70 };
+    const chart_area_padding = { top: 20, right: 20, bottom: 20, left: 70 };
+    const chart_area_margin = { top: 0, right: 200, bottom: 0, left: 0 };
 
-    const width = renderedWidth - margin.left - margin.right;
-    const height = this.opts.renderedHeight - margin.top - margin.bottom;
+    const chart_area_width = renderedWidth - chart_area_margin.left - chart_area_margin.right;
+    const chart_width = chart_area_width - chart_area_padding.left - chart_area_padding.right;
+    const legend_width = chart_area_margin.right;
+    const height = this.opts.renderedHeight - chart_area_padding.top - chart_area_padding.bottom;
 
-    const svg = targetElement.append('svg')
+    const chart_area = targetElement.append('svg')
+      .attr('display', 'inline-block')
       .attr('preserveAspectRatio', 'none')
       .attr('height', this.opts.renderedHeight)
-      .attr('width', renderedWidth);
+      .attr('width', chart_area_width);
+    const legend_area = targetElement.append('svg')
+      .attr('display', 'inline-block')
+      .attr('preserveAspectRatio', 'none')
+      .attr('height', this.opts.renderedHeight)
+      .attr('width', chart_area_margin.right);
 
-    const svgDefs = svg.append("defs")
+    const svgDefs = chart_area.append("defs")
+
+    // those series currently rendered on the chart
+    let renderedSeries = [];
+
+    // those series that have been disabled by clicking on the legend
+    let inactiveSeries = [];
 
     let x;
 
@@ -40,7 +55,7 @@ class BookingsOverTimeByAgencyChart {
         return "<div class='infotip purple'><div class='tooltip_label'>"+d.period+"</div><div class='tooltip_body'>Total bookings: "+d.booking_count+"</div></div>"
       });
 
-    svg.call(infotip);
+    chart_area.call(infotip);
 
     d3.json(this.opts.data_url, function(response, agencies) {
       y.domain([
@@ -55,7 +70,7 @@ class BookingsOverTimeByAgencyChart {
       const sampleBookings = agencies[0].bookings
       x = d3.scaleOrdinal()
         .domain(sampleBookings.map(function (d) { return d.period }))
-        .range(sampleBookings.map(function (d, i, agencies) { return (width/sampleBookings.length)*i }).reverse());
+        .range(sampleBookings.map(function (d, i, agencies) { return (chart_width/sampleBookings.length)*i }).reverse());
 
       colorClasses = d3.scaleOrdinal()
         .domain(agencies, function (agency) { return agency.name })
@@ -66,11 +81,9 @@ class BookingsOverTimeByAgencyChart {
           'series-color-4',
         ])
 
-      agencies.forEach(function (agency) {
-        renderLine(agency)
-      });
+      renderSeriesArray(agencies);
 
-      const axisLayer = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      const axisLayer = chart_area.append("g").attr("transform", "translate(" + chart_area_padding.left + "," + chart_area_padding.top + ")");
       // draw axes first so that they're under all other elements
       axisLayer.append("g")
           .attr("class", "axis")
@@ -85,31 +98,50 @@ class BookingsOverTimeByAgencyChart {
           .attr("dy", "0.32em")
           .attr("fill", "#000")
 
-      const legendLayer = svg.append("g")
+      const legendLayer = legend_area.append("g")
           .attr("font-family", "sans-serif")
           .attr("font-size", 10)
-          .attr("text-anchor", "end")
+          .attr("text-anchor", "start")
         .selectAll("g")
-        .data(agencies.map(function (agency) { return agency.name }).slice().reverse())
+        .data(agencies.slice().reverse())
         .enter().append("g")
-          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+          .attr("transform", function(d, i) { return "translate(0," + ((i*20) + 20) + ")"; })
+          .on('click', function (d, index, elements) {
+            // toggle series
+            inactiveSeries[d.name] = !inactiveSeries[d.name];
+            
+            // swap active/inactive color class on legend
+            const this_legend = elements[index];
+            d3.select(this_legend)
+              .selectAll('circle, text')
+              .attr('class',
+                function (agency) { return ['legend', legendColorClass(agency.name)].join(' ')
+              });
+
+            // re-render all series, excluding those currently inactive
+            renderSeriesArray(agencies.filter(function (agency) {
+              return !isInactiveSeries(agency.name)
+            }));
+          });
 
       legendLayer.append('circle')
-        .attr('class', function (name) { return 'legend '+colorClasses(name) })
-        .attr('cx', width - 16)
+        .attr('cx', 20)
         .attr('r', 7);
 
       legendLayer.append("text")
-        .attr("x", width - 24)
-        .attr("y", 9.5)
+        .attr("x", 30)
+        .attr("y", 0)
         .attr("dy", "0.32em")
-        .text(function(d) { return d; });
+        .text(function(agency) { return agency.name; });
+
+      legendLayer.selectAll('circle, text')
+        .attr('class', function (agency) { return ['legend', legendColorClass(agency.name)].join(' ') })
     });
 
     function renderLine(series) {
-      const lineLayer = svg.append("g")
+      const lineLayer = chart_area.append("g")
         .attr('class', colorClasses(series.name))
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        .attr("transform", "translate(" + chart_area_padding.left + "," + chart_area_padding.top + ")");
 
       const line = d3.line()
         .x(function(d) { return x(d.period) })
@@ -146,6 +178,30 @@ class BookingsOverTimeByAgencyChart {
             lineLayer.selectAll(".dot-halo").attr("r", 0)
             infotip.hide(d, i);
           });
+
+      renderedSeries.push(lineLayer);
+    }
+
+    function renderSeriesArray(seriesArray) {
+      // clean up previous render
+      renderedSeries.forEach(function (series) {
+        series.remove();
+      });
+      seriesArray.forEach(function (series) {
+        renderLine(series);
+      });
+    }
+
+    function legendColorClass(seriesName) {
+      if (isInactiveSeries(seriesName)) {
+        return 'inactive';
+      } else {
+        return colorClasses(seriesName);
+      }
+    }
+
+    function isInactiveSeries(seriesName) {
+      return !!inactiveSeries[seriesName];
     }
 
     function xAxis(layer) {
@@ -161,7 +217,7 @@ class BookingsOverTimeByAgencyChart {
       layer.call(
         d3.axisRight(y)
           .ticks(null, "s")
-          .tickSize(width)
+          .tickSize(chart_width)
       )
       layer.select('.domain').remove()
       layer.selectAll(".tick:not(:first-of-type) line").attr("stroke", "#D6D6D6");
