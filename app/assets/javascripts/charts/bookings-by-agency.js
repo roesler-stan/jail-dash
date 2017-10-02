@@ -71,7 +71,14 @@ class BookingsByAgencyChart {
       .attr('class', 'infotip-container')
       .offset([-10, 0])
       .html(function(d) {
-        return "<div class='infotip "+d.agency+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"+d.percent+"% ("+d.count+" bookings)</div></div>"
+        let tooltip = "<div class='infotip "+d.agency+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"
+        if (d.key == 'booking') {
+          tooltip += ( d.percent+"% ("+d.count+" bookings)" )
+        } else if (d.key == 'pop') {
+          tooltip += ( d.percent+"% of population" )
+        }
+        tooltip += "</div></div>"
+        return tooltip
       })
 
     svg.call(infotip);
@@ -119,7 +126,7 @@ class BookingsByAgencyChart {
           .attr("font-size", 10)
           .attr("text-anchor", "end")
         .selectAll("g")
-        .data(keys.slice().reverse())
+        .data(keys)
         .enter().append("g")
           .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
 
