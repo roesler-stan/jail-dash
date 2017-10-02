@@ -5,7 +5,7 @@ class Api::V1::PopulationController < ApplicationController
 
     bookings = Booking.time_series_bookings(
       time_unit,
-      Booking.joins(:cases)
+      bookings: Booking.joins(:cases)
         .joins("INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code")
         .where("hearing_court_names.extdesc LIKE '%JUSTICE COURT%'")
         .where("NOT EXISTS(SELECT 1 FROM hearing_court_names WHERE hearing_court_names.slc_id = case_masters.jurisdiction_code AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT%')")
@@ -20,7 +20,7 @@ class Api::V1::PopulationController < ApplicationController
 
     bookings = Booking.time_series_bookings(
       time_unit,
-      bookings=Booking.joins(:bonds).where("bond_masters.bondtype = 'FIN' AND bond_masters.original_bond_amt < 500")
+      bookings: Booking.joins(:bonds).where("bond_masters.bondtype = 'FIN' AND bond_masters.original_bond_amt < 500")
     )
 
     render json: bookings
@@ -32,7 +32,7 @@ class Api::V1::PopulationController < ApplicationController
 
     bookings = Booking.time_series_bookings(
       time_unit,
-      bookings=Booking.joins(:cases)
+      bookings: Booking.joins(:cases)
         .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
         .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
     )
