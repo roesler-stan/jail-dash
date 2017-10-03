@@ -1,5 +1,5 @@
 .bookings {
-  #bookings-by-agency {
+  .chart[data-chartname='bookings-by-agency'] {
     height: 500px;
     width: 100%;
 
@@ -29,7 +29,7 @@
     }
   }
 
-  #bookings-over-time {
+  .chart[data-chartname='bookings-over-time'] {
     .purple {
       fill: $maroon;
       .line {

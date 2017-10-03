@@ -12,10 +12,10 @@ class Booking < ApplicationRecord
     Booking.where("comdate > ? AND comdate < ?", from_date, to_date)
   end
 
-  def self.time_series_bookings(time_unit, bookings:Booking.all, time_start:nil, time_end:nil, percentage_mode:false)
+  def self.time_series_bookings(time_intervals, bookings:Booking.all, time_start:nil, time_end:nil, percentage_mode:false)
     chart_time_steps = 8
 
-    if time_unit == 'custom'
+    if time_intervals == 'Custom...'
       beginning = Date.parse(time_start)
       ending = Date.parse(time_end)
       date_cursor = ending
@@ -27,7 +27,7 @@ class Booking < ApplicationRecord
     time_periods = []
 
     chart_time_steps.times do |i|
-      case time_unit
+      case time_intervals
       when 'yearly'
         date_cursor = date_cursor.last_year
         from_date = date_cursor.beginning_of_year

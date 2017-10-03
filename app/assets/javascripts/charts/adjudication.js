@@ -2,7 +2,7 @@ class AdjudicationChart {
   base_render(targetElementSelector, opts) {
     this.opts = {
       renderedHeight: opts.height || 500,
-      data_url: opts.data_url,
+      dataUrl: opts.dataUrl,
     }
 
     const targetElement = d3.select(targetElementSelector);
@@ -70,7 +70,7 @@ class AdjudicationChart {
 
     svg.call(infotip);
 
-    d3.json(this.opts.data_url, function(response, data) {
+    d3.json(this.opts.dataUrl, function(response, data) {
       y.domain(data.map(function(d) { return d.name }));
       x.domain([0, d3.max(data, function(d) { return d.avg_duration })]).nice();
 

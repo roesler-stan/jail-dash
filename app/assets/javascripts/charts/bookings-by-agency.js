@@ -3,7 +3,7 @@ class BookingsByAgencyChart {
     this.args = args;
   }
 
-  render(targetElementSelector) {
+  render(targetElementSelector, opts={}) {
     const targetElement = d3.select(targetElementSelector);
 
     // clean up previous render of chart, if present
@@ -83,7 +83,13 @@ class BookingsByAgencyChart {
 
     svg.call(infotip);
 
-    d3.json("/api/v1/bookings_by_agency.json", function(response, data) {
+    const base_url = "/api/v1/bookings_by_agency.json?"
+    const dataUrl = base_url + [
+      ("time_start="+opts.fromDate),
+      ("time_end="+opts.toDate),
+    ].join('&');
+
+    d3.json(dataUrl, function(response, data) {
       var keys = ['booking', 'pop']
 
       x0.domain(data.agencies.map(function(d) { return d.name; }));

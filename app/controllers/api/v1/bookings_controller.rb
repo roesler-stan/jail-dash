@@ -1,9 +1,8 @@
 class Api::V1::BookingsController < ApplicationController
 
   def by_agency
-    time_unit = params[:time_unit] || 'few_years'
-    time_start = params[:time_start]
-    time_end = params[:time_end]
+    time_start = params[:time_start] || Date.today.previous_financial_quarter.beginning_of_quarter
+    time_end = params[:time_end] || Date.today.previous_financial_quarter.end_of_quarter
 
     # TODO: query for demo purposes only - replace with real one for final release
     @agencies = ActiveRecord::Base.connection.exec_query(
@@ -20,41 +19,28 @@ class Api::V1::BookingsController < ApplicationController
       SQL
     )
 
-    case time_unit
-    when 'this_year'
-      this_year = Date.today
-      @bookings = Booking.between(this_year.beginning_of_year, this_year.end_of_year)
-    when 'last_year'
-      last_year = Date.today.last_year
-      @bookings = Booking.between(last_year.beginning_of_year, last_year.end_of_year)
-    when 'few_years' # TODO: test purposes only - remove this before shipping
-      @bookings = Booking.between((Date.today-5.years).beginning_of_year, Date.today.end_of_year)
-    when 'custom'
-      @bookings = Booking.bookings_in_time_period(time_start, time_end)
-    else
-      raise 'invalid time period argument'
-    end
+    @bookings = Booking.between(time_start, time_end)
 
     # bookings_by_agency.json.jbuilder
   end
 
   def over_time
-    time_unit = bookings_over_time_params[:time_unit] || 'quarterly'
+    time_intervals = bookings_over_time_params[:time_intervals] || 'quarterly'
     time_start = bookings_over_time_params[:time_start]
     time_end = bookings_over_time_params[:time_end]
 
     bookings = Booking.time_series_bookings(
-      time_unit,
+      time_intervals,
       bookings: Booking.all,
-      time_start: time_start, # time params used only when time_unit == 'custom'
-      time_end: time_end, # time params used only when time_unit == 'custom'
+      time_start: time_start, # time params used only when time_intervals == 'custom'
+      time_end: time_end, # time params used only when time_intervals == 'custom'
     )
 
     render json: bookings
   end
 
   def over_time_by_agency
-    time_unit = params[:time_unit] || 'yearly'
+    time_intervals = params[:time_intervals] || 'yearly'
     time_start = params[:time_start]
     time_end = params[:time_end]
 
@@ -62,10 +48,10 @@ class Api::V1::BookingsController < ApplicationController
       {
         name: agency.extdesc,
         bookings: Booking.time_series_bookings(
-          time_unit,
+          time_intervals,
           bookings: Booking.where(arrest: agency.slc_id),
-          time_start: time_start, # time params used only when time_unit == 'custom'
-          time_end: time_end, # time params used only when time_unit == 'custom'
+          time_start: time_start, # time params used only when time_intervals == 'custom'
+          time_end: time_end, # time params used only when time_intervals == 'custom'
         )
       }
     end
@@ -77,6 +63,6 @@ class Api::V1::BookingsController < ApplicationController
   private
 
   def bookings_over_time_params
-    params.permit(:time_unit, :time_start, :time_end)
+    params.permit(:time_intervals, :time_start, :time_end)
   end
 end

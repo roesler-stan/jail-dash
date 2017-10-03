@@ -8,30 +8,30 @@
 
 %section.chart
   .chart_title Percentage of total jail bookings by agency compared to size of municipality served as a percentage of total population
-  .chart_subtitle Last 5 years
-  #bookings-by-agency
-    :javascript
-      $(document).ready(function () {
-        const bookingsByAgency = new BookingsByAgencyChart();
-        bookingsByAgency.render("#bookings-by-agency")
-      });
+  .chart_subtitle 5 years
+  - time_start = Date.today.previous_financial_quarter.beginning_of_quarter.strftime('%Y%m%d')
+  - time_end = Date.today.previous_financial_quarter.end_of_quarter.strftime('%Y%m%d')
+  .chart{ 'data-chartname': 'bookings-by-agency', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end }
+    .datepicker-anchor.pull-right
+      %span.dropdown_selection
+      .chevron
 
 %section.chart
   .chart_title Total number of jail bookings over time
   .chart_subtitle From Q2 2015 to Q2 2017
-  #bookings-over-time
-    :javascript
-      $(document).ready(function () {
-        const bookingsOverTime = new BookingsOverTimeChart();
-        bookingsOverTime.render("#bookings-over-time")
-      });
+  - time_start = (Date.today-2.years).beginning_of_quarter.strftime('%Y%m%d')
+  - time_end = Date.today.previous_financial_quarter.end_of_quarter.strftime('%Y%m%d')
+  .chart{ 'data-chartname': 'bookings-over-time', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end }
+    .datepicker-anchor.pull-right
+      %span.dropdown_selection
+      .chevron
 
 %section.chart
   .chart_title Jail bookings over time, by agency
-  .chart_subtitle From Q2 2015 to Q2 2017
-  #bookings-over-time-by-agency
-    :javascript
-      $(document).ready(function () {
-        const bookingsOverTimeByAgency = new BookingsOverTimeByAgencyChart();
-        bookingsOverTimeByAgency.render("#bookings-over-time-by-agency")
-      });
+  .chart_subtitle Q2 2015 to Q2 2017
+  - time_start = (Date.today-2.years).beginning_of_quarter.strftime('%Y%m%d')
+  - time_end = Date.today.previous_financial_quarter.end_of_quarter.strftime('%Y%m%d')
+  .chart{ 'data-chartname': 'bookings-over-time-by-agency', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end }
+    .datepicker-anchor.pull-right
+      %span.dropdown_selection
+      .chevron

@@ -1,11 +1,11 @@
 class BookingsOverTimeByAgencyChart {
   render(targetElementSelector, opts={}) {
     opts = Object.assign(opts, {
-      data_url: '/api/v1/bookings_over_time_by_agency.json'
+      dataUrl: '/api/v1/bookings_over_time_by_agency.json'
     });
     this.opts = {
       renderedHeight: opts.height || 500,
-      data_url: opts.data_url,
+      dataUrl: opts.dataUrl,
     }
 
     const targetElement = d3.select(targetElementSelector);
@@ -57,7 +57,7 @@ class BookingsOverTimeByAgencyChart {
 
     chart_area.call(infotip);
 
-    d3.json(this.opts.data_url, function(response, agencies) {
+    d3.json(this.opts.dataUrl, function(response, agencies) {
       y.domain([
         0,
         d3.max(agencies, function (agency) {

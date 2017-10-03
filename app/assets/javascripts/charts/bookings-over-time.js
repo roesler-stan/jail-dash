@@ -5,8 +5,15 @@ class BookingsOverTimeChart extends TimeseriesChart {
   }
 
   render(targetElementSelector, opts={}) {
+    const base_url = "/api/v1/bookings_over_time.json?"
+    let params = []
+    if (opts.fromDate)      { params.push("time_start="+opts.fromDate) }
+    if (opts.toDate)        { params.push("time_end="+opts.toDate) }
+    if (opts.timeInterval)  { params.push("time_intervals="+opts.timeInterval) }
+    const dataUrl = base_url + params.join('&');
+  
     opts = Object.assign(opts, {
-      data_url: '/api/v1/bookings_over_time.json?time_unit=custom&time_start=20110101&time_end=20150601',
+      dataUrl: dataUrl,
       color: 'purple',
     });
     this.base_render(targetElementSelector, opts);

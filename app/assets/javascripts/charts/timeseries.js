@@ -3,7 +3,7 @@ class TimeseriesChart {
     var that = this;
     that.opts = {
       renderedHeight: opts.height || 500,
-      data_url: opts.data_url,
+      dataUrl: opts.dataUrl,
       color: opts.color || 'purple',
       percentage_mode: opts.percentage_mode || false,
     }
@@ -51,7 +51,7 @@ class TimeseriesChart {
 
     svg.call(infotip);
 
-    d3.json(that.opts.data_url, function(response, data) {
+    d3.json(that.opts.dataUrl, function(response, data) {
       y.domain([0, d3.max(data, function(d) { return d.booking_count })]).nice();
 
       x = d3.scaleOrdinal()

@@ -14,7 +14,11 @@
 //= require rails-ujs
 //= require d3
 //= require d3-tip
+//= require moment
+//= require datepicker
+//= require datepicker-init
 
+//= require pages/bookings
 //= require pages/population
 
 //= require charts/timeseries
