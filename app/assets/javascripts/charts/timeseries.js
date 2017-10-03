@@ -1,9 +1,11 @@
 class TimeseriesChart {
   base_render(targetElementSelector, opts={}) {
-    this.opts = {
+    var that = this;
+    that.opts = {
       renderedHeight: opts.height || 500,
       data_url: opts.data_url,
       color: opts.color || 'purple',
+      percentage_mode: opts.percentage_mode || false,
     }
 
     const targetElement = d3.select(targetElementSelector);
@@ -23,7 +25,7 @@ class TimeseriesChart {
       .attr('height', this.opts.renderedHeight)
       .attr('width', renderedWidth);
 
-    const g = svg.append("g")
+    const chart = svg.append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
       .attr('class', this.opts.color);
 
@@ -37,12 +39,19 @@ class TimeseriesChart {
     const infotip = d3.tip()
       .attr('class', 'infotip-container')
       .html(function(d) {
-        return "<div class='infotip purple'><div class='tooltip_label'>"+d.period+"</div><div class='tooltip_body'>Total bookings: "+d.booking_count+"</div></div>"
+        let tooltip = "<div class='infotip purple'><div class='tooltip_label'>"+d.period+"</div><div class='tooltip_body'>"
+        if (that.opts.percentage_mode) {
+          tooltip += (d.booking_count*100).toFixed(1)+"% of total bookings"
+        } else {
+          tooltip += "Total bookings: "+d.booking_count
+        }
+        tooltip += "</div></div>"
+        return tooltip
       });
 
     svg.call(infotip);
 
-    d3.json(this.opts.data_url, function(response, data) {
+    d3.json(that.opts.data_url, function(response, data) {
       y.domain([0, d3.max(data, function(d) { return d.booking_count })]).nice();
 
       x = d3.scaleOrdinal()
@@ -54,20 +63,20 @@ class TimeseriesChart {
         .y(function(d) { return y(d.booking_count) });
 
       // draw axes first so that they're under all other elements
-      g.append("g")
+      chart.append("g")
           .attr("class", "axis")
           .attr("transform", "translate(0,"+height+")")
           .call(xAxis)
-      g.append("g")
+      chart.append("g")
           .attr("class", "axis")
-          .call(yAxis)
+          .call(yAxis, that.opts.percentage_mode)
         .append("text")
           .attr("x", 2)
           .attr("y", y(y.ticks().pop()) + 0.5)
           .attr("dy", "0.32em")
           .attr("fill", "#000")
 
-      g.selectAll(".dot-halo")
+      chart.selectAll(".dot-halo")
         .data(data)
         .enter().append("circle")
           .attr("class", function(d, i) { return "dot-halo dot-"+i })
@@ -75,14 +84,14 @@ class TimeseriesChart {
           .attr("cy", line.y())
           .attr("r", 0)
 
-      g.append('path')
+      chart.append('path')
         .attr('class', 'line')
         .attr('fill', 'none')
         .attr('d', line(data));
 
       // draw last, to be on top of all other elements
       // needs to be on top to catch mouse events
-      g.selectAll(".dot")
+      chart.selectAll(".dot")
         .data(data)
         .enter().append("circle")
           .attr("class", "dot")
@@ -90,11 +99,11 @@ class TimeseriesChart {
           .attr("cy", line.y())
           .attr("r", 7)
           .on('mouseover', function(d, i) {
-            g.select(".dot-halo.dot-"+i).attr("r", 12)
+            chart.select(".dot-halo.dot-"+i).attr("r", 12)
             infotip.show(d, i)
           })
           .on('mouseout', function(d, i) {
-            g.selectAll(".dot-halo").attr("r", 0)
+            chart.selectAll(".dot-halo").attr("r", 0)
             infotip.hide(d, i);
           });
     });
@@ -108,10 +117,10 @@ class TimeseriesChart {
         .attr('class', 'chart_label')
     }
 
-    function yAxis(g) {
+    function yAxis(g, pct_mode) {
       g.call(
         d3.axisRight(y)
-          .ticks(null, "s")
+          .ticks(null, (pct_mode ? 'p' : 's'))
           .tickSize(width)
       )
       g.select('.domain').remove()
@@ -119,7 +128,7 @@ class TimeseriesChart {
       g.selectAll(".tick text")
         .attr('class', 'chart_label')
         .attr("x", -40)
-        .attr("dy", 4)
+        .attr("dy", 5)
     }
   }
 }

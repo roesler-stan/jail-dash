@@ -21,12 +21,12 @@ class Api::V1::BookingsController < ApplicationController
     case time_unit
     when 'this_year'
       this_year = Date.today
-      @bookings = Booking.bookings_in_time_period(this_year.beginning_of_year, this_year.end_of_year)
+      @bookings = Booking.between(this_year.beginning_of_year, this_year.end_of_year)
     when 'last_year'
       last_year = Date.today.last_year
-      @bookings = Booking.bookings_in_time_period(last_year.beginning_of_year, last_year.end_of_year)
+      @bookings = Booking.between(last_year.beginning_of_year, last_year.end_of_year)
     when 'few_years' # TODO: test purposes only - remove this before shipping
-      @bookings = Booking.bookings_in_time_period((Date.today-5.years).beginning_of_year, Date.today.end_of_year)
+      @bookings = Booking.between((Date.today-5.years).beginning_of_year, Date.today.end_of_year)
     else
       raise 'invalid time period argument'
     end

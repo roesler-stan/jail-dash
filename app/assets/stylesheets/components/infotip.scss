@@ -17,14 +17,14 @@
 
   &.purple {
     border-color: $maroon;
-    &:before { 
+    &:before {
       @include infotip_before;
       border-top-color: $maroon;
     }
   }
   &.yellow {
     border-color: $yellow;
-    &:before { 
+    &:before {
       @include infotip_before;
       border-top-color: $yellow;
     }
