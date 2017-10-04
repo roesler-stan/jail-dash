@@ -1,12 +1,12 @@
 class BookingsOverTimeByAgencyChart {
   render(targetElementSelector, opts={}) {
-    opts = Object.assign(opts, {
-      dataUrl: '/api/v1/bookings_over_time_by_agency.json'
-    });
-    this.opts = {
-      renderedHeight: opts.height || 500,
-      dataUrl: opts.dataUrl,
-    }
+    const baseUrl = "/api/v1/bookings_over_time_by_agency.json?"
+    let params = []
+    if (opts.fromDate)      { params.push("time_start="+opts.fromDate) }
+    if (opts.toDate)        { params.push("time_end="+opts.toDate) }
+    if (opts.timeInterval)  { params.push("time_intervals="+opts.timeInterval) }
+
+    const dataUrl = baseUrl + params.join('&');
 
     const targetElement = d3.select(targetElementSelector);
 
@@ -14,6 +14,7 @@ class BookingsOverTimeByAgencyChart {
     targetElement.selectAll('svg').remove()
 
     const renderedWidth = parseInt(targetElement.style('width'));
+    const renderedHeight = opts.height || 500;
 
     const chart_area_padding = { top: 20, right: 20, bottom: 20, left: 70 };
     const chart_area_margin = { top: 0, right: 200, bottom: 0, left: 0 };
@@ -21,17 +22,17 @@ class BookingsOverTimeByAgencyChart {
     const chart_area_width = renderedWidth - chart_area_margin.left - chart_area_margin.right;
     const chart_width = chart_area_width - chart_area_padding.left - chart_area_padding.right;
     const legend_width = chart_area_margin.right;
-    const height = this.opts.renderedHeight - chart_area_padding.top - chart_area_padding.bottom;
+    const height = renderedHeight - chart_area_padding.top - chart_area_padding.bottom;
 
     const chart_area = targetElement.append('svg')
       .attr('display', 'inline-block')
       .attr('preserveAspectRatio', 'none')
-      .attr('height', this.opts.renderedHeight)
+      .attr('height', renderedHeight)
       .attr('width', chart_area_width);
-    const legend_area = targetElement.append('svg')
+    const legendArea = targetElement.append('svg')
       .attr('display', 'inline-block')
       .attr('preserveAspectRatio', 'none')
-      .attr('height', this.opts.renderedHeight)
+      .attr('height', renderedHeight)
       .attr('width', chart_area_margin.right);
 
     const svgDefs = chart_area.append("defs")
@@ -57,7 +58,7 @@ class BookingsOverTimeByAgencyChart {
 
     chart_area.call(infotip);
 
-    d3.json(this.opts.dataUrl, function(response, agencies) {
+    d3.json(dataUrl, function(response, agencies) {
       y.domain([
         0,
         d3.max(agencies, function (agency) {
@@ -106,7 +107,7 @@ class BookingsOverTimeByAgencyChart {
           .attr("dy", "0.32em")
           .attr("fill", "#000")
 
-      const legendLayer = legend_area.append("g")
+      const legendLayer = legendArea.append("g")
           .attr("font-family", "sans-serif")
           .attr("font-size", 10)
           .attr("text-anchor", "start")

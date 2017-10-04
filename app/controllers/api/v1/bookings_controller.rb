@@ -25,7 +25,7 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   def over_time
-    time_intervals = bookings_over_time_params[:time_intervals] || 'quarterly'
+    time_intervals = bookings_over_time_params[:time_intervals] || 'Quarterly'
     time_start = bookings_over_time_params[:time_start]
     time_end = bookings_over_time_params[:time_end]
 
@@ -40,7 +40,7 @@ class Api::V1::BookingsController < ApplicationController
   end
 
   def over_time_by_agency
-    time_intervals = params[:time_intervals] || 'yearly'
+    time_intervals = params[:time_intervals] || 'Yearly'
     time_start = params[:time_start]
     time_end = params[:time_end]
 

@@ -13,14 +13,15 @@ class Booking < ApplicationRecord
   end
 
   def self.time_series_bookings(time_intervals, bookings:Booking.all, time_start:nil, time_end:nil, percentage_mode:false)
-    chart_time_steps = 8
 
     if time_intervals == 'Custom...'
+      chart_time_steps = 36
       beginning = Date.parse(time_start)
       ending = Date.parse(time_end)
       date_cursor = ending
       time_step_size = ((ending - beginning).to_i / chart_time_steps)
     else
+      chart_time_steps = 8
       date_cursor = Date.today
     end
 
@@ -28,7 +29,7 @@ class Booking < ApplicationRecord
 
     chart_time_steps.times do |i|
       case time_intervals
-      when 'yearly'
+      when 'Yearly'
         date_cursor = date_cursor.last_year
         from_date = date_cursor.beginning_of_year
         to_date = date_cursor.end_of_year
@@ -39,7 +40,7 @@ class Booking < ApplicationRecord
         else
           booking_count = bookings.between(from_date, to_date).count
         end
-      when 'quarterly'
+      when 'Quarterly'
         date_cursor = date_cursor.previous_financial_quarter
         from_date = date_cursor.beginning_of_financial_quarter
         to_date = date_cursor.end_of_financial_quarter
@@ -50,7 +51,7 @@ class Booking < ApplicationRecord
         else
           booking_count = bookings.between(from_date, to_date).count
         end
-      when 'monthly'
+      when 'Monthly'
         date_cursor = date_cursor.last_month
         from_date = date_cursor.beginning_of_month
         to_date = date_cursor.end_of_month
@@ -61,7 +62,7 @@ class Booking < ApplicationRecord
         else
           booking_count = bookings.between(from_date, to_date).count
         end
-      when 'weekly'
+      when 'Weekly'
         date_cursor = date_cursor.last_week
         from_date = date_cursor.beginning_of_week
         to_date = date_cursor.end_of_week
@@ -72,7 +73,7 @@ class Booking < ApplicationRecord
         else
           booking_count = bookings.between(from_date, to_date).count
         end
-      when 'custom'
+      when 'Custom...'
         previous_cursor = date_cursor
         date_cursor = date_cursor - time_step_size
         from_date = date_cursor

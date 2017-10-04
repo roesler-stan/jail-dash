@@ -17,11 +17,11 @@ $(document).ready(function () {
 
 function initialPageRender() {
 
-  // renderBookingsByAgency();
+  renderBookingsByAgency();
 
   renderBookingsOverTime();
 
-  // renderBookingsOverTimeByAgency();
+  renderBookingsOverTimeByAgency();
 }
 
 function renderBookingsByAgency(pickerArgs) {
@@ -30,16 +30,9 @@ function renderBookingsByAgency(pickerArgs) {
 
   const defaultStart = $chartNode.data('default-time-start')
   const defaultEnd = $chartNode.data('default-time-end')
+  const defaultTimeInterval = $chartNode.data('default-time-interval')
 
-  let opts = {}
-  if (pickerArgs) {
-    opts.timePeriod = pickerArgs.chosenLabel
-    opts.fromDate = pickerArgs.startDate.format('YYYYMMDD')
-    opts.toDate = pickerArgs.endDate.format('YYYYMMDD')
-  } else {
-    opts.fromDate = defaultStart
-    opts.toDate = defaultEnd
-  }
+  const opts = setOptions($chartNode, pickerArgs);
   new BookingsByAgencyChart().render(chartSelector, opts);
 }
 
@@ -49,16 +42,9 @@ function renderBookingsOverTime(pickerArgs) {
 
   const defaultStart = $chartNode.data('default-time-start')
   const defaultEnd = $chartNode.data('default-time-end')
+  const defaultTimeInterval = $chartNode.data('default-time-interval')
 
-  let opts = {}
-  if (pickerArgs) {
-    opts.timePeriod = pickerArgs.chosenLabel
-    opts.fromDate = pickerArgs.startDate.format('YYYYMMDD')
-    opts.toDate = pickerArgs.endDate.format('YYYYMMDD')
-  } else {
-    opts.fromDate = defaultStart
-    opts.toDate = defaultEnd
-  }
+  const opts = setOptions($chartNode, pickerArgs);
   new BookingsOverTimeChart().render(chartSelector, opts)
 }
 
@@ -66,17 +52,26 @@ function renderBookingsOverTimeByAgency(pickerArgs) {
   const chartSelector = ".chart[data-chartname='bookings-over-time-by-agency']";
   const $chartNode = $(chartSelector);
 
+  const opts = setOptions($chartNode, pickerArgs);
+
+  new BookingsOverTimeByAgencyChart().render(chartSelector, opts)
+}
+
+function setOptions($chartNode, pickerArgs) {
   const defaultStart = $chartNode.data('default-time-start')
   const defaultEnd = $chartNode.data('default-time-end')
+  const defaultTimeInterval = $chartNode.data('default-time-interval')
 
   let opts = {}
   if (pickerArgs) {
-    opts.timePeriod = pickerArgs.chosenLabel
     opts.fromDate = pickerArgs.startDate.format('YYYYMMDD')
     opts.toDate = pickerArgs.endDate.format('YYYYMMDD')
+    opts.timeInterval = pickerArgs.chosenLabel
   } else {
     opts.fromDate = defaultStart
     opts.toDate = defaultEnd
+    opts.timeInterval = defaultTimeInterval
   }
-  new BookingsOverTimeByAgencyChart().render(chartSelector, opts)
+
+  return opts;
 }
