@@ -1,5 +1,5 @@
 .adjudication {
-  #adjudication-by-court, #adjudication-by-judge {
+  .chart {
     height: 500px;
     width: 100%;
 
@@ -7,20 +7,18 @@
       stroke: none;
     }
 
-    .row {
-      &.gradient-purple {
-        fill: url(#gradient-purple);
+    .gradient-purple {
+      fill: url(#gradient-purple);
 
-        &:hover {
-          fill: url(#gradient-purple-hover);
-        }
+      &:hover {
+        fill: url(#gradient-purple-hover);
       }
-      &.gradient-yellow {
-        fill: url(#gradient-yellow);
+    }
+    .gradient-yellow {
+      fill: url(#gradient-yellow);
 
-        &:hover {
-          fill: url(#gradient-yellow-hover);
-        }
+      &:hover {
+        fill: url(#gradient-yellow-hover);
       }
     }
   }

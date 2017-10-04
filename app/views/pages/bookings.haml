@@ -6,7 +6,7 @@
       .kpi-number= @bookings_last_quarter
       .kpi_label bookings last quarter
 
-%section.chart
+%section.chart-section
   .chart_title Percentage of total jail bookings by agency compared to size of municipality served as a percentage of total population
   .chart_subtitle 5 years
   - time_start = Date.today.previous_financial_quarter.beginning_of_quarter.strftime('%Y%m%d')
@@ -16,7 +16,7 @@
       %span.dropdown_selection
       .chevron
 
-%section.chart
+%section.chart-section
   .chart_title Total number of jail bookings over time
   .chart_subtitle From Q2 2015 to Q2 2017
   - time_start = (Date.today-2.years).beginning_of_quarter.strftime('%Y%m%d')
@@ -26,7 +26,7 @@
       %span.dropdown_selection
       .chevron
 
-%section.chart
+%section.chart-section
   .chart_title Jail bookings over time, by agency
   .chart_subtitle Q2 2015 to Q2 2017
   - time_start = (Date.today-2.years).beginning_of_quarter.strftime('%Y%m%d')

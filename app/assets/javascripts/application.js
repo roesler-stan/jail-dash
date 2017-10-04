@@ -19,6 +19,7 @@
 //= require datepicker-init
 
 //= require pages/bookings
+//= require pages/adjudication
 //= require pages/population
 
 //= require charts/timeseries

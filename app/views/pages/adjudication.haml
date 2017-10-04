@@ -9,22 +9,22 @@
       .kpi #{@adjudication_median} days
       .kpi_label median length of adjudication
 
-%section.chart
+%section.chart-section
   .chart_title Average length of adjudication process by court
   .chart_subtitle Last 3 years
-  #adjudication-by-court
-    :javascript
-      $(document).ready(function () {
-        const adjudicationByCourt = new AdjudicationByCourtChart();
-        adjudicationByCourt.render("#adjudication-by-court", {color: 'yellow'});
-      });
+  - time_start = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
+  - time_end = Date.today.strftime('%Y%m%d')
+  .chart{ 'data-chartname': 'adjudication-by-court', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
+    .datepicker-anchor.pull-right
+      %span.dropdown_selection
+      .chevron
 
-%section.chart
+%section.chart-section
   .chart_title Average length of adjudication process by judge
   .chart_subtitle Last 3 years
-  #adjudication-by-judge
-    :javascript
-      $(document).ready(function () {
-        const adjudicationByJudge = new AdjudicationByJudgeChart();
-        adjudicationByJudge.render("#adjudication-by-judge", {color: 'purple'});
-      });
+  - time_start = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
+  - time_end = Date.today.strftime('%Y%m%d')
+  .chart{ 'data-chartname': 'adjudication-by-judge', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
+    .datepicker-anchor.pull-right
+      %span.dropdown_selection
+      .chevron

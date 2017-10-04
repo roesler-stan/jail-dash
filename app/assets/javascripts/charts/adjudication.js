@@ -1,25 +1,21 @@
 class AdjudicationChart {
   base_render(targetElementSelector, opts) {
-    this.opts = {
-      renderedHeight: opts.height || 500,
-      dataUrl: opts.dataUrl,
-    }
-
     const targetElement = d3.select(targetElementSelector);
 
     // clean up previous render of chart, if present
     targetElement.selectAll('svg').remove()
 
     const renderedWidth = parseInt(targetElement.style('width'));
+    const renderedHeight = opts.height || 500;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 150 };
 
     const width = renderedWidth - margin.left - margin.right;
-    const height = this.opts.renderedHeight - margin.top - margin.bottom;
+    const height = renderedHeight - margin.top - margin.bottom;
 
     const svg = targetElement.append('svg')
       .attr('preserveAspectRatio', 'none')
-      .attr('height', this.opts.renderedHeight)
+      .attr('height', renderedHeight)
       .attr('width', renderedWidth);
 
     const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -70,7 +66,7 @@ class AdjudicationChart {
 
     svg.call(infotip);
 
-    d3.json(this.opts.dataUrl, function(response, data) {
+    d3.json(opts.dataUrl, function(response, data) {
       y.domain(data.map(function(d) { return d.name }));
       x.domain([0, d3.max(data, function(d) { return d.avg_duration })]).nice();
 
