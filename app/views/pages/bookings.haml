@@ -11,7 +11,12 @@
   .chart_subtitle 5 years
   - time_start = Date.today.previous_financial_quarter.beginning_of_quarter.strftime('%Y%m%d')
   - time_end = Date.today.previous_financial_quarter.end_of_quarter.strftime('%Y%m%d')
-  .chart{ 'data-chartname': 'bookings-by-agency', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
+  .chart{ 'data-chartname': 'bookings-by-agency',
+          'data-adjustable-time': true,
+          'data-default-time-start': time_start,
+          'data-default-time-end': time_end,
+          'data-default-time-interval': 'Last quarter',
+          'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
     .datepicker-anchor.pull-right
       %span.dropdown_selection
       .chevron
@@ -21,7 +26,12 @@
   .chart_subtitle From Q2 2015 to Q2 2017
   - time_start = (Date.today-2.years).beginning_of_quarter.strftime('%Y%m%d')
   - time_end = Date.today.previous_financial_quarter.end_of_quarter.strftime('%Y%m%d')
-  .chart{ 'data-chartname': 'bookings-over-time', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-default-time-interval': 'Quarterly', 'data-ranges': 'Weekly,Monthly,Quarterly,Yearly' }
+  .chart{ 'data-chartname': 'bookings-over-time',
+          'data-adjustable-time': true,
+          'data-default-time-start': time_start,
+          'data-default-time-end': time_end,
+          'data-default-time-interval': 'Quarterly',
+          'data-ranges': 'Weekly,Monthly,Quarterly,Yearly' }
     .datepicker-anchor.pull-right
       %span.dropdown_selection
       .chevron
@@ -31,7 +41,12 @@
   .chart_subtitle Q2 2015 to Q2 2017
   - time_start = (Date.today-2.years).beginning_of_quarter.strftime('%Y%m%d')
   - time_end = Date.today.previous_financial_quarter.end_of_quarter.strftime('%Y%m%d')
-  .chart{ 'data-chartname': 'bookings-over-time-by-agency', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-default-time-interval': 'Yearly', 'data-ranges': 'Weekly,Monthly,Quarterly,Yearly' }
+  .chart{ 'data-chartname': 'bookings-over-time-by-agency',
+          'data-adjustable-time': true,
+          'data-default-time-start': time_start,
+          'data-default-time-end': time_end,
+          'data-default-time-interval': 'Yearly',
+          'data-ranges': 'Weekly,Monthly,Quarterly,Yearly' }
     .datepicker-anchor.pull-right
       %span.dropdown_selection
       .chevron
