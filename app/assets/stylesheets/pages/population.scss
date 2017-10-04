@@ -41,9 +41,7 @@
     display: inline-block;
   }
 
-  #condition-of-probation,
-  #justice-court-commitments,
-  #held-on-fines {
+  .chart-area {
     .line {
       stroke: #C93163;
       stroke-width: 3;
@@ -54,5 +52,9 @@
     .dot-halo {
       fill: #F1CBD8;
     }
+  }
+
+  .chart_label { // override base style; easier than reassigning class in d3
+    @include small_chart_label;
   }
 }

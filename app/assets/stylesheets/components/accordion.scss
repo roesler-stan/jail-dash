@@ -31,15 +31,14 @@
 
     &:nth-child(odd) {
       background-color: $accordion-menu-background;
+      .submenu {
+        background-color: $accordion-menu-sub-background;
+      }
     }
   }
 
   .submenu {
     display: none;
-
-    &:nth-child(odd) {
-      background-color: $accordion-menu-sub-background;
-    }
   }
 
   .chevron {
