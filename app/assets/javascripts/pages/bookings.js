@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
   if ($('body').hasClass('bookings')) {
-    initialPageRender();
+    initialBookingsPageRender();
   }
 
   $('.datepicker-anchor').on('apply.daterangepicker', function (ev, picker) {
@@ -17,7 +17,7 @@ $(document).ready(function () {
 
 });
 
-function initialPageRender() {
+function initialBookingsPageRender() {
 
   renderBookingsByAgency();
 

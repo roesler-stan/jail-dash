@@ -1,6 +1,6 @@
 = content_for(:page_name, 'adjudication')
 .header
-  %h2.section_header Length of Adjudication Process
+  .section_header Length of Adjudication Process
   .header-kpis
     .kpi-container
       .kpi #{@adjudication_average} days
@@ -14,7 +14,11 @@
   .chart_subtitle Last 3 years
   - time_start = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
   - time_end = Date.today.strftime('%Y%m%d')
-  .chart{ 'data-chartname': 'adjudication-by-court', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
+  .chart{ 'data-chartname': 'adjudication-by-court',
+          'data-adjustable-time': true,
+          'data-default-time-start': time_start,
+          'data-default-time-end': time_end,
+          'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
     .datepicker-anchor.pull-right
       %span.dropdown_selection
       .chevron
@@ -24,7 +28,11 @@
   .chart_subtitle Last 3 years
   - time_start = (Date.today-3.years).beginning_of_year.strftime('%Y%m%d')
   - time_end = Date.today.strftime('%Y%m%d')
-  .chart{ 'data-chartname': 'adjudication-by-judge', 'data-adjustable-time': true, 'data-default-time-start': time_start, 'data-default-time-end': time_end, 'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
+  .chart{ 'data-chartname': 'adjudication-by-judge',
+          'data-adjustable-time': true,
+          'data-default-time-start': time_start,
+          'data-default-time-end': time_end,
+          'data-ranges': "This month,Last month,This quarter,Last quarter,This year,Last year" }
     .datepicker-anchor.pull-right
       %span.dropdown_selection
       .chevron

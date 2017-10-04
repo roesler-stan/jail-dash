@@ -21,7 +21,7 @@
   }
 }
 
-.page-title {
+.section_header {
   display: inline-block;
 }
 
@@ -30,6 +30,7 @@
 
   .kpi-container {
     display: inline-block;
+    margin-right: 10px;
 
     .kpi {
       color: $action-color;
@@ -38,4 +39,9 @@
       color: $base-font-color;
     }
   }
+}
+
+// borrowed from Bootstrap 3, since the datepicker module refers to it
+.pull-right {
+  float: right;
 }
