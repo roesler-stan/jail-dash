@@ -1,6 +1,8 @@
 $(document).ready(function () {
 
-  initialPageRender();
+  if ($('body').hasClass('bookings')) {
+    initialPageRender();
+  }
 
   $('.datepicker-anchor').on('apply.daterangepicker', function (ev, picker) {
     const chartName = $(ev.target).parent().data('chartname')

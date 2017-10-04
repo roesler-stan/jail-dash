@@ -1,7 +1,7 @@
 class Api::V1::PopulationController < ApplicationController
 
   def justice_court_commitments
-    time_intervals = params[:time_intervals] || 'yearly'
+    time_intervals = 'Yearly'
 
     bookings = Booking.time_series_bookings(
       time_intervals,
@@ -17,7 +17,7 @@ class Api::V1::PopulationController < ApplicationController
   end
 
   def held_on_fines
-    time_intervals = params[:time_intervals] || 'yearly'
+    time_intervals = 'Yearly'
 
     bookings = Booking.time_series_bookings(
       time_intervals,
@@ -30,7 +30,7 @@ class Api::V1::PopulationController < ApplicationController
 
   def condition_of_probation
     # billing_communities.extdesc = 'state probationary senctence inmates'
-    time_intervals = params[:time_intervals] || 'yearly'
+    time_intervals = 'Yearly'
 
     bookings = Booking.time_series_bookings(
       time_intervals,

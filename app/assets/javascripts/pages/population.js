@@ -9,3 +9,40 @@ $(document).ready(function () {
     }
   });
 });
+
+$(document).on('drawchart-condition-of-probation', function () {
+  renderConditionOfProbation();
+});
+$(document).on('drawchart-justice-court-commitments', function () {
+  renderJusticeCourtCommitments();
+});
+$(document).on('drawchart-held-on-fines', function () {
+  renderHeldOnFines();
+});
+
+function renderConditionOfProbation() {
+  const chartSelector = "#condition-of-probation";
+
+  const opts = {
+    height: 300,
+  }
+  new ConditionOfProbationChart().render(chartSelector, opts);
+}
+
+function renderJusticeCourtCommitments() {
+  const chartSelector = "#justice-court-commitments";
+
+  const opts = {
+    height: 300,
+  }
+  new JusticeCourtCommitmentsChart().render(chartSelector, opts);
+}
+
+function renderHeldOnFines() {
+  const chartSelector = "#held-on-fines";
+
+  const opts = {
+    height: 300,
+  }
+  new HeldOnFinesChart().render(chartSelector, opts);
+}

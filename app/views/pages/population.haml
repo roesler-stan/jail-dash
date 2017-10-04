@@ -26,13 +26,7 @@
           .chart-area
             %span Yearly Trend
             #condition-of-probation
-              :javascript
-                $(document).on('drawchart-condition-of-probation', function () {
-                  window.conditionOfProbation = new ConditionOfProbationChart();
-                  window.conditionOfProbation.render("#condition-of-probation", {
-                    height: 300
-                  });
-                });
+
           .stats-sidebar
             %span Current Stats
             .stat
@@ -64,13 +58,7 @@
           .chart-area
             %span Yearly Trend
             #justice-court-commitments
-              :javascript
-                $(document).on('drawchart-justice-court-commitments', function () {
-                  window.justiceCourtCommitments = new JusticeCourtCommitmentsChart();
-                  window.justiceCourtCommitments.render("#justice-court-commitments", {
-                    height: 300
-                  });
-                });
+
           .stats-sidebar
             %span Current Stats
             .stat
@@ -102,13 +90,7 @@
           .chart-area
             %span Yearly Trend
             #held-on-fines
-              :javascript
-                $(document).on('drawchart-held-on-fines', function () {
-                  window.heldOnFines = new HeldOnFinesChart();
-                  window.heldOnFines.render("#held-on-fines", {
-                    height: 300
-                  });
-                });
+
           .stats-sidebar
             %span Current Stats
             .stat
