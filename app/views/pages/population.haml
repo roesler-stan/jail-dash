@@ -56,7 +56,7 @@
       .submenu
         .population-info-section
           .chart-area
-            %span.small_chart_title Yearly Trend
+            %span.small_chart_title Quarterly Trend
             #justice-court-commitments
 
           .stats-sidebar
@@ -76,6 +76,19 @@
               .kpi-container
                 .kpi ??? days
                 .panel_kpi_label avg length of sentence
+
+          .stats-table
+            %table
+              %thead
+                %th.small_chart_title Justice Court Municipality
+                %th.small_chart_title % of Justice Court Commitments
+                %th.small_chart_title # of Jail Beds
+              %tbody
+                - @justice_court_stats_by_court.each do |court|
+                  %tr
+                    %td.table_body_text= court["name"]
+                    %td.table_body_text= court["bookings_count"]
+                    %td.table_body_text #{court["bookings_pct"].round(1)}%
     %li
       %span Held on Fines Under $500
       .row

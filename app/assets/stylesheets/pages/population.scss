@@ -8,6 +8,30 @@
     .stats-sidebar {
       @include grid-column(3);
     }
+
+    .stats-table {
+      clear: both;
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        padding-bottom: 10px;
+      }
+
+      tbody {
+
+        td {
+          padding: 5px;
+        }
+
+        tr:nth-child(odd) {
+          background-color: $shade-gray;
+        }
+      }
+    }
   }
 
   .metric-bar {

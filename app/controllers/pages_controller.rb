@@ -30,18 +30,73 @@ class PagesController < ApplicationController
       .where("bond_masters.bondtype = 'FIN' AND bond_masters.original_bond_amt < 500")
       .count
     @held_on_fines_pct = ((@held_on_fines_pop.to_f / @total_jail_population) * 100).round(0)
+
     @condition_of_probation_pop = unreleased_bookings.joins(:cases)
         .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
         .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
         .count
     @condition_of_probation_pct = ((@condition_of_probation_pop.to_f / @total_jail_population) * 100).round(0)
-    @justice_court_pop = unreleased_bookings.joins(:cases)
-      .joins("INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code")
-      .where("hearing_court_names.extdesc LIKE '%JUSTICE COURT%'")
-      .where("NOT EXISTS(SELECT 1 FROM hearing_court_names WHERE hearing_court_names.slc_id = case_masters.jurisdiction_code AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT%')")
-      .distinct
-      .count
+
+    @justice_court_pop = ActiveRecord::Base.connection.exec_query(
+      <<-SQL
+        WITH non_justice_bookings AS (
+          SELECT
+            bookings.*
+          FROM bookings
+          INNER JOIN case_masters ON case_masters.sysid = bookings.sysid
+          INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
+          WHERE hearing_court_names.slc_id = case_masters.jurisdiction_code
+            AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT'
+        )
+        SELECT
+          COUNT(bookings.sysid) AS current_justice_bookings
+        FROM bookings
+        LEFT OUTER JOIN non_justice_bookings ON non_justice_bookings.sysid = bookings.sysid
+        WHERE non_justice_bookings.sysid IS NULL
+          AND bookings.reldate < '1902-01-01 00:00:00'
+      SQL
+    ).first['current_justice_bookings']
     @justice_court_pct = ((@justice_court_pop.to_f / @total_jail_population) * 100).round(0)
+    @justice_court_stats_by_court = ActiveRecord::Base.connection.exec_query(
+      <<-SQL
+        WITH non_justice_bookings AS (
+          SELECT bookings.*
+          FROM bookings
+          INNER JOIN case_masters ON case_masters.sysid = bookings.sysid
+          INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
+          WHERE
+              hearing_court_names.slc_id = case_masters.jurisdiction_code
+              AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT'
+        ),
+        unreleased_justice_court_bookings AS (
+          SELECT bookings.*
+          FROM bookings
+          LEFT OUTER JOIN non_justice_bookings ON non_justice_bookings.sysid = bookings.sysid
+          WHERE non_justice_bookings.sysid IS NULL
+            AND bookings.reldate < '1902-01-01 00:00:00'
+        ),
+        total_bookings AS (
+            SELECT
+                hearing_court_names.extdesc AS name,
+                count(unreleased_justice_court_bookings.sysid) AS bookings_count
+            FROM unreleased_justice_court_bookings
+            INNER JOIN case_masters ON case_masters.sysid = unreleased_justice_court_bookings.sysid
+            INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
+            GROUP BY hearing_court_names.extdesc
+        )
+        SELECT
+            total_bookings.name as name,
+            total_bookings.bookings_count,
+            cast(
+                total_bookings.bookings_count as float
+            ) / (
+                SELECT COUNT(*) FROM unreleased_justice_court_bookings)*100 as bookings_pct
+        from total_bookings
+        group by
+            total_bookings.name,
+            total_bookings.bookings_count
+      SQL
+    )
   end
 
 end

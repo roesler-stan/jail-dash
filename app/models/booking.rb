@@ -35,44 +35,28 @@ class Booking < ApplicationRecord
         to_date = date_cursor.end_of_year
 
         period_name = date_cursor.beginning_of_year.year
-        if percentage_mode
-          booking_count = bookings.between(from_date, to_date).count / Booking.between(from_date, to_date).count.to_f
-        else
-          booking_count = bookings.between(from_date, to_date).count
-        end
+        booking_count = get_booking_count(bookings, from_date, to_date, percentage_mode)
       when 'Quarterly'
         date_cursor = date_cursor.previous_financial_quarter
         from_date = date_cursor.beginning_of_financial_quarter
         to_date = date_cursor.end_of_financial_quarter
 
         period_name = date_cursor.financial_quarter
-        if percentage_mode
-          booking_count = bookings.between(from_date, to_date).count / Booking.between(from_date, to_date).count.to_f
-        else
-          booking_count = bookings.between(from_date, to_date).count
-        end
+        booking_count = get_booking_count(bookings, from_date, to_date, percentage_mode)
       when 'Monthly'
         date_cursor = date_cursor.last_month
         from_date = date_cursor.beginning_of_month
         to_date = date_cursor.end_of_month
 
         period_name = date_cursor.beginning_of_month
-        if percentage_mode
-          booking_count = bookings.between(from_date, to_date).count / Booking.between(from_date, to_date).count.to_f
-        else
-          booking_count = bookings.between(from_date, to_date).count
-        end
+        booking_count = get_booking_count(bookings, from_date, to_date, percentage_mode)
       when 'Weekly'
         date_cursor = date_cursor.last_week
         from_date = date_cursor.beginning_of_week
         to_date = date_cursor.end_of_week
 
         period_name = date_cursor.beginning_of_week
-        if percentage_mode
-          booking_count = bookings.between(from_date, to_date).count / Booking.between(from_date, to_date).count.to_f
-        else
-          booking_count = bookings.between(from_date, to_date).count
-        end
+        booking_count = get_booking_count(bookings, from_date, to_date, percentage_mode)
       when 'Custom...'
         previous_cursor = date_cursor
         date_cursor = date_cursor - time_step_size
@@ -92,5 +76,16 @@ class Booking < ApplicationRecord
     end
 
     time_periods
+  end
+
+
+  private
+
+  def self.get_booking_count(bookings, from_date, to_date, percentage_mode)
+    if percentage_mode
+      return bookings.between(from_date, to_date).count / Booking.between(from_date, to_date).count.to_f
+    else
+      return bookings.between(from_date, to_date).count
+    end
   end
 end
