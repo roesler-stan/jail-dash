@@ -32,10 +32,7 @@ function adjudicationByCourt(pickerArgs) {
   const defaultTimeInterval = $chartNode.data('default-time-interval')
 
   const opts = setOptions($chartNode, pickerArgs);
-  new AdjudicationByCourtChart().render(
-    chartSelector,
-    Object.assign(opts, { color: 'purple' }),
-  );
+  new AdjudicationByCourtChart().render(chartSelector, Object.assign(opts, { color: 'purple' }));
 }
 
 function adjudicationByJudge(pickerArgs) {
@@ -47,10 +44,7 @@ function adjudicationByJudge(pickerArgs) {
   const defaultTimeInterval = $chartNode.data('default-time-interval')
 
   const opts = setOptions($chartNode, pickerArgs);
-  new AdjudicationByJudgeChart().render(
-    chartSelector,
-    Object.assign(opts, { color: 'yellow' }),
-  );
+  new AdjudicationByJudgeChart().render(chartSelector, Object.assign(opts, { color: 'yellow' }));
 }
 
 function setOptions($chartNode, pickerArgs) {
