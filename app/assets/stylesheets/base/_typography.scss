@@ -53,11 +53,10 @@ hr {
 .nav-tabs .tab {
   font-family: Arvo;
   font-size: 18px;
-  color: #FFFFFF;
 
-  &.active {
-    color: $maroon;
-  }
+  a { color: #FFFFFF; }
+  &.active a { color: $fuchsia; }
+
 }
 
 .kpi {
