@@ -41,17 +41,18 @@ class PagesController < ApplicationController
       <<-SQL
         WITH non_justice_bookings AS (
           SELECT
-            bookings.*
+            DISTINCT(bookings.sysid)
           FROM bookings
           INNER JOIN case_masters ON case_masters.sysid = bookings.sysid
           INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
-          WHERE hearing_court_names.slc_id = case_masters.jurisdiction_code
-            AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT'
+          WHERE hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT'
         )
         SELECT
-          COUNT(bookings.sysid) AS current_justice_bookings
+          COUNT(DISTINCT(bookings.sysid)) AS current_justice_bookings
         FROM bookings
         LEFT OUTER JOIN non_justice_bookings ON non_justice_bookings.sysid = bookings.sysid
+        INNER JOIN case_masters ON case_masters.sysid = bookings.sysid
+        INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
         WHERE non_justice_bookings.sysid IS NULL
           AND bookings.reldate < '1902-01-01 00:00:00'
       SQL
@@ -64,9 +65,7 @@ class PagesController < ApplicationController
           FROM bookings
           INNER JOIN case_masters ON case_masters.sysid = bookings.sysid
           INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
-          WHERE
-              hearing_court_names.slc_id = case_masters.jurisdiction_code
-              AND hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT'
+          WHERE hearing_court_names.extdesc NOT LIKE '%JUSTICE COURT'
         ),
         unreleased_justice_court_bookings AS (
           SELECT bookings.*
@@ -91,8 +90,8 @@ class PagesController < ApplicationController
                 total_bookings.bookings_count as float
             ) / (
                 SELECT COUNT(*) FROM unreleased_justice_court_bookings)*100 as bookings_pct
-        from total_bookings
-        group by
+        FROM total_bookings
+        GROUP BY
             total_bookings.name,
             total_bookings.bookings_count
       SQL

@@ -87,8 +87,8 @@
                 - @justice_court_stats_by_court.each do |court|
                   %tr
                     %td.table_body_text= court["name"]
-                    %td.table_body_text= court["bookings_count"]
                     %td.table_body_text #{court["bookings_pct"].round(1)}%
+                    %td.table_body_text= court["bookings_count"]
     %li
       %span Held on Fines Under $500
       .row
