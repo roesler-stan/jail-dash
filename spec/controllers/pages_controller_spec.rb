@@ -69,8 +69,18 @@ describe PagesController do
         expect(assigns(:inhouse_jail_population)).to eq(2)
       end
 
-      xit 'should return appropriate held_on_fines_pop' do
+      it 'should return appropriate held_on_fines_pop' do
+        released_booking = FactoryGirl.create(:booking, reldate: Date.yesterday)
+        low_fine_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:bond_master, sysid: low_fine_booking.sysid, type_id: 'FIN', original_bond_amt: 100)
+        high_fine_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:bond_master, sysid: high_fine_booking.sysid, type_id: 'FIN', original_bond_amt: 10_000)
+        other_bond_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:bond_master, sysid: other_bond_booking.sysid, type_id: 'OTHER', original_bond_amt: 100)
+
         get :population
+
+        expect(assigns(:held_on_fines_pop)).to eq(1)
       end
 
       xit 'should return appropriate held_on_fines_pct' do
@@ -93,8 +103,40 @@ describe PagesController do
         get :population
       end
 
-      xit 'should return appropriate justice_court_pop' do
+      it 'should return appropriate justice_court_pop' do
+        released_booking = FactoryGirl.create(:booking, reldate: Date.yesterday)
+        non_justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:case_master,
+          booking: non_justice_booking,
+          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'NORMAL COURT'),
+        )
+        justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:case_master,
+          booking: justice_booking,
+          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
+        )
+        multi_court_non_justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:case_master,
+          booking: multi_court_non_justice_booking,
+          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
+        )
+        FactoryGirl.create(:case_master,
+          booking: multi_court_non_justice_booking,
+          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'OTHER COURT'),
+        )
+        multi_court_justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
+        FactoryGirl.create(:case_master,
+          booking: multi_court_justice_booking,
+          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
+        )
+        FactoryGirl.create(:case_master,
+          booking: multi_court_justice_booking,
+          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
+        )
+
         get :population
+
+        expect(assigns(:justice_court_pop)).to eq(2)
       end
 
       xit 'should return appropriate justice_court_pct' do
