@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170927205619) do
+ActiveRecord::Schema.define(version: 20171017170902) do
 
   create_table "agency_populations", force: :cascade do |t|
     t.string "agency_id", null: false
@@ -33,13 +33,13 @@ ActiveRecord::Schema.define(version: 20170927205619) do
   create_table "bond_masters", force: :cascade do |t|
     t.bigint "bondid", null: false
     t.bigint "sysid"
-    t.string "bondtype"
     t.bigint "case_pk"
     t.integer "original_bond_amt"
+    t.string "type_id"
     t.index ["bondid"], name: "index_bond_masters_on_bondid", unique: true
-    t.index ["bondtype"], name: "index_bond_masters_on_bondtype"
     t.index ["case_pk"], name: "index_bond_masters_on_case_pk"
     t.index ["sysid"], name: "index_bond_masters_on_sysid"
+    t.index ["type_id"], name: "index_bond_masters_on_type_id"
   end
 
   create_table "bookings", force: :cascade do |t|
@@ -52,6 +52,12 @@ ActiveRecord::Schema.define(version: 20170927205619) do
     t.index ["comdate"], name: "index_bookings_on_comdate"
     t.index ["reldate"], name: "index_bookings_on_reldate"
     t.index ["sysid"], name: "index_bookings_on_sysid", unique: true
+  end
+
+  create_table "case_charge_sentences", force: :cascade do |t|
+    t.integer "max_days"
+    t.bigint "charge_pk"
+    t.index ["charge_pk"], name: "index_case_charge_sentences_on_charge_pk"
   end
 
   create_table "case_charges", force: :cascade do |t|

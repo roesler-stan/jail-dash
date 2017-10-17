@@ -55,7 +55,7 @@ class Api::V1::PopulationController < ApplicationController
 
     bookings = Booking.time_series_bookings(
       time_intervals,
-      bookings: Booking.joins(:bonds).where("bond_masters.bondtype = 'FIN' AND bond_masters.original_bond_amt < 500"),
+      bookings: Booking.joins(:bonds).where("bond_masters.type_id = 'FIN' AND bond_masters.original_bond_amt < 500"),
       percentage_mode: true,
     )
 
