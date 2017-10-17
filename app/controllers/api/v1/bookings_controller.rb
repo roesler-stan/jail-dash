@@ -4,6 +4,9 @@ class Api::V1::BookingsController < ApplicationController
     time_start = params[:time_start] || Date.today.previous_financial_quarter.beginning_of_quarter
     time_end = params[:time_end] || Date.today.previous_financial_quarter.end_of_quarter
 
+    sanitized_time_start = Date.parse(time_start).strftime('%Y-%m-%d')
+    sanitized_time_end = Date.parse(time_end).strftime('%Y-%m-%d')
+
     # TODO: query for demo purposes only - replace with real one for final release
     @agencies = ActiveRecord::Base.connection.exec_query(
       <<-SQL
@@ -13,7 +16,7 @@ class Api::V1::BookingsController < ApplicationController
           COUNT(bookings.sysid) AS "booking_count"
         FROM arrests
         INNER JOIN bookings on bookings.arrest = arrests.slc_id
-        WHERE bookings.comdate > '2010-01-01'
+        WHERE bookings.comdate > '#{sanitized_time_start}'
         GROUP BY arrests.slc_id, arrests.extdesc
         ORDER BY COUNT(bookings.sysid) DESC;
       SQL
@@ -21,7 +24,7 @@ class Api::V1::BookingsController < ApplicationController
 
     @bookings = Booking.between(time_start, time_end)
 
-    # bookings_by_agency.json.jbuilder
+    # by_agency.json.jbuilder
   end
 
   def over_time
