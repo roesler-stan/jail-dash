@@ -22,20 +22,28 @@ class PagesController < ApplicationController
     unreleased_bookings = Booking.where("reldate < '1902-01-01 00:00:00'")
 
     @total_jail_population = unreleased_bookings.count
-    @inhouse_jail_population = unreleased_bookings.joins(:cases)
-      .where(jlocat: 'MAIN')
+    @inhouse_jail_population = unreleased_bookings.where(jlocat: 'MAIN')
       .distinct
       .count
-    @held_on_fines_pop = unreleased_bookings.joins(:bonds)
-      .where("bond_masters.type_id = 'FIN' AND bond_masters.original_bond_amt < 500")
-      .count
-    @held_on_fines_pct = ((@held_on_fines_pop.to_f / @total_jail_population) * 100).round(0)
 
-    @condition_of_probation_pop = unreleased_bookings.joins(:cases)
+    held_on_fines = unreleased_bookings.joins(:bonds)
+      .where("bond_masters.type_id = 'FIN' AND bond_masters.original_bond_amt < 500")
+    @held_on_fines_pop = 0
+    @held_on_fines_pct = 0
+    if held_on_fines
+      @held_on_fines_pop = held_on_fines.count
+      @held_on_fines_pct = ((@held_on_fines_pop.to_f / @total_jail_population) * 100).round(0)
+    end
+
+    condition_of_probation = unreleased_bookings.joins(:cases)
         .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
         .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
-        .count
-    @condition_of_probation_pct = ((@condition_of_probation_pop.to_f / @total_jail_population) * 100).round(0)
+    @condition_of_probation_pop = 0
+    @condition_of_probation_pct = 0
+    if condition_of_probation
+      @condition_of_probation_pop = condition_of_probation.count
+      @condition_of_probation_pct = ((@condition_of_probation_pop.to_f / @total_jail_population) * 100).round(0)
+    end
 
     @justice_court_pop = ActiveRecord::Base.connection.exec_query(
       <<-SQL

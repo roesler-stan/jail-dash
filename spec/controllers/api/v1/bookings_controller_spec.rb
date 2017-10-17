@@ -53,5 +53,19 @@ describe Api::V1::BookingsController do
         end
       end
     end
+
+    context 'when not logged in' do
+      it 'should respond with a 401' do
+        get :by_agency
+
+        expect(response.status).to be(401)
+      end
+    end
+  end
+
+  xdescribe '#over_time' do
+  end
+
+  xdescribe '#over_time_by_agency' do
   end
 end
