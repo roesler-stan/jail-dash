@@ -1,5 +1,6 @@
-class PagesController < ApplicationController
+# frozen_string_literal: true
 
+class PagesController < ApplicationController
   def bookings
     previous_quarter = Date.today.previous_financial_quarter
     @bookings_last_quarter = Booking.where("comdate > ? AND comdate < ?", previous_quarter.beginning_of_financial_quarter, previous_quarter.end_of_financial_quarter).count
@@ -7,7 +8,55 @@ class PagesController < ApplicationController
 
   def adjudication
     @adjudication_average = Booking.average("datediff(dd, reldate, comdate)").round
-    @adjudication_median = ActiveRecord::Base.connection.exec_query(
+    @adjudication_median = adjudication_median_query
+  end
+
+  def population
+    unreleased_bookings = Booking.where("reldate < '1902-01-01 00:00:00'")
+
+    @total_jail_population = unreleased_bookings.count
+    @inhouse_jail_population = unreleased_bookings.where(jlocat: 'MAIN')
+                                                  .distinct
+                                                  .count
+
+    # HELD ON FINES
+    held_on_fines = unreleased_bookings.joins(:bonds)
+      .where("bond_masters.type_id = 'FIN' AND bond_masters.original_bond_amt < 500")
+    @held_on_fines_pop = held_on_fines.count
+    @held_on_fines_pct = 0
+    @held_on_fines_avg_sentence = 0
+    if held_on_fines.any?
+      @held_on_fines_pct = ((@held_on_fines_pop.to_f / @total_jail_population) * 100).round(0)
+      @held_on_fines_avg_sentence = 188 # TODO: set real query for this
+    end
+
+    # CONDITION OF PROBATION
+    condition_of_probation = unreleased_bookings.joins(:cases)
+      .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
+      .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
+    @condition_of_probation_pop = 0
+    @condition_of_probation_pct = 0
+    @condition_of_probation_avg_sentence = 0
+    if condition_of_probation.any?
+      @condition_of_probation_pop = condition_of_probation.count
+      @condition_of_probation_pct = ((@condition_of_probation_pop.to_f / @total_jail_population) * 100).round(0)
+      @condition_of_probation_avg_sentence = 188 # TODO: set real query for this
+    end
+
+    # JUSTICE COURT
+    @justice_court_pop = justice_court_pop_query
+    @justice_court_pct = 0
+    if @justice_court_pop.positive?
+      @justice_court_pct = ((@justice_court_pop.to_f / @total_jail_population) * 100).round(0)
+    end
+    @justice_court_avg_sentence = 188 # TODO: set real query for this
+    @justice_court_stats_by_court = justice_court_stats_by_court_query
+  end
+
+  private
+
+  def adjudication_median_query
+    ActiveRecord::Base.connection.exec_query(
       <<-SQL
         SELECT
           DISTINCT(PERCENTILE_DISC(0.5) WITHIN GROUP(ORDER BY datediff(dd, bookings.comdate, bookings.reldate)) OVER()) AS median
@@ -18,34 +67,8 @@ class PagesController < ApplicationController
     ).first['median']
   end
 
-  def population
-    unreleased_bookings = Booking.where("reldate < '1902-01-01 00:00:00'")
-
-    @total_jail_population = unreleased_bookings.count
-    @inhouse_jail_population = unreleased_bookings.where(jlocat: 'MAIN')
-      .distinct
-      .count
-
-    held_on_fines = unreleased_bookings.joins(:bonds)
-      .where("bond_masters.type_id = 'FIN' AND bond_masters.original_bond_amt < 500")
-    @held_on_fines_pop = 0
-    @held_on_fines_pct = 0
-    if held_on_fines.any?
-      @held_on_fines_pop = held_on_fines.count
-      @held_on_fines_pct = ((@held_on_fines_pop.to_f / @total_jail_population) * 100).round(0)
-    end
-
-    condition_of_probation = unreleased_bookings.joins(:cases)
-      .joins('INNER JOIN billing_communities ON billing_communities.id_guid = case_masters.billing_community')
-      .where(billing_communities: { extdesc: 'State Probationary Sentence Inmates' })
-    @condition_of_probation_pop = 0
-    @condition_of_probation_pct = 0
-    if condition_of_probation.any?
-      @condition_of_probation_pop = condition_of_probation.count
-      @condition_of_probation_pct = ((@condition_of_probation_pop.to_f / @total_jail_population) * 100).round(0)
-    end
-
-    @justice_court_pop = ActiveRecord::Base.connection.exec_query(
+  def justice_court_pop_query
+    ActiveRecord::Base.connection.exec_query(
       <<-SQL
         WITH non_justice_bookings AS (
           SELECT
@@ -65,11 +88,10 @@ class PagesController < ApplicationController
           AND bookings.reldate < '1902-01-01 00:00:00'
       SQL
     ).first['current_justice_bookings']
-    @justice_court_pct = 0
-    if @justice_court_pop > 0
-      @justice_court_pct = ((@justice_court_pop.to_f / @total_jail_population) * 100).round(0)
-    end
-    @justice_court_stats_by_court = ActiveRecord::Base.connection.exec_query(
+  end
+
+  def justice_court_stats_by_court_query
+    ActiveRecord::Base.connection.exec_query(
       <<-SQL
         WITH non_justice_bookings AS (
           SELECT bookings.*
@@ -86,27 +108,26 @@ class PagesController < ApplicationController
             AND bookings.reldate < '1902-01-01 00:00:00'
         ),
         total_bookings AS (
-            SELECT
-                hearing_court_names.extdesc AS name,
-                count(unreleased_justice_court_bookings.sysid) AS bookings_count
-            FROM unreleased_justice_court_bookings
-            INNER JOIN case_masters ON case_masters.sysid = unreleased_justice_court_bookings.sysid
-            INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
-            GROUP BY hearing_court_names.extdesc
+          SELECT
+            hearing_court_names.extdesc AS name,
+            count(unreleased_justice_court_bookings.sysid) AS bookings_count
+          FROM unreleased_justice_court_bookings
+          INNER JOIN case_masters ON case_masters.sysid = unreleased_justice_court_bookings.sysid
+          INNER JOIN hearing_court_names ON hearing_court_names.slc_id = case_masters.jurisdiction_code
+          GROUP BY hearing_court_names.extdesc
         )
         SELECT
-            total_bookings.name as name,
-            total_bookings.bookings_count,
-            cast(
-                total_bookings.bookings_count as float
-            ) / (
-                SELECT COUNT(*) FROM unreleased_justice_court_bookings)*100 as bookings_pct
+          total_bookings.name as name,
+          total_bookings.bookings_count,
+          cast(
+            total_bookings.bookings_count as float
+          ) / (
+            SELECT COUNT(*) FROM unreleased_justice_court_bookings)*100 as bookings_pct
         FROM total_bookings
         GROUP BY
-            total_bookings.name,
-            total_bookings.bookings_count
+          total_bookings.name,
+          total_bookings.bookings_count
       SQL
     )
   end
-
 end

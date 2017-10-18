@@ -1,11 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe PagesController do
   include AuthHelper
 
-  xdescribe '#bookings' do
+  describe '#bookings' do
     context 'when logged in' do
-
       before(:each) do
         http_login
       end
@@ -18,14 +19,15 @@ describe PagesController do
     end
   end
 
-  xdescribe '#adjudication' do
+  describe '#adjudication' do
     context 'when logged in' do
-
       before(:each) do
         http_login
       end
 
       it 'should return a 200' do
+        booking = FactoryGirl.create(:booking) # controller breaks w/o at least one booking in DB
+
         get :adjudication
 
         expect(response.status).to be(200)
@@ -35,7 +37,6 @@ describe PagesController do
 
   describe '#population' do
     context 'when logged in' do
-
       before(:each) do
         http_login
       end
@@ -107,32 +108,26 @@ describe PagesController do
         released_booking = FactoryGirl.create(:booking, reldate: Date.yesterday)
         non_justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
         FactoryGirl.create(:case_master,
-          booking: non_justice_booking,
-          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'NORMAL COURT'),
-        )
+                           booking: non_justice_booking,
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'NORMAL COURT'))
         justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
         FactoryGirl.create(:case_master,
-          booking: justice_booking,
-          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
-        )
+                           booking: justice_booking,
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
         multi_court_non_justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
         FactoryGirl.create(:case_master,
-          booking: multi_court_non_justice_booking,
-          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
-        )
+                           booking: multi_court_non_justice_booking,
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
         FactoryGirl.create(:case_master,
-          booking: multi_court_non_justice_booking,
-          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'OTHER COURT'),
-        )
+                           booking: multi_court_non_justice_booking,
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'OTHER COURT'))
         multi_court_justice_booking = FactoryGirl.create(:booking, reldate: Date.parse('1900-01-01'))
         FactoryGirl.create(:case_master,
-          booking: multi_court_justice_booking,
-          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
-        )
+                           booking: multi_court_justice_booking,
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
         FactoryGirl.create(:case_master,
-          booking: multi_court_justice_booking,
-          hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'),
-        )
+                           booking: multi_court_justice_booking,
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
 
         get :population
 
@@ -144,6 +139,16 @@ describe PagesController do
       end
 
       xit 'should return appropriate justice_court_avg_sentence' do
+        FactoryGirl.create(:case_master,
+                           booking: FactoryGirl.create(:booking),
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
+        FactoryGirl.create(:case_master,
+                           booking: FactoryGirl.create(:booking),
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
+        FactoryGirl.create(:case_master,
+                           booking: FactoryGirl.create(:booking),
+                           hearing_court_name: FactoryGirl.create(:hearing_court_name, extdesc: 'JUSTICE COURT'))
+
         get :population
       end
 
