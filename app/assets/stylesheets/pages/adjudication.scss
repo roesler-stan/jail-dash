@@ -20,4 +20,15 @@
       }
     }
   }
+
+  .courts-selector {
+    .options {
+      display: none;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      width: 350px;
+      border: 1px solid #CCCCCC;
+    }
+  }
 }

@@ -7,9 +7,9 @@ class AdjudicationByJudgeChart extends AdjudicationChart {
   render(targetElementSelector, opts) {
     const baseUrl = "/api/v1/adjudication_by_judge.json?"
     let params = []
-    if (opts.fromDate)      { params.push("time_start="+opts.fromDate) }
-    if (opts.toDate)        { params.push("time_end="+opts.toDate) }
-    if (opts.timeInterval)  { params.push("time_intervals="+opts.timeInterval) }
+    if (opts.fromDate)  { params.push("time_start="+opts.fromDate) }
+    if (opts.toDate)    { params.push("time_end="+opts.toDate) }
+    if (opts.courts)    { params.push("courts="+opts.courts) }
 
     const dataUrl = baseUrl + params.join('&');
 

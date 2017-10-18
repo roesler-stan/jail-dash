@@ -1,4 +1,10 @@
 $(document).ready(function () {
+  if ($('body').hasClass('population')) {
+    setup();
+  }
+});
+
+function setup () {
   $('.js-accordion-trigger').click(function(e){
     e.preventDefault();
     $(this).parent().parent().toggleClass('is-expanded');
@@ -8,17 +14,17 @@ $(document).ready(function () {
       $(this).trigger('drawchart-'+$(this).data('chart'))
     }
   });
-});
 
-$(document).on('drawchart-condition-of-probation', function () {
-  renderConditionOfProbation();
-});
-$(document).on('drawchart-justice-court-commitments', function () {
-  renderJusticeCourtCommitments();
-});
-$(document).on('drawchart-held-on-fines', function () {
-  renderHeldOnFines();
-});
+  $(document).on('drawchart-condition-of-probation', function () {
+    renderConditionOfProbation();
+  });
+  $(document).on('drawchart-justice-court-commitments', function () {
+    renderJusticeCourtCommitments();
+  });
+  $(document).on('drawchart-held-on-fines', function () {
+    renderHeldOnFines();
+  });
+}
 
 function renderConditionOfProbation() {
   const chartSelector = "#condition-of-probation";

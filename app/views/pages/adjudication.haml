@@ -38,3 +38,11 @@
     .datepicker-anchor.pull-right
       %span.dropdown_selection
       .chevron
+    .courts-selector.pull-right
+      %span.dropdown_selection{ 'data-courtname': '' } All
+      .chevron
+      .options.courts
+        %ul
+          %li.option.dropdown_option{ 'data-courtname': '' } All
+          - HearingCourtName.order(:extdesc).pluck(:extdesc).each do |court_name|
+            %li.option.dropdown_option{ 'data-courtname': court_name }= court_name

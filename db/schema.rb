@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171017170902) do
+ActiveRecord::Schema.define(version: 20171018215357) do
 
   create_table "agency_populations", force: :cascade do |t|
     t.string "agency_id", null: false
@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(version: 20171017170902) do
     t.index ["billing_community"], name: "index_case_masters_on_billing_community"
     t.index ["case_pk"], name: "index_case_masters_on_case_pk", unique: true
     t.index ["judge"], name: "index_case_masters_on_judge"
+    t.index ["jurisdiction_code"], name: "index_case_masters_on_jurisdiction_code"
     t.index ["sysid"], name: "index_case_masters_on_sysid"
   end
 

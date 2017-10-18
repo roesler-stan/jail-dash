@@ -105,12 +105,13 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 //
 // STYLESHEETS
 //
-.datepicker-anchor {
+.datepicker-anchor,
+.courts-selector {
   position: relative;
-  background: #fff; 
-  cursor: pointer; 
-  padding: 5px 10px; 
-  border: 1px solid #ccc; 
+  background: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
   width: 350px;
 
   .chevron {
@@ -424,7 +425,8 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
 // Predefined Ranges
 //
 
-.ranges {
+.ranges,
+.courts {
   font-size: 14px;
   float: none;
   margin: 0;

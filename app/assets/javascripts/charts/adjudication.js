@@ -67,6 +67,16 @@ class AdjudicationChart {
     svg.call(infotip);
 
     d3.json(opts.dataUrl, function(response, data) {
+      if (data.length === 0) {
+        const textWidth = 300
+        g.append('text')
+          .attr('x', (width-textWidth)/2)
+          .attr('y', height/2)
+          .attr('width', textWidth)
+          .text('No data available for this selection.')
+
+        return; // Terminate execution, as there's nothing to render.
+      }
       y.domain(data.map(function(d) { return d.name }));
       x.domain([0, d3.max(data, function(d) { return d.avg_duration })]).nice();
 
