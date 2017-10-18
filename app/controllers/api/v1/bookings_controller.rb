@@ -14,13 +14,13 @@ class Api::V1::BookingsController < ApplicationController
         SELECT TOP 10
           arrests.slc_id,
           arrests.extdesc,
-          COUNT(bookings.sysid) AS "booking_count"
+          COUNT(bookings.sysid) AS booking_count
         FROM arrests
         INNER JOIN bookings on bookings.arrest = arrests.slc_id
         WHERE bookings.comdate > '#{sanitized_time_start}'
           AND bookings.comdate < '#{sanitized_time_end}'
         GROUP BY arrests.slc_id, arrests.extdesc
-        ORDER BY COUNT(bookings.sysid) DESC;
+        ORDER BY booking_count DESC;
       SQL
     )
 

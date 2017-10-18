@@ -102,17 +102,24 @@ class BookingsByAgencyChart {
         .enter().append("g")
           .attr("transform", function(d) { return "translate(" + x0(d.name) + ",0)"; })
         .selectAll("rect")
-        .data(function(d) { return keys.map(function(key) { return {agency: d.name, key: key, count: d[key+'_count'], percent: d[key+'_pct']}; }); })
+        .data(function(d) {
+          return keys.map(function(key) {
+            return {agency: d.name, key: key, count: d[key+'_count'], percent: d[key+'_pct']};
+          });
+        })
         .enter().append("rect")
           .attr("x", function(d) { return x1(d.key); })
-          .attr("y", function(d) { return y(d.percent); })
           .attr('rx', 3) // border radius
           .attr('ry', 3) // border radius
           .attr("width", x1.bandwidth())
-          .attr("height", function(d) { return height - y(d.percent); })
           .attr("class", function(d) { return 'column '+gradientClasses(d.key) })
           .on('mouseover', infotip.show)
-          .on('mouseout', infotip.hide);
+          .on('mouseout', infotip.hide)
+          .attr("y", height)
+          .transition()
+          .duration(750)
+          .attr("y", function(d) { return y(d.percent) })
+          .attr("height", function(d) { return height - y(d.percent); })
 
       g.append("g")
         .attr("class", "axis")

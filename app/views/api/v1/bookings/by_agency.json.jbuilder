@@ -10,8 +10,15 @@ json.agencies @agencies.each do |agency|
   booking_count = @bookings.where(arrest: agency['slc_id']).count
   json.booking_count booking_count
   json.booking_pct ((booking_count.to_f / total_bookings)*100).round(1)
-  
+
   pop_count = AgencyPopulation.find_by(agency_id: agency['slc_id']).try(:population) || 0
   json.pop_count pop_count
   json.pop_pct ((pop_count.to_f / total_population)*100).round(1)
-end
+end.concat([{
+  # bookings that are missing agency associations
+  name: 'Other (Unknown) Agencies',
+  booking_count: @bookings.where(arrest: '').count,
+  booking_pct: ((@bookings.where(arrest: '').count.to_f / total_bookings)*100).round(1),
+  pop_count: 0,
+  pop_pct: 0.0
+}])
