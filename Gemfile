@@ -8,6 +8,7 @@ end
 
 
 gem 'rails', '~> 5.1.4'
+gem 'webpacker', '~> 3.0'
 gem 'activerecord-sqlserver-adapter'
 gem 'tiny_tds', '1.3.0' # support for activerecord-sqlserver-adapter on OSX/*NIX
 gem 'puma', '~> 3.7'
