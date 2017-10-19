@@ -108,9 +108,9 @@ class BookingsOverTimeByAgencyChart {
           .attr("fill", "#000")
 
       const legendLayer = legendArea.append("g")
-          .attr("font-family", "sans-serif")
-          .attr("font-size", 10)
+          .attr('class', 'legend_label')
           .attr("text-anchor", "start")
+          .attr('cursor', 'pointer')
         .selectAll("g")
         .data(agencies.slice().reverse())
         .enter().append("g")
@@ -118,7 +118,7 @@ class BookingsOverTimeByAgencyChart {
           .on('click', function (d, index, elements) {
             // toggle series
             inactiveSeries[d.name] = !inactiveSeries[d.name];
-            
+
             // swap active/inactive color class on legend
             const this_legend = elements[index];
             d3.select(this_legend)
@@ -203,7 +203,7 @@ class BookingsOverTimeByAgencyChart {
 
     function legendColorClass(seriesName) {
       if (isInactiveSeries(seriesName)) {
-        return 'inactive';
+        return 'hidden';
       } else {
         return colorClasses(seriesName);
       }

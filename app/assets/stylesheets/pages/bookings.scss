@@ -81,8 +81,8 @@
     }
   }
 
-  .inactive {
-    .dot, &.legend, text {
+  .hidden {
+    .dot, &.legend {
       fill: $medium-gray-2;
     }
   }

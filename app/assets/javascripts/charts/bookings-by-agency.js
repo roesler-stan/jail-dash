@@ -62,7 +62,7 @@ class BookingsByAgencyChart {
         .padding(0.05);
 
     const y = d3.scaleLinear()
-        .rangeRound([height, 0]);
+        .rangeRound([height, 20]); // -20 to create a little room for the legend
 
     const z = d3.scaleOrdinal()
         .range(['purple', 'yellow']);
@@ -72,9 +72,9 @@ class BookingsByAgencyChart {
       .offset([-10, 0])
       .html(function(d) {
         let tooltip = "<div class='infotip "+z(d.key)+"'><div class='tooltip_label'>"+d.agency+"</div><div class='tooltip_body'>"
-        if (d.key == 'booking') {
+        if (d.key === 'bookings') {
           tooltip += ( d.percent+"% ("+d.count+" bookings)" )
-        } else if (d.key == 'pop') {
+        } else if (d.key === 'population') {
           tooltip += ( d.percent+"% of population" )
         }
         tooltip += "</div></div>"
@@ -90,11 +90,11 @@ class BookingsByAgencyChart {
     ].join('&');
 
     d3.json(dataUrl, function(response, data) {
-      var keys = ['booking', 'pop']
+      var seriesKeys = ['bookings', 'population']
 
       x0.domain(data.agencies.map(function(d) { return d.name; }));
-      x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-      y.domain([0, d3.max(data.agencies, function(d) { return d3.max(keys, function(key) { return d[key+'_pct']; }); })]).nice();
+      x1.domain(seriesKeys).rangeRound([0, x0.bandwidth()]);
+      y.domain([0, d3.max(data.agencies, function(d) { return d3.max(seriesKeys, function(key) { return d[key+'_pct']; }); })]).nice();
 
       g.append("g")
         .selectAll("g")
@@ -103,7 +103,7 @@ class BookingsByAgencyChart {
           .attr("transform", function(d) { return "translate(" + x0(d.name) + ",0)"; })
         .selectAll("rect")
         .data(function(d) {
-          return keys.map(function(key) {
+          return seriesKeys.map(function(key) {
             return {agency: d.name, key: key, count: d[key+'_count'], percent: d[key+'_pct']};
           });
         })
@@ -139,22 +139,24 @@ class BookingsByAgencyChart {
           .attr("font-size", 10)
           .attr("text-anchor", "end")
         .selectAll("g")
-        .data(keys)
+        .data(seriesKeys)
         .enter().append("g")
-          .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+          .attr("transform", function(d, i) { return "translate("+(i * 150)+",0)"; });
 
       legend.append("rect")
-          .attr("x", width - 16)
+          .attr('x', 0)
           .attr('rx', 3) // border radius
           .attr('ry', 3) // border radius
-          .attr("width", 16)
-          .attr("height", 16)
+          .attr('width', 16)
+          .attr('height', 16)
           .attr('class', z);
 
-      legend.append("text")
-          .attr("x", width - 24)
-          .attr("y", 9.5)
-          .attr("dy", "0.32em")
+      legend.append('text')
+          .attr('class', 'legend_label')
+          .attr('text-anchor', 'start')
+          .attr('x', 20)
+          .attr('y', 9.5)
+          .attr('dy', '0.32em')
           .text(function(d) { return '% of total '+d; });
     });
 
