@@ -1,6 +1,6 @@
 class TimeseriesChart {
   base_render(targetElementSelector, opts={}) {
-    var that = this;
+    const that = this;
     that.opts = {
       renderedHeight: opts.height || 500,
       dataUrl: opts.dataUrl,

@@ -90,7 +90,7 @@ class BookingsByAgencyChart {
     ].join('&');
 
     d3.json(dataUrl, function(response, data) {
-      var seriesKeys = ['bookings', 'population']
+      const seriesKeys = ['bookings', 'population']
 
       x0.domain(data.agencies.map(function(d) { return d.name; }));
       x1.domain(seriesKeys).rangeRound([0, x0.bandwidth()]);
