@@ -18,7 +18,7 @@ class AdjudicationChart {
       .attr('height', renderedHeight)
       .attr('width', renderedWidth);
 
-    const g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    const chart = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     const svgDefs = svg.append("defs")
 
@@ -66,10 +66,27 @@ class AdjudicationChart {
 
     svg.call(infotip);
 
-    d3.json(opts.dataUrl, function(response, data) {
+    d3.json(opts.dataUrl)
+      .on('beforesend', function (status) {
+        chart.append('foreignObject')
+          .attr('class', 'load-indicator-container')
+          .attr('x', width/2 - 20) // loader is 40px square
+          .attr('y', height/2 - 20) // loader is 40px square
+        .append('xhtml:div')
+          .attr('class', 'sk-wave')
+          .html('<div class="sk-rect sk-rect1"></div> \
+                 <div class="sk-rect sk-rect2"></div> \
+                 <div class="sk-rect sk-rect3"></div> \
+                 <div class="sk-rect sk-rect4"></div> \
+                 <div class="sk-rect sk-rect5"></div>')
+      })
+      .get(function(response, data) {
+      // remove load indicator when chart renders
+      d3.select('.load-indicator-container').remove()
+
       if (data.length === 0) {
         const textWidth = 300
-        g.append('text')
+        chart.append('text')
           .attr('x', (width-textWidth)/2)
           .attr('y', height/2)
           .attr('width', textWidth)
@@ -83,7 +100,7 @@ class AdjudicationChart {
       const durations = data.map(function (d) { return d.avg_duration })
       const average = Math.round(durations.reduce(function(sum, val) { return sum + val }) / data.length)
 
-      const bar = g.append("g")
+      const bar = chart.append("g")
         .selectAll("g")
         .data(data)
         .enter().append("g")
@@ -100,17 +117,25 @@ class AdjudicationChart {
         .attr("width", function(d) { return x(d.avg_duration); })
         .attr("class", 'row gradient-'+color)
         .on('mouseover', infotip.show)
-        .on('mouseout', infotip.hide);
+        .on('mouseout', infotip.hide)
+        .attr("width", 0)
+        .transition()
+        .duration(750)
+        .attr("height", y.bandwidth())
+        .attr("width", function(d) { return x(d.avg_duration); })
 
       bar.append('text')
         .attr('class', 'chart_label')
         .attr('fill', '#5C5C5C')
-        .attr('x', function(d) { return x(d.avg_duration) + 5 })
-        .attr('y', function(d) { return y(d.name) + y.bandwidth()/2 + 6 }) // 6 is half of 12px text height
         .attr('text-anchor', 'start')
-        .text(function(d) { return d.avg_duration });
+        .text(function(d) { return d.avg_duration })
+        .attr('x', 0)
+        .attr('y', function(d) { return y(d.name) + y.bandwidth()/2 + 6 }) // 6 is half of 12px text height
+        .transition()
+        .duration(750)
+        .attr('x', function(d) { return x(d.avg_duration) + 5 })
 
-      const average_line = g.append('g')
+      const average_line = chart.append('g')
       average_line.append('line')
           .attr('x1', function(d) { return x(average) })
           .attr('x2', function(d) { return x(average) })
@@ -127,7 +152,7 @@ class AdjudicationChart {
         .attr('y', -5)
         .text('Overall average: '+average+' days')
 
-      g.append("g")
+      chart.append("g")
           .attr("class", "axis")
           .call(d3.axisLeft(y)
             .ticks(null, "s")

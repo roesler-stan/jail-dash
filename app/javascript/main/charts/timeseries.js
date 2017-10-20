@@ -65,7 +65,6 @@ export class TimeseriesChart {
                  <div class="sk-rect sk-rect4"></div> \
                  <div class="sk-rect sk-rect5"></div>')
       })
-      .on('progress', function (status) { console.log(status) })
       .get(function(response, data) {
       // remove load indicator when chart renders
       d3.select('.load-indicator-container').remove()
