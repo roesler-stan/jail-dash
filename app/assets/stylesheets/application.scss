@@ -11,3 +11,9 @@
 @import "pages/bookings";
 @import "pages/adjudication";
 @import "pages/population";
+
+// chart loading indicator
+@import "../node_modules/spinkit/scss/spinners/3-wave.scss";
+.sk-wave .sk-rect {
+  background-color: $fuchsia;
+}

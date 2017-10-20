@@ -51,7 +51,25 @@ export class TimeseriesChart {
 
     svg.call(infotip);
 
-    d3.json(that.opts.dataUrl, function(response, data) {
+    d3.json(that.opts.dataUrl)
+      .on('beforesend', function (status) {
+        chart.append('foreignObject')
+          .attr('class', 'load-indicator-container')
+          .attr('x', width/2 - 20) // loader is 40px square
+          .attr('y', height/2 - 20) // loader is 40px square
+        .append('xhtml:div')
+          .attr('class', 'sk-wave')
+          .html('<div class="sk-rect sk-rect1"></div> \
+                 <div class="sk-rect sk-rect2"></div> \
+                 <div class="sk-rect sk-rect3"></div> \
+                 <div class="sk-rect sk-rect4"></div> \
+                 <div class="sk-rect sk-rect5"></div>')
+      })
+      .on('progress', function (status) { console.log(status) })
+      .get(function(response, data) {
+      // remove load indicator when chart renders
+      d3.select('.load-indicator-container').remove()
+
       y.domain([0, d3.max(data, function(d) { return d.booking_count })]).nice();
 
       x = d3.scaleOrdinal()
