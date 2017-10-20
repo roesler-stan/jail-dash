@@ -1,6 +1,7 @@
 {
   "name": "jail_dashboard",
   "private": true,
+  "engines": {},
   "dependencies": {
     "@rails/webpacker": "^3.0.2",
     "coffeescript": "^2.0.1",
@@ -11,6 +12,6 @@
     "moment": "^2.19.1"
   },
   "devDependencies": {
-    "webpack-dev-server": "^2.9.2"
+    "webpack-dev-server": "^2.9.3"
   }
 }
