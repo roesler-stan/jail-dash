@@ -1,3 +1,6 @@
+import {AdjudicationByCourtChart} from '../charts/adjudication-by-court.js'
+import {AdjudicationByJudgeChart} from '../charts/adjudication-by-judge.js'
+
 $(document).ready(function () {
 
   if ($('body').hasClass('adjudication')) {
@@ -13,7 +16,7 @@ $(document).ready(function () {
     }
   });
 
-  $courtsSelector = $('.courts-selector')
+  const $courtsSelector = $('.courts-selector')
   $courtsSelector.click(function () {
     $courtsSelector.find('.options').show();
   });

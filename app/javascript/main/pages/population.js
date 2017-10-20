@@ -1,3 +1,7 @@
+import {ConditionOfProbationChart} from '../charts/population-condition-of-probation.js'
+import {JusticeCourtCommitmentsChart} from '../charts/population-justice-court-commitments.js'
+import {HeldOnFinesChart} from '../charts/population-held-on-fines.js'
+
 $(document).ready(function () {
   if ($('body').hasClass('population')) {
     setup();

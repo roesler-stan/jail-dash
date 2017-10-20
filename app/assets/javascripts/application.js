@@ -10,25 +10,5 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require rails-ujs
-//= require d3
-//= require d3-tip
-//= require moment
-//= require datepicker
-//= require datepicker-init
 
-//= require pages/bookings
-//= require pages/adjudication
-//= require pages/population
-
-//= require charts/timeseries
-//= require charts/bookings-by-agency
-//= require charts/bookings-over-time
-//= require charts/bookings-over-time-by-agency
-//= require charts/adjudication
-//= require charts/adjudication-by-court
-//= require charts/adjudication-by-judge
-//= require charts/population-condition-of-probation
-//= require charts/population-justice-court-commitments
-//= require charts/population-held-on-fines
+// ALL JS FOR THIS APP IS LOADED THROUGH app/javascript/packs/application.js

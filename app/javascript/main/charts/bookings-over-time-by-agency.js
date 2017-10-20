@@ -1,4 +1,4 @@
-class BookingsOverTimeByAgencyChart {
+export class BookingsOverTimeByAgencyChart {
   render(targetElementSelector, opts={}) {
     const baseUrl = "/api/v1/bookings_over_time_by_agency.json?"
     let params = []

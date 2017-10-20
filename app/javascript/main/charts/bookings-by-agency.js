@@ -1,4 +1,4 @@
-class BookingsByAgencyChart {
+export class BookingsByAgencyChart {
   constructor(args) {
     this.args = args;
   }

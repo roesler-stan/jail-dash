@@ -142,3 +142,5 @@ class AdjudicationChart {
     });
   }
 }
+
+module.exports = AdjudicationChart;

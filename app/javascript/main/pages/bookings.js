@@ -1,3 +1,7 @@
+import {BookingsByAgencyChart} from '../charts/bookings-by-agency.js';
+import {BookingsOverTimeChart} from '../charts/bookings-over-time.js';
+import {BookingsOverTimeByAgencyChart} from '../charts/bookings-over-time-by-agency.js';
+
 $(document).ready(function () {
 
   if ($('body').hasClass('bookings')) {

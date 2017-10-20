@@ -132,3 +132,5 @@ class TimeseriesChart {
     }
   }
 }
+
+module.exports = TimeseriesChart;

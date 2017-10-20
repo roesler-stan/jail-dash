@@ -1,4 +1,6 @@
-class AdjudicationByJudgeChart extends AdjudicationChart {
+import AdjudicationChart from './adjudication.js'
+
+export class AdjudicationByJudgeChart extends AdjudicationChart {
   constructor(args) {
     super(args);
     this.args = args;

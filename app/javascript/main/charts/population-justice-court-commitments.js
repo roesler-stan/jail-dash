@@ -1,4 +1,6 @@
-class JusticeCourtCommitmentsChart extends TimeseriesChart {
+import TimeseriesChart from './timeseries.js';
+
+export class JusticeCourtCommitmentsChart extends TimeseriesChart {
   constructor(args) {
     super(args);
     this.args = args;

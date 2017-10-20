@@ -5,7 +5,7 @@
     %title Jail Dashboard
     = csrf_meta_tags
     = stylesheet_link_tag 'application', 'https://fonts.googleapis.com/css?family=Arvo|Lato:400,700', media: 'all'
-    = javascript_include_tag 'application'
+    = javascript_pack_tag 'application'
     = render 'shared/analytics'
   %body{ class: content_for(:page_name) }
     .page-wrapper
