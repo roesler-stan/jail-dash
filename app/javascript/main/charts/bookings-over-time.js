@@ -1,4 +1,4 @@
-import TimeseriesChart from './timeseries.js';
+import {TimeseriesChart} from './timeseries.js';
 
 export class BookingsOverTimeChart extends TimeseriesChart {
   constructor(args) {

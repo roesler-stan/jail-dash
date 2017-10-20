@@ -1,8 +1,3 @@
-import 'jquery';
-import 'jquery-ujs';
-import 'd3';
-import 'd3-tip';
-import 'moment';
 import 'datepicker.js';
 
 import './datepicker-init.js';

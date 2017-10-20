@@ -1,4 +1,4 @@
-class TimeseriesChart {
+export class TimeseriesChart {
   base_render(targetElementSelector, opts={}) {
     const that = this;
     that.opts = {
@@ -132,5 +132,3 @@ class TimeseriesChart {
     }
   }
 }
-
-module.exports = TimeseriesChart;
