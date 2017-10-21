@@ -37,7 +37,8 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 ### Run the rails app
 rails s
 
-### Input the user name and password found in app/controllers/application_controller.rb
+### Input user name and password
+vim app/controllers/application_controller.rb
 
 ## Debugging
 - docker ps -a
