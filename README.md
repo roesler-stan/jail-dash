@@ -6,6 +6,8 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 Important notes while following this tutorial:
 * BE SURE TO GIVE DOCKER 4GB OF MEMORY (as egregious as that is), as MSSQL won't even start with anything less than 3.25GB
 * There are password requirements when setting up the DB. The password in the `database.yml` file should work nicely. The full Docker setup command using that password is: `docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=SApassword!' -p 1433:1433 -d microsoft/mssql-server-linux`
-* If you're having trouble starting teh Docker DB, keeping it running, or connecting to it, you may find it helpful to run `docker logs [CONTAINER_NAME]`, where `CONTAINER_NAME` is the hash shown for the container when you run `docker ps -a`
+* If you're having trouble starting the Docker DB, keeping it running, or connecting to it, you may find it helpful to run `docker logs [CONTAINER_NAME]`, where `CONTAINER_NAME` is the hash shown for the container when you run `docker ps -a`
 
 Heroku does not read from the `database.yml` file in production. To connect to the remote RDS MSSQL server, you'll need to specify the full connection URL in Settings/"Config Variables" as `DATABASE_URL=sqlserver://<username>:<paSSW0rd>@<database.host.name>:1433`
+
+Please see INSTALLATION.md for more information about getting this app running locally.

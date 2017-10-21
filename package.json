@@ -4,7 +4,7 @@
   "engines": {},
   "dependencies": {
     "@rails/webpacker": "^3.0.2",
-    "coffeescript": "^2.0.1",
+    "coffeescript": "1.12.7",
     "d3": "^4.11.0",
     "d3-tip": "v0.8.0-alpha.1",
     "jquery": "^3.2.1",
