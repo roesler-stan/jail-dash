@@ -13,14 +13,15 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 `docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=SApassword!' -p 1433:1433 -d microsoft/mssql-server-linux`
 
 ### Set up the ruby on rails database
-gem install rails
+1. gem install rails
 #### Use bundle to install this app's ruby requirements
-bundle
-brew install graphviz
-(If necessary, change the ruby version in Gemfile)
-ruby connect.rb
-rake db:create
-rake db:migrate
+2. bundle
+3. brew install graphviz
+#### (If necessary, change the ruby version in Gemfile)
+4. vim Gemfile
+5. ruby connect.rb
+6. rake db:create
+7. rake db:migrate
 
 ### Run the rails app
 rails s
