@@ -8,6 +8,8 @@ https://github.com/codeforamerica/jail-dash
 2. Give docker 4GB of memory: https://docs.docker.com/docker-for-mac/#memory
 
 ### Set up ruby and connect to SQL server
+Run the first 1 1/2 pages of the following!
+
 https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 
 ### Run MSSQL with docker in the background
