@@ -27,6 +27,11 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 5. rake db:create
 6. rake db:migrate
 
+### Install webpack
+1. brew install node
+2. brew install yarn
+3. bundle exec rails webpacker:install
+
 ### Run the rails app
 rails s
 
