@@ -20,8 +20,8 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 #### Use bundle to install this app's ruby requirements
 2. bundle
 3. brew install graphviz
-#### (If necessary, change the ruby version in Gemfile)
-4. vim Gemfile
+#### (If necessary, change the ruby version in Gemfile and .ruby-version)
+4. vim Gemfile, vim .ruby-version
 #### Set up rails db (see https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/step/2.html)
 5. ruby connect.rb
 6. rake db:create
