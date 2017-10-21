@@ -23,9 +23,9 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 #### (If necessary, change the ruby version in Gemfile and .ruby-version)
 4. vim Gemfile, vim .ruby-version
 #### Set up rails db (see https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/step/2.html)
-5. ruby connect.rb
-6. rake db:create
-7. rake db:migrate
+#### (To test database: ruby connect.rb)
+5. rake db:create
+6. rake db:migrate
 
 ### Run the rails app
 rails s
