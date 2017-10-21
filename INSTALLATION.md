@@ -1,5 +1,7 @@
 # jail-dash installation
 
+This is a ruby on rails app using Microsoft SQL.  It is used by Jail Dashboard to visualize counties' jail performance: https://www.codeforamerica.org/news/join-the-free-jail-dashboard-pilot.
+
 ### Fork the remote repository
 https://github.com/codeforamerica/jail-dash
 
