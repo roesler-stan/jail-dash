@@ -1,6 +1,7 @@
 # jail-dash installation
 
 ### Fork the remote repository
+https://github.com/codeforamerica/jail-dash
 
 ### Use docker to run the Microsoft SQL (MSSQL) server
 1. Install docker: https://docs.docker.com/docker-for-mac/install/
@@ -19,6 +20,7 @@ https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/
 3. brew install graphviz
 #### (If necessary, change the ruby version in Gemfile)
 4. vim Gemfile
+#### Set up rails db (see https://www.microsoft.com/en-us/sql-server/developer-get-started/ruby/mac/step/2.html)
 5. ruby connect.rb
 6. rake db:create
 7. rake db:migrate
@@ -28,7 +30,7 @@ rails s
 
 
 ## Debugging
-docker ps -a
-docker logs [CONTAINER_NAME]
+- docker ps -a
+- docker logs [CONTAINER_NAME]
 
 
